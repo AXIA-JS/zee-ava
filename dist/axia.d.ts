@@ -2,15 +2,16 @@
  * @packageDocumentation
  * @module AxiaCore
  */
-import { AxiosRequestConfig, Method } from 'axios';
-import { APIBase, RequestResponseData } from './common/apibase';
+import { AxiosRequestConfig, Method } from "axios";
+import { APIBase, RequestResponseData } from "./common/apibase";
 /**
  * AxiaCore is middleware for interacting with Axia node RPC APIs.
  *
  * Example usage:
  * ```js
- * let axia = new AxiaCore("127.0.0.1", 9650, "https");
+ * let axia = new AxiaCore("127.0.0.1", 9650, "https")
  * ```
+ *
  *
  */
 export default class AxiaCore {
@@ -18,7 +19,9 @@ export default class AxiaCore {
     protected hrp: string;
     protected protocol: string;
     protected ip: string;
+    protected host: string;
     protected port: number;
+    protected baseEndpoint: string;
     protected url: string;
     protected auth: string;
     protected headers: {
@@ -29,29 +32,41 @@ export default class AxiaCore {
         [k: string]: APIBase;
     };
     /**
-       * Sets the address and port of the main Axia Client.
-       *
-       * @param ip The hostname to resolve to reach the Axia Client RPC APIs
-       * @param port The port to resolve to reach the Axia Client RPC APIs
-       * @param protocol The protocol string to use before a "://" in a request,
-       * ex: "http", "https", "git", "ws", etc ...
-       */
-    setAddress: (ip: string, port: number, protocol?: string) => void;
+     * Sets the address and port of the main Axia Client.
+     *
+     * @param host The hostname to resolve to reach the Axia Client RPC APIs.
+     * @param port The port to resolve to reach the Axia Client RPC APIs.
+     * @param protocol The protocol string to use before a "://" in a request,
+     * ex: "http", "https", etc. Defaults to http
+     * @param baseEndpoint the base endpoint to reach the Axia Client RPC APIs,
+     * ex: "/rpc". Defaults to "/"
+     * The following special characters are removed from host and protocol
+     * &#,@+()$~%'":*?{} also less than and greater than signs
+     */
+    setAddress: (host: string, port: number, protocol?: string, baseEndpoint?: string) => void;
     /**
-       * Returns the protocol such as "http", "https", "git", "ws", etc.
-       */
+     * Returns the protocol such as "http", "https", "git", "ws", etc.
+     */
     getProtocol: () => string;
     /**
-       * Returns the IP for the Axia node.
-       */
+     * Returns the host for the Axia node.
+     */
+    getHost: () => string;
+    /**
+     * Returns the IP for the Axia node.
+     */
     getIP: () => string;
     /**
-       * Returns the port for the Axia node.
-       */
+     * Returns the port for the Axia node.
+     */
     getPort: () => number;
     /**
-       * Returns the URL of the Axia node (ip + port);
-       */
+     * Returns the base endpoint for the Axia node.
+     */
+    getBaseEndpoint: () => string;
+    /**
+     * Returns the URL of the Axia node (ip + port)
+     */
     getURL: () => string;
     /**
      * Returns the custom headers
@@ -62,13 +77,13 @@ export default class AxiaCore {
      */
     getRequestConfig: () => AxiosRequestConfig;
     /**
-       * Returns the networkID;
-       */
+     * Returns the networkID
+     */
     getNetworkID: () => number;
     /**
-       * Sets the networkID
-       */
-    setNetworkID: (netid: number) => void;
+     * Sets the networkID
+     */
+    setNetworkID: (netID: number) => void;
     /**
      * Returns the Human-Readable-Part of the network associated with this key.
      *
@@ -121,18 +136,18 @@ export default class AxiaCore {
      * @param auth A temporary token provided by the node enabling access to the endpoints on the node.
      */
     setAuthToken: (auth: string) => void;
-    protected _setHeaders: (headers: object) => object;
+    protected _setHeaders: (headers: any) => any;
     /**
      * Adds an API to the middleware. The API resolves to a registered blockchain's RPC.
      *
      * In TypeScript:
      * ```js
-     * axia.addAPI<MyVMClass>("mychain", MyVMClass, "/ext/bc/mychain");
+     * axia.addAPI<MyVMClass>("mychain", MyVMClass, "/ext/bc/mychain")
      * ```
      *
      * In Javascript:
      * ```js
-     * axia.addAPI("mychain", MyVMClass, "/ext/bc/mychain");
+     * axia.addAPI("mychain", MyVMClass, "/ext/bc/mychain")
      * ```
      *
      * @typeparam GA Class of the API being added
@@ -141,7 +156,7 @@ export default class AxiaCore {
      * @param baseurl Path to resolve to reach the API
      *
      */
-    addAPI: <GA extends APIBase>(apiName: string, ConstructorFN: new (axc: AxiaCore, baseurl?: string, ...args: Array<any>) => GA, baseurl?: string, ...args: Array<any>) => void;
+    addAPI: <GA extends APIBase>(apiName: string, ConstructorFN: new (axc: AxiaCore, baseurl?: string, ...args: any[]) => GA, baseurl?: string, ...args: any[]) => void;
     /**
      * Retrieves a reference to an API by its apiName label.
      *
@@ -151,13 +166,12 @@ export default class AxiaCore {
     /**
      * @ignore
      */
-    protected _request: (xhrmethod: Method, baseurl: string, getdata: object, postdata: string | object | ArrayBuffer | ArrayBufferView, headers?: object, axiosConfig?: AxiosRequestConfig) => Promise<RequestResponseData>;
+    protected _request: (xhrmethod: Method, baseurl: string, getdata: object, postdata: string | object | ArrayBuffer | ArrayBufferView, headers?: any, axiosConfig?: AxiosRequestConfig) => Promise<RequestResponseData>;
     /**
      * Makes a GET call to an API.
      *
      * @param baseurl Path to the api
      * @param getdata Object containing the key value pairs sent in GET
-     * @param parameters Object containing the parameters of the API call
      * @param headers An array HTTP Request Headers
      * @param axiosConfig Configuration for the axios javascript library that will be the
      * foundation for the rest of the parameters
@@ -170,7 +184,6 @@ export default class AxiaCore {
      *
      * @param baseurl Path to the API
      * @param getdata Object containing the key value pairs sent in DELETE
-     * @param parameters Object containing the parameters of the API call
      * @param headers An array HTTP Request Headers
      * @param axiosConfig Configuration for the axios javascript library that will be the
      * foundation for the rest of the parameters
@@ -184,7 +197,6 @@ export default class AxiaCore {
      * @param baseurl Path to the API
      * @param getdata Object containing the key value pairs sent in POST
      * @param postdata Object containing the key value pairs sent in POST
-     * @param parameters Object containing the parameters of the API call
      * @param headers An array HTTP Request Headers
      * @param axiosConfig Configuration for the axios javascript library that will be the
      * foundation for the rest of the parameters
@@ -198,7 +210,6 @@ export default class AxiaCore {
      * @param baseurl Path to the baseurl
      * @param getdata Object containing the key value pairs sent in PUT
      * @param postdata Object containing the key value pairs sent in PUT
-     * @param parameters Object containing the parameters of the API call
      * @param headers An array HTTP Request Headers
      * @param axiosConfig Configuration for the axios javascript library that will be the
      * foundation for the rest of the parameters
@@ -223,10 +234,10 @@ export default class AxiaCore {
     /**
      * Creates a new Axia instance. Sets the address and port of the main Axia Client.
      *
-     * @param ip The hostname to resolve to reach the Axia Client APIs
+     * @param host The hostname to resolve to reach the Axia Client APIs
      * @param port The port to resolve to reach the Axia Client APIs
      * @param protocol The protocol string to use before a "://" in a request, ex: "http", "https", "git", "ws", etc ...
      */
-    constructor(ip: string, port: number, protocol?: string);
+    constructor(host?: string, port?: number, protocol?: string);
 }
 //# sourceMappingURL=axia.d.ts.map

@@ -2,8 +2,9 @@
  * @packageDocumentation
  * @module API-Auth
  */
-import AxiaCore from '../../axia';
-import { JRPCAPI } from '../../common/jrpcapi';
+import AxiaCore from "../../axia";
+import { JRPCAPI } from "../../common/jrpcapi";
+import { ErrorResponseObject } from "../../utils/errors";
 /**
  * Class for interacting with a node's AuthAPI.
  *
@@ -16,18 +17,18 @@ export declare class AuthAPI extends JRPCAPI {
      * Creates a new authorization token that grants access to one or more API endpoints.
      *
      * @param password This node's authorization token password, set through the CLI when the node was launched.
-     * @param endpoints A list of endpoints that will be accessible using the generated token. If there's an element that is "*", this token can reach any endpoint.
+     * @param endpoints A list of endpoints that will be accessible using the generated token. If there"s an element that is "*", this token can reach any endpoint.
      *
-     * @returns Returns a Promise<string> containing the authorization token.
+     * @returns Returns a Promise string containing the authorization token.
      */
-    newToken: (password: string, endpoints: Array<string>) => Promise<string>;
+    newToken: (password: string, endpoints: string[]) => Promise<string | ErrorResponseObject>;
     /**
      * Revokes an authorization token, removing all of its rights to access endpoints.
      *
      * @param password This node's authorization token password, set through the CLI when the node was launched.
      * @param token An authorization token whose access should be revoked.
      *
-     * @returns Returns a Promise<boolean> indicating if a token was successfully revoked.
+     * @returns Returns a Promise boolean indicating if a token was successfully revoked.
      */
     revokeToken: (password: string, token: string) => Promise<boolean>;
     /**
@@ -36,9 +37,16 @@ export declare class AuthAPI extends JRPCAPI {
      * @param oldPassword This node's authorization token password, set through the CLI when the node was launched.
      * @param newPassword A new password for this node's authorization token issuance.
      *
-     * @returns Returns a Promise<boolean> indicating if the password was successfully changed.
+     * @returns Returns a Promise boolean indicating if the password was successfully changed.
      */
     changePassword: (oldPassword: string, newPassword: string) => Promise<boolean>;
-    constructor(core: AxiaCore, baseurl?: string);
+    /**
+     * This class should not be instantiated directly. Instead use the [[Axia.addAPI]]
+     * method.
+     *
+     * @param core A reference to the Axia class
+     * @param baseURL Defaults to the string "/ext/auth" as the path to rpc's baseURL
+     */
+    constructor(core: AxiaCore, baseURL?: string);
 }
 //# sourceMappingURL=api.d.ts.map

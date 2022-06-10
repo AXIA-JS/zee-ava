@@ -1,6 +1,6 @@
 # Index RPC
 
-Example scripts for the Axia [Index RPC](https://docs.avax.network/build/axiago-apis/index-api)
+Example scripts for the Axia [Index RPC](https://docs.axc.network/build/axiago-apis/index-api)
 
 * [getContainerByID.ts](./getContainerByID.ts)
 * [getContainerByIndex.ts](./getContainerByIndex.ts)

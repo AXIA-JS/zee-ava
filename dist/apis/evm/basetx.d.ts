@@ -2,11 +2,11 @@
  * @packageDocumentation
  * @module API-EVM-BaseTx
  */
-import { Buffer } from 'buffer/';
-import { KeyChain, KeyPair } from './keychain';
-import { EVMStandardBaseTx } from '../../common/evmtx';
-import { Credential } from '../../common/credentials';
-import { SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import { KeyChain, KeyPair } from "./keychain";
+import { EVMStandardBaseTx } from "../../common/evmtx";
+import { Credential } from "../../common/credentials";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Class representing a base for all transactions.
  */
@@ -17,7 +17,7 @@ export declare class EVMBaseTx extends EVMStandardBaseTx<KeyPair, KeyChain> {
     /**
      * Returns the id of the [[BaseTx]]
      */
-    getTxType: () => number;
+    getTxType(): number;
     /**
      * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[BaseTx]], parses it, populates the class, and returns the length of the BaseTx in bytes.
      *

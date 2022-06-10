@@ -2,7 +2,7 @@
  * @packageDocumentation
  * @module API-PlatformVM-Credentials
  */
-import { Credential } from '../../common/credentials';
+import { Credential } from "../../common/credentials";
 /**
  * Takes a buffer representing the credential and returns the proper [[Credential]] instance.
  *
@@ -10,7 +10,7 @@ import { Credential } from '../../common/credentials';
  *
  * @returns An instance of an [[Credential]]-extended class.
  */
-export declare const SelectCredentialClass: (credid: number, ...args: Array<any>) => Credential;
+export declare const SelectCredentialClass: (credid: number, ...args: any[]) => Credential;
 export declare class SECPCredential extends Credential {
     protected _typeName: string;
     protected _typeID: number;

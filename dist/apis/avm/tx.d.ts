@@ -2,11 +2,11 @@
  * @packageDocumentation
  * @module API-AVM-Transactions
  */
-import { Buffer } from 'buffer/';
-import { KeyChain, KeyPair } from './keychain';
-import { StandardTx, StandardUnsignedTx } from '../../common/tx';
-import { BaseTx } from './basetx';
-import { SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import { KeyChain, KeyPair } from "./keychain";
+import { StandardTx, StandardUnsignedTx } from "../../common/tx";
+import { BaseTx } from "./basetx";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Takes a buffer representing the output and returns the proper [[BaseTx]] instance.
  *
@@ -14,7 +14,7 @@ import { SerializedEncoding } from '../../utils/serialization';
  *
  * @returns An instance of an [[BaseTx]]-extended class.
  */
-export declare const SelectTxClass: (txtype: number, ...args: Array<any>) => BaseTx;
+export declare const SelectTxClass: (txtype: number, ...args: any[]) => BaseTx;
 export declare class UnsignedTx extends StandardUnsignedTx<KeyPair, KeyChain, BaseTx> {
     protected _typeName: string;
     protected _typeID: any;

@@ -31,7 +31,7 @@ cKeychain.importKey(privKey)
 const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
 const cAddressStrings: string[] = cchain.keyChain().getAddressStrings()
 const pChainBlockchainIdStr: string = Defaults.network[networkID].P.blockchainID
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
+const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const Web3 = require("web3")
 const path: string = "/ext/bc/C/rpc"
@@ -46,13 +46,13 @@ const main = async (): Promise<any> => {
   const txcount = await web3.eth.getTransactionCount(cHexAddress)
   const nonce: number = txcount
   const locktime: BN = new BN(0)
-  let avaxAmount: BN = new BN(1e7)
+  let axcAmount: BN = new BN(1e7)
   let fee: BN = baseFee.div(new BN(1e9))
   fee = fee.add(new BN(1e6))
 
   let unsignedTx: UnsignedTx = await cchain.buildExportTx(
-    avaxAmount,
-    avaxAssetID,
+    axcAmount,
+    axcAssetID,
     pChainBlockchainIdStr,
     cHexAddress,
     cAddressStrings[0],

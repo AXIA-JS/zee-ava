@@ -1,18 +1,18 @@
 /**
  * @packageDocumentation
  * @module API-AVM-UTXOs
-  */
-import { Buffer } from 'buffer/';
+ */
+import { Buffer } from "buffer/";
 import BN from "bn.js";
-import { TransferableOutput, SECPMintOutput, SECPTransferOutput } from './outputs';
-import { UnsignedTx } from './tx';
-import { TransferableInput } from './inputs';
-import { Output, OutputOwners } from '../../common/output';
-import { InitialStates } from './initialstates';
-import { MinterSet } from './minterset';
-import { StandardUTXO, StandardUTXOSet } from '../../common/utxos';
-import { StandardAssetAmountDestination } from '../../common/assetamount';
-import { SerializedEncoding } from '../../utils/serialization';
+import { TransferableOutput, SECPMintOutput, SECPTransferOutput } from "./outputs";
+import { UnsignedTx } from "./tx";
+import { TransferableInput } from "./inputs";
+import { Output, OutputOwners } from "../../common/output";
+import { InitialStates } from "./initialstates";
+import { MinterSet } from "./minterset";
+import { StandardUTXO, StandardUTXOSet } from "../../common/utxos";
+import { StandardAssetAmountDestination } from "../../common/assetamount";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Class for representing a single UTXO.
  */
@@ -40,7 +40,7 @@ export declare class UTXO extends StandardUTXO {
      */
     toString(): string;
     clone(): this;
-    create(codecID?: number, txid?: Buffer, outputidx?: Buffer | number, assetid?: Buffer, output?: Output): this;
+    create(codecID?: number, txid?: Buffer, outputidx?: Buffer | number, assetID?: Buffer, output?: Output): this;
 }
 export declare class AssetAmountDestination extends StandardAssetAmountDestination<TransferableOutput, TransferableInput> {
 }
@@ -60,8 +60,8 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      * Creates an [[UnsignedTx]] wrapping a [[BaseTx]]. For more granular control, you may create your own
      * [[UnsignedTx]] wrapping a [[BaseTx]] manually (with their corresponding [[TransferableInput]]s and [[TransferableOutput]]s).
      *
-     * @param networkid The number representing NetworkID of the node
-     * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
      * @param amount The amount of the asset to be spent in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}.
      * @param assetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for the UTXO
      * @param toAddresses The addresses to send the funds
@@ -77,13 +77,13 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      * @returns An unsigned transaction created from the passed in parameters.
      *
      */
-    buildBaseTx: (networkid: number, blockchainid: Buffer, amount: BN, assetID: Buffer, toAddresses: Array<Buffer>, fromAddresses: Array<Buffer>, changeAddresses?: Array<Buffer>, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
+    buildBaseTx: (networkID: number, blockchainID: Buffer, amount: BN, assetID: Buffer, toAddresses: Buffer[], fromAddresses: Buffer[], changeAddresses?: Buffer[], fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
     /**
      * Creates an unsigned Create Asset transaction. For more granular control, you may create your own
      * [[CreateAssetTX]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s).
      *
-     * @param networkid The number representing NetworkID of the node
-     * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
      * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
      * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs
      * @param initialState The [[InitialStates]] that represent the intial state of a created asset
@@ -99,13 +99,13 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      * @returns An unsigned transaction created from the passed in parameters.
      *
      */
-    buildCreateAssetTx: (networkid: number, blockchainid: Buffer, fromAddresses: Array<Buffer>, changeAddresses: Array<Buffer>, initialState: InitialStates, name: string, symbol: string, denomination: number, mintOutputs?: Array<SECPMintOutput>, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
+    buildCreateAssetTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], initialState: InitialStates, name: string, symbol: string, denomination: number, mintOutputs?: SECPMintOutput[], fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
     /**
      * Creates an unsigned Secp mint transaction. For more granular control, you may create your own
      * [[OperationTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
      *
-     * @param networkid The number representing NetworkID of the node
-     * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
      * @param mintOwner A [[SECPMintOutput]] which specifies the new set of minters
      * @param transferOwner A [[SECPTransferOutput]] which specifies where the minted tokens will go
      * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
@@ -116,110 +116,110 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      * @param memo Optional contains arbitrary bytes, up to 256 bytes
      * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
      */
-    buildSECPMintTx: (networkid: number, blockchainid: Buffer, mintOwner: SECPMintOutput, transferOwner: SECPTransferOutput, fromAddresses: Array<Buffer>, changeAddresses: Array<Buffer>, mintUTXOID: string, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
+    buildSECPMintTx: (networkID: number, blockchainID: Buffer, mintOwner: SECPMintOutput, transferOwner: SECPTransferOutput, fromAddresses: Buffer[], changeAddresses: Buffer[], mintUTXOID: string, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
     /**
-    * Creates an unsigned Create Asset transaction. For more granular control, you may create your own
-    * [[CreateAssetTX]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s).
-    *
-    * @param networkid The number representing NetworkID of the node
-    * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
-    * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
-    * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
-    * @param minterSets The minters and thresholds required to mint this nft asset
-    * @param name String for the descriptive name of the nft asset
-    * @param symbol String for the ticker symbol of the nft asset
-    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
-    * @param feeAssetID Optional. The assetID of the fees being burned.
-    * @param memo Optional contains arbitrary bytes, up to 256 bytes
-    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-    * @param locktime Optional. The locktime field created in the resulting mint output
-    *
-    * @returns An unsigned transaction created from the passed in parameters.
-    *
-    */
-    buildCreateNFTAssetTx: (networkid: number, blockchainid: Buffer, fromAddresses: Array<Buffer>, changeAddresses: Array<Buffer>, minterSets: Array<MinterSet>, name: string, symbol: string, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN) => UnsignedTx;
+     * Creates an unsigned Create Asset transaction. For more granular control, you may create your own
+     * [[CreateAssetTX]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s).
+     *
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
+     * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
+     * @param minterSets The minters and thresholds required to mint this nft asset
+     * @param name String for the descriptive name of the nft asset
+     * @param symbol String for the ticker symbol of the nft asset
+     * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
+     * @param feeAssetID Optional. The assetID of the fees being burned.
+     * @param memo Optional contains arbitrary bytes, up to 256 bytes
+     * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param locktime Optional. The locktime field created in the resulting mint output
+     *
+     * @returns An unsigned transaction created from the passed in parameters.
+     *
+     */
+    buildCreateNFTAssetTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], minterSets: MinterSet[], name: string, symbol: string, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN) => UnsignedTx;
     /**
-    * Creates an unsigned NFT mint transaction. For more granular control, you may create your own
-    * [[OperationTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
-    *
-    * @param networkid The number representing NetworkID of the node
-    * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
-    * @param owners An array of [[OutputOwners]] who will be given the NFTs.
-    * @param fromAddresses The addresses being used to send the funds from the UTXOs
-    * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
-    * @param utxoids An array of strings for the NFTs being transferred
-    * @param groupID Optional. The group this NFT is issued to.
-    * @param payload Optional. Data for NFT Payload.
-    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
-    * @param feeAssetID Optional. The assetID of the fees being burned.
-    * @param memo Optional contains arbitrary bytes, up to 256 bytes
-    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-    *
-    * @returns An unsigned transaction created from the passed in parameters.
-    *
-    */
-    buildCreateNFTMintTx: (networkid: number, blockchainid: Buffer, owners: Array<OutputOwners>, fromAddresses: Array<Buffer>, changeAddresses: Array<Buffer>, utxoids: Array<string>, groupID?: number, payload?: Buffer, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
+     * Creates an unsigned NFT mint transaction. For more granular control, you may create your own
+     * [[OperationTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
+     *
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param owners An array of [[OutputOwners]] who will be given the NFTs.
+     * @param fromAddresses The addresses being used to send the funds from the UTXOs
+     * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
+     * @param utxoids An array of strings for the NFTs being transferred
+     * @param groupID Optional. The group this NFT is issued to.
+     * @param payload Optional. Data for NFT Payload.
+     * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
+     * @param feeAssetID Optional. The assetID of the fees being burned.
+     * @param memo Optional contains arbitrary bytes, up to 256 bytes
+     * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+     *
+     * @returns An unsigned transaction created from the passed in parameters.
+     *
+     */
+    buildCreateNFTMintTx: (networkID: number, blockchainID: Buffer, owners: OutputOwners[], fromAddresses: Buffer[], changeAddresses: Buffer[], utxoids: string[], groupID?: number, payload?: Buffer, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
     /**
-    * Creates an unsigned NFT transfer transaction. For more granular control, you may create your own
-    * [[OperationTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
-    *
-    * @param networkid The number representing NetworkID of the node
-    * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
-    * @param toAddresses An array of {@link https://github.com/feross/buffer|Buffer}s which indicate who recieves the NFT
-    * @param fromAddresses An array for {@link https://github.com/feross/buffer|Buffer} who owns the NFT
-    * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
-    * @param utxoids An array of strings for the NFTs being transferred
-    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
-    * @param feeAssetID Optional. The assetID of the fees being burned.
-    * @param memo Optional contains arbitrary bytes, up to 256 bytes
-    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-    * @param locktime Optional. The locktime field created in the resulting outputs
-    * @param threshold Optional. The number of signatures required to spend the funds in the resultant UTXO
-    *
-    * @returns An unsigned transaction created from the passed in parameters.
-    *
-    */
-    buildNFTTransferTx: (networkid: number, blockchainid: Buffer, toAddresses: Array<Buffer>, fromAddresses: Array<Buffer>, changeAddresses: Array<Buffer>, utxoids: Array<string>, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
+     * Creates an unsigned NFT transfer transaction. For more granular control, you may create your own
+     * [[OperationTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
+     *
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param toAddresses An array of {@link https://github.com/feross/buffer|Buffer}s which indicate who recieves the NFT
+     * @param fromAddresses An array for {@link https://github.com/feross/buffer|Buffer} who owns the NFT
+     * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
+     * @param utxoids An array of strings for the NFTs being transferred
+     * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
+     * @param feeAssetID Optional. The assetID of the fees being burned.
+     * @param memo Optional contains arbitrary bytes, up to 256 bytes
+     * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param locktime Optional. The locktime field created in the resulting outputs
+     * @param threshold Optional. The number of signatures required to spend the funds in the resultant UTXO
+     *
+     * @returns An unsigned transaction created from the passed in parameters.
+     *
+     */
+    buildNFTTransferTx: (networkID: number, blockchainID: Buffer, toAddresses: Buffer[], fromAddresses: Buffer[], changeAddresses: Buffer[], utxoids: string[], fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
     /**
-      * Creates an unsigned ImportTx transaction.
-      *
-      * @param networkid The number representing NetworkID of the node
-      * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
-      * @param toAddresses The addresses to send the funds
-      * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
-      * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
-      * @param importIns An array of [[TransferableInput]]s being imported
-      * @param sourceChain A {@link https://github.com/feross/buffer|Buffer} for the chainid where the imports are coming from.
-      * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}. Fee will come from the inputs first, if they can.
-      * @param feeAssetID Optional. The assetID of the fees being burned.
-      * @param memo Optional contains arbitrary bytes, up to 256 bytes
-      * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-      * @param locktime Optional. The locktime field created in the resulting outputs
-      * @param threshold Optional. The number of signatures required to spend the funds in the resultant UTXO
-      * @returns An unsigned transaction created from the passed in parameters.
-      *
-      */
-    buildImportTx: (networkid: number, blockchainid: Buffer, toAddresses: Array<Buffer>, fromAddresses: Array<Buffer>, changeAddresses: Array<Buffer>, atomics: Array<UTXO>, sourceChain?: Buffer, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
+     * Creates an unsigned ImportTx transaction.
+     *
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param toAddresses The addresses to send the funds
+     * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
+     * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
+     * @param importIns An array of [[TransferableInput]]s being imported
+     * @param sourceChain A {@link https://github.com/feross/buffer|Buffer} for the chainid where the imports are coming from.
+     * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}. Fee will come from the inputs first, if they can.
+     * @param feeAssetID Optional. The assetID of the fees being burned.
+     * @param memo Optional contains arbitrary bytes, up to 256 bytes
+     * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param locktime Optional. The locktime field created in the resulting outputs
+     * @param threshold Optional. The number of signatures required to spend the funds in the resultant UTXO
+     * @returns An unsigned transaction created from the passed in parameters.
+     *
+     */
+    buildImportTx: (networkID: number, blockchainID: Buffer, toAddresses: Buffer[], fromAddresses: Buffer[], changeAddresses: Buffer[], atomics: UTXO[], sourceChain?: Buffer, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
     /**
-    * Creates an unsigned ExportTx transaction.
-    *
-    * @param networkid The number representing NetworkID of the node
-    * @param blockchainid The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
-    * @param amount The amount being exported as a {@link https://github.com/indutny/bn.js/|BN}
-    * @param axcAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for AXC
-    * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who recieves the AXC
-    * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who owns the AXC
-    * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
-    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
-    * @param destinationChain Optional. A {@link https://github.com/feross/buffer|Buffer} for the chainid where to send the asset.
-    * @param feeAssetID Optional. The assetID of the fees being burned.
-    * @param memo Optional contains arbitrary bytes, up to 256 bytes
-    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-    * @param locktime Optional. The locktime field created in the resulting outputs
-    * @param threshold Optional. The number of signatures required to spend the funds in the resultant UTXO
-    * @returns An unsigned transaction created from the passed in parameters.
-    *
-    */
-    buildExportTx: (networkid: number, blockchainid: Buffer, amount: BN, assetID: Buffer, toAddresses: Array<Buffer>, fromAddresses: Array<Buffer>, changeAddresses?: Array<Buffer>, destinationChain?: Buffer, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
+     * Creates an unsigned ExportTx transaction.
+     *
+     * @param networkID The number representing NetworkID of the node
+     * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
+     * @param amount The amount being exported as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param axcAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for AXC
+     * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who recieves the AXC
+     * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who owns the AXC
+     * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
+     * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
+     * @param destinationChain Optional. A {@link https://github.com/feross/buffer|Buffer} for the chainid where to send the asset.
+     * @param feeAssetID Optional. The assetID of the fees being burned.
+     * @param memo Optional contains arbitrary bytes, up to 256 bytes
+     * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param locktime Optional. The locktime field created in the resulting outputs
+     * @param threshold Optional. The number of signatures required to spend the funds in the resultant UTXO
+     * @returns An unsigned transaction created from the passed in parameters.
+     *
+     */
+    buildExportTx: (networkID: number, blockchainID: Buffer, amount: BN, assetID: Buffer, toAddresses: Buffer[], fromAddresses: Buffer[], changeAddresses?: Buffer[], destinationChain?: Buffer, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
 }
 //# sourceMappingURL=utxos.d.ts.map

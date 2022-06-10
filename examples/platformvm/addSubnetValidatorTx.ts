@@ -61,22 +61,22 @@ const nodeID: string = "NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN"
 const startTime: BN = new BN(1652146558)
 const endTime: BN = new BN(1653442362)
 const memo: Buffer = Buffer.from(
-  "Manually create a AddSubnetValidatorTx which creates a 1-of-2 AVAX utxo and adds a validator to a subnet by correctly signing the 2-of-3 SubnetAuth"
+  "Manually create a AddSubnetValidatorTx which creates a 1-of-2 AXC utxo and adds a validator to a subnet by correctly signing the 2-of-3 SubnetAuth"
 )
-const avaxUTXOKeychain: Buffer[] = [pAddresses[0], pAddresses[1]]
+const axcUTXOKeychain: Buffer[] = [pAddresses[0], pAddresses[1]]
 
 const main = async (): Promise<any> => {
-  const avaxAssetID: Buffer = await pchain.getAVAXAssetID()
+  const axcAssetID: Buffer = await pchain.getAXCAssetID()
   const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     unlocked.sub(fee),
-    avaxUTXOKeychain,
+    axcUTXOKeychain,
     locktime,
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetID,
+    axcAssetID,
     secpTransferOutput
   )
   outputs.push(transferableOutput)
@@ -96,7 +96,7 @@ const main = async (): Promise<any> => {
     const input: TransferableInput = new TransferableInput(
       txid,
       outputidx,
-      avaxAssetID,
+      axcAssetID,
       secpTransferInput
     )
     inputs.push(input)

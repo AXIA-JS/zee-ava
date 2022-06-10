@@ -2,9 +2,10 @@
  * @packageDocumentation
  * @module Utils-HelperFunctions
  */
-import BN from 'bn.js';
-import { Buffer } from 'buffer/';
-export declare function getPreferredHRP(networkID?: number): any;
+import BN from "bn.js";
+import { Buffer } from "buffer/";
+import { UnsignedTx } from "../apis/evm";
+export declare function getPreferredHRP(networkID?: number): string;
 export declare function MaxWeightFormula(staked: BN, cap: BN): BN;
 /**
  * Function providing the current UNIX time using a {@link https://github.com/indutny/bn.js/|BN}.
@@ -34,4 +35,7 @@ export declare function bufferToNodeIDString(pk: Buffer): string;
  * @param pk A string for the nodeID.
  */
 export declare function NodeIDStringToBuffer(pk: string): Buffer;
+export declare function costImportTx(tx: UnsignedTx): number;
+export declare function calcBytesCost(len: number): number;
+export declare function costExportTx(tx: UnsignedTx): number;
 //# sourceMappingURL=helperfunctions.d.ts.map

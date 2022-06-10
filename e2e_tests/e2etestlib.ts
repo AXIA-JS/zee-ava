@@ -1,15 +1,15 @@
 import { Axia } from "src"
 
 export const getAxia = (): Axia => {
-  if (typeof process.env.AVALANCHEGO_IP === "undefined") {
-    throw "Undefined environment variable: AVALANCHEGO_IP"
+  if (typeof process.env.AXIAGO_IP === "undefined") {
+    throw "Undefined environment variable: AXIAGO_IP"
   }
-  if (typeof process.env.AVALANCHEGO_PORT === "undefined") {
-    throw "Undefined environment variable: AVALANCHEGO_PORT"
+  if (typeof process.env.AXIAGO_PORT === "undefined") {
+    throw "Undefined environment variable: AXIAGO_PORT"
   }
   const axia: Axia = new Axia(
-    process.env.AVALANCHEGO_IP,
-    parseInt(process.env.AVALANCHEGO_PORT)
+    process.env.AXIAGO_IP,
+    parseInt(process.env.AXIAGO_PORT)
   )
   return axia
 }

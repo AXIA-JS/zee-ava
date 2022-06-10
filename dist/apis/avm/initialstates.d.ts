@@ -3,8 +3,8 @@
  * @module API-AVM-InitialStates
  */
 import { Buffer } from "buffer/";
-import { Output } from '../../common/output';
-import { Serializable, SerializedEncoding } from '../../utils/serialization';
+import { Output } from "../../common/output";
+import { Serializable, SerializedEncoding } from "../../utils/serialization";
 /**
  * Class for creating initial output states used in asset creation
  */
@@ -14,13 +14,13 @@ export declare class InitialStates extends Serializable {
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected fxs: {
-        [fxid: number]: Array<Output>;
+        [fxid: number]: Output[];
     };
     /**
-       *
-       * @param out The output state to add to the collection
-       * @param fxid The FxID that will be used for this output, default AVMConstants.SECPFXID
-       */
+     *
+     * @param out The output state to add to the collection
+     * @param fxid The FxID that will be used for this output, default AVMConstants.SECPFXID
+     */
     addOutput(out: Output, fxid?: number): void;
     fromBuffer(bytes: Buffer, offset?: number): number;
     toBuffer(): Buffer;

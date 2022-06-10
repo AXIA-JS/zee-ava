@@ -11,8 +11,9 @@ export declare class PlatformVMConstants {
     static STAKEABLELOCKOUTID: number;
     static SECPINPUTID: number;
     static STAKEABLELOCKINID: number;
-    static LOCKEDSTAKEABLES: Array<number>;
+    static LOCKEDSTAKEABLES: number[];
     static BASETX: number;
+    static SUBNETAUTH: number;
     static ADDVALIDATORTX: number;
     static ADDSUBNETVALIDATORTX: number;
     static ADDDELEGATORTX: number;

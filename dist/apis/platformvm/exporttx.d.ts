@@ -2,12 +2,12 @@
  * @packageDocumentation
  * @module API-PlatformVM-ExportTx
  */
-import { Buffer } from 'buffer/';
-import { TransferableOutput } from './outputs';
-import { TransferableInput } from './inputs';
-import { BaseTx } from './basetx';
-import BN from 'bn.js';
-import { SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import { TransferableOutput } from "./outputs";
+import { TransferableInput } from "./inputs";
+import { BaseTx } from "./basetx";
+import BN from "bn.js";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Class representing an unsigned Export transaction.
  */
@@ -18,20 +18,24 @@ export declare class ExportTx extends BaseTx {
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected destinationChain: Buffer;
     protected numOuts: Buffer;
-    protected exportOuts: Array<TransferableOutput>;
+    protected exportOuts: TransferableOutput[];
     /**
      * Returns the id of the [[ExportTx]]
      */
-    getTxType: () => number;
+    getTxType(): number;
     /**
      * Returns an array of [[TransferableOutput]]s in this transaction.
      */
-    getExportOutputs(): Array<TransferableOutput>;
+    getExportOutputs(): TransferableOutput[];
     /**
      * Returns the total exported amount as a {@link https://github.com/indutny/bn.js/|BN}.
      */
     getExportTotal(): BN;
-    getTotalOuts(): Array<TransferableOutput>;
+    getTotalOuts(): TransferableOutput[];
+    /**
+     * Returns the destinationChain as a {@link https://github.com/feross/buffer|Buffer}
+     */
+    getDestinationChain(): Buffer;
     /**
      * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[ExportTx]], parses it, populates the class, and returns the length of the [[ExportTx]] in bytes.
      *
@@ -51,14 +55,14 @@ export declare class ExportTx extends BaseTx {
     /**
      * Class representing an unsigned Export transaction.
      *
-     * @param networkid Optional networkid, [[DefaultNetworkID]]
-     * @param blockchainid Optional blockchainid, default Buffer.alloc(32, 16)
+     * @param networkID Optional networkID, [[DefaultNetworkID]]
+     * @param blockchainID Optional blockchainID, default Buffer.alloc(32, 16)
      * @param outs Optional array of the [[TransferableOutput]]s
      * @param ins Optional array of the [[TransferableInput]]s
      * @param memo Optional {@link https://github.com/feross/buffer|Buffer} for the memo field
      * @param destinationChain Optional chainid which identifies where the funds will send to.
      * @param exportOuts Array of [[TransferableOutputs]]s used in the transaction
      */
-    constructor(networkid?: number, blockchainid?: Buffer, outs?: Array<TransferableOutput>, ins?: Array<TransferableInput>, memo?: Buffer, destinationChain?: Buffer, exportOuts?: Array<TransferableOutput>);
+    constructor(networkID?: number, blockchainID?: Buffer, outs?: TransferableOutput[], ins?: TransferableInput[], memo?: Buffer, destinationChain?: Buffer, exportOuts?: TransferableOutput[]);
 }
 //# sourceMappingURL=exporttx.d.ts.map

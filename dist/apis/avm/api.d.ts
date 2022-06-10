@@ -2,20 +2,21 @@
  * @packageDocumentation
  * @module API-AVM
  */
-import BN from 'bn.js';
-import { Buffer } from 'buffer/';
-import AxiaCore from '../../axia';
-import { UTXOSet } from './utxos';
-import { KeyChain } from './keychain';
-import { Tx, UnsignedTx } from './tx';
-import { PayloadBase } from '../../utils/payload';
-import { SECPMintOutput } from './outputs';
-import { InitialStates } from './initialstates';
-import { JRPCAPI } from '../../common/jrpcapi';
-import { MinterSet } from './minterset';
-import { PersistanceOptions } from '../../utils/persistenceoptions';
-import { OutputOwners } from '../../common/output';
-import { SECPTransferOutput } from './outputs';
+import BN from "bn.js";
+import { Buffer } from "buffer/";
+import AxiaCore from "../../axia";
+import { UTXOSet } from "./utxos";
+import { KeyChain } from "./keychain";
+import { Tx, UnsignedTx } from "./tx";
+import { PayloadBase } from "../../utils/payload";
+import { SECPMintOutput } from "./outputs";
+import { InitialStates } from "./initialstates";
+import { JRPCAPI } from "../../common/jrpcapi";
+import { MinterSet } from "./minterset";
+import { PersistanceOptions } from "../../utils/persistenceoptions";
+import { OutputOwners } from "../../common/output";
+import { SECPTransferOutput } from "./outputs";
+import { GetUTXOsResponse, GetAssetDescriptionResponse, GetBalanceResponse, SendResponse, SendMultipleResponse, GetAddressTxsResponse, IMinterSet } from "./interfaces";
 /**
  * Class for interacting with a node endpoint that is using the AVM.
  *
@@ -33,6 +34,7 @@ export declare class AVMAPI extends JRPCAPI {
     protected AXCAssetID: Buffer;
     protected txFee: BN;
     protected creationTxFee: BN;
+    protected mintTxFee: BN;
     /**
      * Gets the alias for the blockchainID if it exists, otherwise returns `undefined`.
      *
@@ -45,7 +47,7 @@ export declare class AVMAPI extends JRPCAPI {
      * @param alias The alias for the blockchainID.
      *
      */
-    setBlockchainAlias: (alias: string) => string;
+    setBlockchainAlias: (alias: string) => undefined;
     /**
      * Gets the blockchainID and returns it.
      *
@@ -108,11 +110,29 @@ export declare class AVMAPI extends JRPCAPI {
      */
     getDefaultCreationTxFee: () => BN;
     /**
+     * Gets the default mint fee for this chain.
+     *
+     * @returns The default mint fee as a {@link https://github.com/indutny/bn.js/|BN}
+     */
+    getDefaultMintTxFee: () => BN;
+    /**
+     * Gets the mint fee for this chain.
+     *
+     * @returns The mint fee as a {@link https://github.com/indutny/bn.js/|BN}
+     */
+    getMintTxFee: () => BN;
+    /**
      * Gets the creation fee for this chain.
      *
      * @returns The creation fee as a {@link https://github.com/indutny/bn.js/|BN}
      */
     getCreationTxFee: () => BN;
+    /**
+     * Sets the mint fee for this chain.
+     *
+     * @param fee The mint fee amount to set as {@link https://github.com/indutny/bn.js/|BN}
+     */
+    setMintTxFee: (fee: BN) => void;
     /**
      * Sets the creation fee for this chain.
      *
@@ -141,22 +161,23 @@ export declare class AVMAPI extends JRPCAPI {
      */
     checkGooseEgg: (utx: UnsignedTx, outTotal?: BN) => Promise<boolean>;
     /**
-       * Gets the balance of a particular asset on a blockchain.
-       *
-       * @param address The address to pull the asset balance from
-       * @param assetID The assetID to pull the balance from
-       *
-       * @returns Promise with the balance of the assetID as a {@link https://github.com/indutny/bn.js/|BN} on the provided address for the blockchain.
-       */
-    getBalance: (address: string, assetID: string) => Promise<object>;
+     * Gets the balance of a particular asset on a blockchain.
+     *
+     * @param address The address to pull the asset balance from
+     * @param assetID The assetID to pull the balance from
+     * @param includePartial If includePartial=false, returns only the balance held solely
+     *
+     * @returns Promise with the balance of the assetID as a {@link https://github.com/indutny/bn.js/|BN} on the provided address for the blockchain.
+     */
+    getBalance: (address: string, assetID: string, includePartial?: boolean) => Promise<GetBalanceResponse>;
     /**
-       * Creates an address (and associated private keys) on a user on a blockchain.
-       *
-       * @param username Name of the user to create the address under
-       * @param password Password to unlock the user and encrypt the private key
-       *
-       * @returns Promise for a string representing the address created by the vm.
-       */
+     * Creates an address (and associated private keys) on a user on a blockchain.
+     *
+     * @param username Name of the user to create the address under
+     * @param password Password to unlock the user and encrypt the private key
+     *
+     * @returns Promise for a string representing the address created by the vm.
+     */
     createAddress: (username: string, password: string) => Promise<string>;
     /**
      * Create a new fixed-cap, fungible asset. A quantity of it is created at initialization and there no more is ever created.
@@ -171,111 +192,140 @@ export declare class AVMAPI extends JRPCAPI {
      * ```js
      * Example initialHolders:
      * [
-     *     {
-     *         "address": "X-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
-     *         "amount": 10000
+     *   {
+     *     "address": "X-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
+     *     "amount": 10000
+     *   },
+     *   {
+     *     "address": "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
+     *     "amount": 50000
+     *   }
+     * ]
+     * ```
+     *
+     * @returns Returns a Promise string containing the base 58 string representation of the ID of the newly created asset.
+     */
+    createFixedCapAsset: (username: string, password: string, name: string, symbol: string, denomination: number, initialHolders: object[]) => Promise<string>;
+    /**
+     * Create a new variable-cap, fungible asset. No units of the asset exist at initialization. Minters can mint units of this asset using createMintTx, signMintTx and sendMintTx.
+     *
+     * @param username The user paying the transaction fee (in $AXC) for asset creation
+     * @param password The password for the user paying the transaction fee (in $AXC) for asset creation
+     * @param name The human-readable name for the asset
+     * @param symbol Optional. The shorthand symbol for the asset -- between 0 and 4 characters
+     * @param denomination Optional. Determines how balances of this asset are displayed by user interfaces. Default is 0
+     * @param minterSets is a list where each element specifies that threshold of the addresses in minters may together mint more of the asset by signing a minting transaction
+     *
+     * ```js
+     * Example minterSets:
+     * [
+     *    {
+     *      "minters":[
+     *        "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr"
+     *      ],
+     *      "threshold": 1
      *     },
      *     {
-     *         "address": "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
-     *         "amount": 50000
+     *      "minters": [
+     *        "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
+     *        "X-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
+     *        "X-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx"
+     *      ],
+     *      "threshold": 2
      *     }
      * ]
      * ```
      *
-     * @returns Returns a Promise<string> containing the base 58 string representation of the ID of the newly created asset.
+     * @returns Returns a Promise string containing the base 58 string representation of the ID of the newly created asset.
      */
-    createFixedCapAsset: (username: string, password: string, name: string, symbol: string, denomination: number, initialHolders: Array<object>) => Promise<string>;
+    createVariableCapAsset: (username: string, password: string, name: string, symbol: string, denomination: number, minterSets: object[]) => Promise<string>;
     /**
-       * Create a new variable-cap, fungible asset. No units of the asset exist at initialization. Minters can mint units of this asset using createMintTx, signMintTx and sendMintTx.
-       *
-       * @param username The user paying the transaction fee (in $AXC) for asset creation
-       * @param password The password for the user paying the transaction fee (in $AXC) for asset creation
-       * @param name The human-readable name for the asset
-       * @param symbol Optional. The shorthand symbol for the asset -- between 0 and 4 characters
-       * @param denomination Optional. Determines how balances of this asset are displayed by user interfaces. Default is 0
-       * @param minterSets is a list where each element specifies that threshold of the addresses in minters may together mint more of the asset by signing a minting transaction
-       *
-       * ```js
-       * Example minterSets:
-       * [
-       *      {
-       *          "minters":[
-       *              "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr"
-       *          ],
-       *          "threshold": 1
-       *      },
-       *      {
-       *          "minters": [
-       *              "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
-       *              "X-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
-       *              "X-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx"
-       *          ],
-       *          "threshold": 2
-       *      }
-       * ]
-       * ```
-       *
-       * @returns Returns a Promise<string> containing the base 58 string representation of the ID of the newly created asset.
-       */
-    createVariableCapAsset: (username: string, password: string, name: string, symbol: string, denomination: number, minterSets: Array<object>) => Promise<string>;
+     * Creates a family of NFT Asset. No units of the asset exist at initialization. Minters can mint units of this asset using createMintTx, signMintTx and sendMintTx.
+     *
+     * @param username The user paying the transaction fee (in $AXC) for asset creation
+     * @param password The password for the user paying the transaction fee (in $AXC) for asset creation
+     * @param from Optional. An array of addresses managed by the node's keystore for this blockchain which will fund this transaction
+     * @param changeAddr Optional. An address to send the change
+     * @param name The human-readable name for the asset
+     * @param symbol Optional. The shorthand symbol for the asset -- between 0 and 4 characters
+     * @param minterSets is a list where each element specifies that threshold of the addresses in minters may together mint more of the asset by signing a minting transaction
+     *
+     * @returns Returns a Promise string containing the base 58 string representation of the ID of the newly created asset.
+     */
+    createNFTAsset: (username: string, password: string, from: string[] | Buffer[], changeAddr: string, name: string, symbol: string, minterSet: IMinterSet) => Promise<string>;
     /**
-       * Create an unsigned transaction to mint more of an asset.
-       *
-       * @param amount The units of the asset to mint
-       * @param assetID The ID of the asset to mint
-       * @param to The address to assign the units of the minted asset
-       * @param minters Addresses of the minters responsible for signing the transaction
-       *
-       * @returns Returns a Promise<string> containing the base 58 string representation of the unsigned transaction.
-       */
-    mint: (username: string, password: string, amount: number | BN, assetID: Buffer | string, to: string, minters: Array<string>) => Promise<string>;
+     * Create an unsigned transaction to mint more of an asset.
+     *
+     * @param amount The units of the asset to mint
+     * @param assetID The ID of the asset to mint
+     * @param to The address to assign the units of the minted asset
+     * @param minters Addresses of the minters responsible for signing the transaction
+     *
+     * @returns Returns a Promise string containing the base 58 string representation of the unsigned transaction.
+     */
+    mint: (username: string, password: string, amount: number | BN, assetID: Buffer | string, to: string, minters: string[]) => Promise<string>;
     /**
-       * Exports the private key for an address.
-       *
-       * @param username The name of the user with the private key
-       * @param password The password used to decrypt the private key
-       * @param address The address whose private key should be exported
-       *
-       * @returns Promise with the decrypted private key as store in the database
-       */
+     * Mint non-fungible tokens which were created with AVMAPI.createNFTAsset
+     *
+     * @param username The user paying the transaction fee (in $AXC) for asset creation
+     * @param password The password for the user paying the transaction fee (in $AXC) for asset creation
+     * @param from Optional. An array of addresses managed by the node's keystore for this blockchain which will fund this transaction
+     * @param changeAddr Optional. An address to send the change
+     * @param assetID The asset id which is being sent
+     * @param to Address on X-Chain of the account to which this NFT is being sent
+     * @param encoding Optional.  is the encoding format to use for the payload argument. Can be either "cb58" or "hex". Defaults to "hex".
+     *
+     * @returns ID of the transaction
+     */
+    mintNFT: (username: string, password: string, from: string[] | Buffer[], changeAddr: string, payload: string, assetID: string | Buffer, to: string, encoding?: string) => Promise<string>;
+    /**
+     * Send NFT from one account to another on X-Chain
+     *
+     * @param username The user paying the transaction fee (in $AXC) for asset creation
+     * @param password The password for the user paying the transaction fee (in $AXC) for asset creation
+     * @param from Optional. An array of addresses managed by the node's keystore for this blockchain which will fund this transaction
+     * @param changeAddr Optional. An address to send the change
+     * @param assetID The asset id which is being sent
+     * @param groupID The group this NFT is issued to.
+     * @param to Address on X-Chain of the account to which this NFT is being sent
+     *
+     * @returns ID of the transaction
+     */
+    sendNFT: (username: string, password: string, from: string[] | Buffer[], changeAddr: string, assetID: string | Buffer, groupID: number, to: string) => Promise<string>;
+    /**
+     * Exports the private key for an address.
+     *
+     * @param username The name of the user with the private key
+     * @param password The password used to decrypt the private key
+     * @param address The address whose private key should be exported
+     *
+     * @returns Promise with the decrypted private key as store in the database
+     */
     exportKey: (username: string, password: string, address: string) => Promise<string>;
     /**
-       * Imports a private key into the node's keystore under an user and for a blockchain.
-       *
-       * @param username The name of the user to store the private key
-       * @param password The password that unlocks the user
-       * @param privateKey A string representing the private key in the vm's format
-       *
-       * @returns The address for the imported private key.
-       */
+     * Imports a private key into the node's keystore under an user and for a blockchain.
+     *
+     * @param username The name of the user to store the private key
+     * @param password The password that unlocks the user
+     * @param privateKey A string representing the private key in the vm's format
+     *
+     * @returns The address for the imported private key.
+     */
     importKey: (username: string, password: string, privateKey: string) => Promise<string>;
     /**
-      * Send ANT (Axia Native Token) assets including AXC from the X-Chain to an account on the P-Chain or C-Chain.
-      *
-      * After calling this method, you must call the P-Chain's `importAXC` or the C-Chain’s `import` method to complete the transfer.
-      *
-      * @param username The Keystore user that controls the P-Chain or C-Chain account specified in `to`
-      * @param password The password of the Keystore user
-      * @param to The account on the P-Chain or C-Chain to send the asset to.
-      * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
-      * @param assetID The asset id which is being sent
-      *
-      * @returns String representing the transaction id
-      */
+     * Send ANT (Axia Native Token) assets including AXC from the X-Chain to an account on the P-Chain or C-Chain.
+     *
+     * After calling this method, you must call the P-Chain's `import` or the C-Chain’s `import` method to complete the transfer.
+     *
+     * @param username The Keystore user that controls the P-Chain or C-Chain account specified in `to`
+     * @param password The password of the Keystore user
+     * @param to The account on the P-Chain or C-Chain to send the asset to.
+     * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param assetID The asset id which is being sent
+     *
+     * @returns String representing the transaction id
+     */
     export: (username: string, password: string, to: string, amount: BN, assetID: string) => Promise<string>;
-    /**
-       * Send AXC from the X-Chain to an account on the P-Chain or C-Chain.
-       *
-       * After calling this method, you must call the P-Chain’s or C-Chain's importAXC method to complete the transfer.
-       *
-       * @param username The Keystore user that controls the P-Chain account specified in `to`
-       * @param password The password of the Keystore user
-       * @param to The account on the P-Chain or C-Chain to send the AXC to.
-       * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
-       *
-       * @returns String representing the transaction id
-       */
-    exportAXC: (username: string, password: string, to: string, amount: BN) => Promise<string>;
     /**
      * Send ANT (Axia Native Token) assets including AXC from an account on the P-Chain or C-Chain to an address on the X-Chain. This transaction
      * must be signed with the key of the account that the asset is sent from and which pays
@@ -291,63 +341,47 @@ export declare class AVMAPI extends JRPCAPI {
      */
     import: (username: string, password: string, to: string, sourceChain: string) => Promise<string>;
     /**
-       * Finalize a transfer of AXC from the P-Chain to the X-Chain.
-       *
-       * Before this method is called, you must call the P-Chain’s `exportAXC` method to initiate the transfer.
-       * @param username The Keystore user that controls the address specified in `to`
-       * @param password The password of the Keystore user
-       * @param to The address the AXC is sent to. This must be the same as the to argument in the corresponding call to the P-Chain’s exportAXC, except that the prepended X- should be included in this argument
-       * @param sourceChain Chain the funds are coming from.
-       *
-       * @returns String representing the transaction id
-       */
-    importAXC: (username: string, password: string, to: string, sourceChain: string) => Promise<string>;
-    /**
-       * Lists all the addresses under a user.
-       *
-       * @param username The user to list addresses
-       * @param password The password of the user to list the addresses
-       *
-       * @returns Promise of an array of address strings in the format specified by the blockchain.
-       */
-    listAddresses: (username: string, password: string) => Promise<Array<string>>;
-    /**
-       * Retrieves all assets for an address on a server and their associated balances.
-       *
-       * @param address The address to get a list of assets
-       *
-       * @returns Promise of an object mapping assetID strings with {@link https://github.com/indutny/bn.js/|BN} balance for the address on the blockchain.
-       */
-    getAllBalances: (address: string) => Promise<Array<object>>;
-    /**
-       * Retrieves an assets name and symbol.
-       *
-       * @param assetID Either a {@link https://github.com/feross/buffer|Buffer} or an b58 serialized string for the AssetID or its alias.
-       *
-       * @returns Returns a Promise<object> with keys "name" and "symbol".
-       */
-    getAssetDescription: (assetID: Buffer | string) => Promise<{
-        name: string;
-        symbol: string;
-        assetID: Buffer;
-        denomination: number;
-    }>;
-    /**
-     * Returns the treansaction data of a provided transaction ID by calling the node's `getTx` method.
+     * Lists all the addresses under a user.
      *
-     * @param txid The string representation of the transaction ID
+     * @param username The user to list addresses
+     * @param password The password of the user to list the addresses
      *
-     * @returns Returns a Promise<string> containing the bytes retrieved from the node
+     * @returns Promise of an array of address strings in the format specified by the blockchain.
      */
-    getTx: (txid: string) => Promise<string>;
+    listAddresses: (username: string, password: string) => Promise<string[]>;
+    /**
+     * Retrieves all assets for an address on a server and their associated balances.
+     *
+     * @param address The address to get a list of assets
+     *
+     * @returns Promise of an object mapping assetID strings with {@link https://github.com/indutny/bn.js/|BN} balance for the address on the blockchain.
+     */
+    getAllBalances: (address: string) => Promise<object[]>;
+    /**
+     * Retrieves an assets name and symbol.
+     *
+     * @param assetID Either a {@link https://github.com/feross/buffer|Buffer} or an b58 serialized string for the AssetID or its alias.
+     *
+     * @returns Returns a Promise object with keys "name" and "symbol".
+     */
+    getAssetDescription: (assetID: Buffer | string) => Promise<GetAssetDescriptionResponse>;
+    /**
+     * Returns the transaction data of a provided transaction ID by calling the node's `getTx` method.
+     *
+     * @param txID The string representation of the transaction ID
+     * @param encoding sets the format of the returned transaction. Can be, "cb58", "hex" or "json". Defaults to "cb58".
+     *
+     * @returns Returns a Promise string or object containing the bytes retrieved from the node
+     */
+    getTx: (txID: string, encoding?: string) => Promise<string | object>;
     /**
      * Returns the status of a provided transaction ID by calling the node's `getTxStatus` method.
      *
-     * @param txid The string representation of the transaction ID
+     * @param txID The string representation of the transaction ID
      *
-     * @returns Returns a Promise<string> containing the status retrieved from the node
+     * @returns Returns a Promise string containing the status retrieved from the node
      */
-    getTxStatus: (txid: string) => Promise<string>;
+    getTxStatus: (txID: string) => Promise<string>;
     /**
      * Retrieves the UTXOs related to the addresses provided from the node's `getUTXOs` method.
      *
@@ -363,17 +397,10 @@ export declare class AVMAPI extends JRPCAPI {
      * persistOpts is optional and must be of type [[PersistanceOptions]]
      *
      */
-    getUTXOs: (addresses: Array<string> | string, sourceChain?: string, limit?: number, startIndex?: {
+    getUTXOs: (addresses: string[] | string, sourceChain?: string, limit?: number, startIndex?: {
         address: string;
         utxo: string;
-    }, persistOpts?: PersistanceOptions) => Promise<{
-        numFetched: number;
-        utxos: UTXOSet;
-        endIndex: {
-            address: string;
-            utxo: string;
-        };
-    }>;
+    }, persistOpts?: PersistanceOptions) => Promise<GetUTXOsResponse>;
     /**
      * Helper function which creates an unsigned transaction. For more granular control, you may create your own
      * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
@@ -394,7 +421,7 @@ export declare class AVMAPI extends JRPCAPI {
      * @remarks
      * This helper exists because the endpoint API should be the primary point of entry for most functionality.
      */
-    buildBaseTx: (utxoset: UTXOSet, amount: BN, assetID: Buffer | string, toAddresses: Array<string>, fromAddresses: Array<string>, changeAddresses: Array<string>, memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
+    buildBaseTx: (utxoset: UTXOSet, amount: BN, assetID: Buffer | string, toAddresses: string[], fromAddresses: string[], changeAddresses: string[], memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
     /**
      * Helper function which creates an unsigned NFT Transfer. For more granular control, you may create your own
      * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
@@ -414,7 +441,7 @@ export declare class AVMAPI extends JRPCAPI {
      * @remarks
      * This helper exists because the endpoint API should be the primary point of entry for most functionality.
      */
-    buildNFTTransferTx: (utxoset: UTXOSet, toAddresses: Array<string>, fromAddresses: Array<string>, changeAddresses: Array<string>, utxoid: string | Array<string>, memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
+    buildNFTTransferTx: (utxoset: UTXOSet, toAddresses: string[], fromAddresses: string[], changeAddresses: string[], utxoid: string | string[], memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
     /**
      * Helper function which creates an unsigned Import Tx. For more granular control, you may create your own
      * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
@@ -435,7 +462,7 @@ export declare class AVMAPI extends JRPCAPI {
      * @remarks
      * This helper exists because the endpoint API should be the primary point of entry for most functionality.
      */
-    buildImportTx: (utxoset: UTXOSet, ownerAddresses: Array<string>, sourceChain: Buffer | string, toAddresses: Array<string>, fromAddresses: Array<string>, changeAddresses?: Array<string>, memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
+    buildImportTx: (utxoset: UTXOSet, ownerAddresses: string[], sourceChain: Buffer | string, toAddresses: string[], fromAddresses: string[], changeAddresses?: string[], memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
     /**
      * Helper function which creates an unsigned Export Tx. For more granular control, you may create your own
      * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
@@ -451,11 +478,11 @@ export declare class AVMAPI extends JRPCAPI {
      * @param locktime Optional. The locktime field created in the resulting outputs
      * @param threshold Optional. The number of signatures required to spend the funds in the resultant UTXO
      * @param assetID Optional. The assetID of the asset to send. Defaults to AXC assetID.
-     * Regardless of the asset which you're exporting, all fees are paid in AXC.
+     * Regardless of the asset which you"re exporting, all fees are paid in AXC.
      *
      * @returns An unsigned transaction ([[UnsignedTx]]) which contains an [[ExportTx]].
      */
-    buildExportTx: (utxoset: UTXOSet, amount: BN, destinationChain: Buffer | string, toAddresses: Array<string>, fromAddresses: Array<string>, changeAddresses?: Array<string>, memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number, assetID?: string) => Promise<UnsignedTx>;
+    buildExportTx: (utxoset: UTXOSet, amount: BN, destinationChain: Buffer | string, toAddresses: string[], fromAddresses: string[], changeAddresses?: string[], memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number, assetID?: string) => Promise<UnsignedTx>;
     /**
      * Creates an unsigned transaction. For more granular control, you may create your own
      * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
@@ -474,80 +501,91 @@ export declare class AVMAPI extends JRPCAPI {
      * @returns An unsigned transaction ([[UnsignedTx]]) which contains a [[CreateAssetTx]].
      *
      */
-    buildCreateAssetTx: (utxoset: UTXOSet, fromAddresses: Array<string>, changeAddresses: Array<string>, initialStates: InitialStates, name: string, symbol: string, denomination: number, mintOutputs?: Array<SECPMintOutput>, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<UnsignedTx>;
-    buildSECPMintTx: (utxoset: UTXOSet, mintOwner: SECPMintOutput, transferOwner: SECPTransferOutput, fromAddresses: Array<string>, changeAddresses: Array<string>, mintUTXOID: string, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<any>;
+    buildCreateAssetTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], initialStates: InitialStates, name: string, symbol: string, denomination: number, mintOutputs?: SECPMintOutput[], memo?: PayloadBase | Buffer, asOf?: BN) => Promise<UnsignedTx>;
+    buildSECPMintTx: (utxoset: UTXOSet, mintOwner: SECPMintOutput, transferOwner: SECPTransferOutput, fromAddresses: string[], changeAddresses: string[], mintUTXOID: string, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<any>;
     /**
-    * Creates an unsigned transaction. For more granular control, you may create your own
-    * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
-    *
-    * @param utxoset A set of UTXOs that the transaction is built on
-    * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
-    * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
-    * @param minterSets is a list where each element specifies that threshold of the addresses in minters may together mint more of the asset by signing a minting transaction
-    * @param name String for the descriptive name of the asset
-    * @param symbol String for the ticker symbol of the asset
-    * @param memo Optional CB58 Buffer or String which contains arbitrary bytes, up to 256 bytes
-    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-    * @param locktime Optional. The locktime field created in the resulting mint output
-    *
-    * ```js
-    * Example minterSets:
-    * [
-    *      {
-    *          "minters":[
-    *              "X-axc1ghstjukrtw8935lryqtnh643xe9a94u3tc75c7"
-    *          ],
-    *          "threshold": 1
-    *      },
-    *      {
-    *          "minters": [
-    *              "X-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx",
-    *              "X-axc1k4nr26c80jaquzm9369j5a4shmwcjn0vmemcjz",
-    *              "X-axc1ztkzsrjnkn0cek5ryvhqswdtcg23nhge3nnr5e"
-    *          ],
-    *          "threshold": 2
-    *      }
-    * ]
-    * ```
-    *
-    * @returns An unsigned transaction ([[UnsignedTx]]) which contains a [[CreateAssetTx]].
-    *
-    */
-    buildCreateNFTAssetTx: (utxoset: UTXOSet, fromAddresses: Array<string>, changeAddresses: Array<string>, minterSets: MinterSet[], name: string, symbol: string, memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN) => Promise<UnsignedTx>;
+     * Creates an unsigned transaction. For more granular control, you may create your own
+     * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
+     *
+     * @param utxoset A set of UTXOs that the transaction is built on
+     * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
+     * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
+     * @param minterSets is a list where each element specifies that threshold of the addresses in minters may together mint more of the asset by signing a minting transaction
+     * @param name String for the descriptive name of the asset
+     * @param symbol String for the ticker symbol of the asset
+     * @param memo Optional CB58 Buffer or String which contains arbitrary bytes, up to 256 bytes
+     * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param locktime Optional. The locktime field created in the resulting mint output
+     *
+     * ```js
+     * Example minterSets:
+     * [
+     *      {
+     *          "minters":[
+     *              "X-axc1ghstjukrtw8935lryqtnh643xe9a94u3tc75c7"
+     *          ],
+     *          "threshold": 1
+     *      },
+     *      {
+     *          "minters": [
+     *              "X-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx",
+     *              "X-axc1k4nr26c80jaquzm9369j5a4shmwcjn0vmemcjz",
+     *              "X-axc1ztkzsrjnkn0cek5ryvhqswdtcg23nhge3nnr5e"
+     *          ],
+     *          "threshold": 2
+     *      }
+     * ]
+     * ```
+     *
+     * @returns An unsigned transaction ([[UnsignedTx]]) which contains a [[CreateAssetTx]].
+     *
+     */
+    buildCreateNFTAssetTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], minterSets: MinterSet[], name: string, symbol: string, memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN) => Promise<UnsignedTx>;
     /**
-    * Creates an unsigned transaction. For more granular control, you may create your own
-    * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
-    *
-    * @param utxoset  A set of UTXOs that the transaction is built on
-    * @param owners Either a single or an array of [[OutputOwners]] to send the nft output
-    * @param fromAddresses The addresses being used to send the NFT from the utxoID provided
-    * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
-    * @param utxoid A base58 utxoID or an array of base58 utxoIDs for the nft mint output this transaction is sending
-    * @param groupID Optional. The group this NFT is issued to.
-    * @param payload Optional. Data for NFT Payload as either a [[PayloadBase]] or a {@link https://github.com/feross/buffer|Buffer}
-    * @param memo Optional CB58 Buffer or String which contains arbitrary bytes, up to 256 bytes
-    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-    *
-    * @returns An unsigned transaction ([[UnsignedTx]]) which contains an [[OperationTx]].
-    *
-    */
-    buildCreateNFTMintTx: (utxoset: UTXOSet, owners: Array<OutputOwners> | OutputOwners, fromAddresses: Array<string>, changeAddresses: Array<string>, utxoid: string | Array<string>, groupID?: number, payload?: PayloadBase | Buffer, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<any>;
+     * Creates an unsigned transaction. For more granular control, you may create your own
+     * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s, and [[TransferOperation]]s).
+     *
+     * @param utxoset  A set of UTXOs that the transaction is built on
+     * @param owners Either a single or an array of [[OutputOwners]] to send the nft output
+     * @param fromAddresses The addresses being used to send the NFT from the utxoID provided
+     * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
+     * @param utxoid A base58 utxoID or an array of base58 utxoIDs for the nft mint output this transaction is sending
+     * @param groupID Optional. The group this NFT is issued to.
+     * @param payload Optional. Data for NFT Payload as either a [[PayloadBase]] or a {@link https://github.com/feross/buffer|Buffer}
+     * @param memo Optional CB58 Buffer or String which contains arbitrary bytes, up to 256 bytes
+     * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+     *
+     * @returns An unsigned transaction ([[UnsignedTx]]) which contains an [[OperationTx]].
+     *
+     */
+    buildCreateNFTMintTx: (utxoset: UTXOSet, owners: OutputOwners[] | OutputOwners, fromAddresses: string[], changeAddresses: string[], utxoid: string | string[], groupID?: number, payload?: PayloadBase | Buffer, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<any>;
     /**
      * Helper function which takes an unsigned transaction and signs it, returning the resulting [[Tx]].
-    *
-    * @param utx The unsigned transaction of type [[UnsignedTx]]
-    *
-    * @returns A signed transaction of type [[Tx]]
-    */
+     *
+     * @param utx The unsigned transaction of type [[UnsignedTx]]
+     *
+     * @returns A signed transaction of type [[Tx]]
+     */
     signTx: (utx: UnsignedTx) => Tx;
     /**
      * Calls the node's issueTx method from the API and returns the resulting transaction ID as a string.
      *
      * @param tx A string, {@link https://github.com/feross/buffer|Buffer}, or [[Tx]] representing a transaction
      *
-     * @returns A Promise<string> representing the transaction ID of the posted transaction.
+     * @returns A Promise string representing the transaction ID of the posted transaction.
      */
     issueTx: (tx: string | Buffer | Tx) => Promise<string>;
+    /**
+     * Calls the node's getAddressTxs method from the API and returns transactions corresponding to the provided address and assetID
+     *
+     * @param address The address for which we're fetching related transactions.
+     * @param cursor Page number or offset.
+     * @param pageSize  Number of items to return per page. Optional. Defaults to 1024. If [pageSize] == 0 or [pageSize] > [maxPageSize], then it fetches at max [maxPageSize] transactions
+     * @param assetID Only return transactions that changed the balance of this asset. Must be an ID or an alias for an asset.
+     *
+     * @returns A promise object representing the array of transaction IDs and page offset
+     */
+    getAddressTxs: (address: string, cursor: number, pageSize: number | undefined, assetID: string | Buffer) => Promise<GetAddressTxsResponse>;
     /**
      * Sends an amount of assetID to the specified address from a list of owned of addresses.
      *
@@ -562,10 +600,7 @@ export declare class AVMAPI extends JRPCAPI {
      *
      * @returns Promise for the string representing the transaction's ID.
      */
-    send: (username: string, password: string, assetID: string | Buffer, amount: number | BN, to: string, from?: Array<string> | Array<Buffer>, changeAddr?: string, memo?: string | Buffer) => Promise<{
-        txID: string;
-        changeAddr: string;
-    }>;
+    send: (username: string, password: string, assetID: string | Buffer, amount: number | BN, to: string, from?: string[] | Buffer[], changeAddr?: string, memo?: string | Buffer) => Promise<SendResponse>;
     /**
      * Sends an amount of assetID to an array of specified addresses from a list of owned of addresses.
      *
@@ -576,16 +611,13 @@ export declare class AVMAPI extends JRPCAPI {
      * @param changeAddr Optional. An address to send the change
      * @param memo Optional. CB58 Buffer or String which contains arbitrary bytes, up to 256 bytes
      *
-     * @returns Promise for the string representing the transaction's ID.
+     * @returns Promise for the string representing the transaction"s ID.
      */
-    sendMultiple: (username: string, password: string, sendOutputs: Array<{
+    sendMultiple: (username: string, password: string, sendOutputs: {
         assetID: string | Buffer;
         amount: number | BN;
         to: string;
-    }>, from?: Array<string> | Array<Buffer>, changeAddr?: string, memo?: string | Buffer) => Promise<{
-        txID: string;
-        changeAddr: string;
-    }>;
+    }[], from?: string[] | Buffer[], changeAddr?: string, memo?: string | Buffer) => Promise<SendMultipleResponse>;
     /**
      * Given a JSON representation of this Virtual Machine’s genesis state, create the byte representation of that state.
      *
@@ -597,14 +629,14 @@ export declare class AVMAPI extends JRPCAPI {
     /**
      * @ignore
      */
-    protected _cleanAddressArray(addresses: Array<string> | Array<Buffer>, caller: string): Array<string>;
+    protected _cleanAddressArray(addresses: string[] | Buffer[], caller: string): string[];
     /**
-     * This class should not be instantiated directly. Instead use the [[Axia.addAPI]] method.
+     * This class should not be instantiated directly. Instead use the [[Axia.addAP`${I}`]] method.
      *
      * @param core A reference to the Axia class
-     * @param baseurl Defaults to the string "/ext/bc/X" as the path to blockchain's baseurl
-     * @param blockchainID The Blockchain's ID. Defaults to an empty string: ''
+     * @param baseURL Defaults to the string "/ext/bc/X" as the path to blockchain's baseURL
+     * @param blockchainID The Blockchain"s ID. Defaults to an empty string: ""
      */
-    constructor(core: AxiaCore, baseurl?: string, blockchainID?: string);
+    constructor(core: AxiaCore, baseURL?: string, blockchainID?: string);
 }
 //# sourceMappingURL=api.d.ts.map

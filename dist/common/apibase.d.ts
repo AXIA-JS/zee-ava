@@ -3,9 +3,9 @@
  * @module Common-APIBase
  */
 /// <reference types="node" />
-import { StoreAPI } from 'store2';
-import { ClientRequest } from 'http';
-import AxiaCore from '../axia';
+import { StoreAPI } from "store2";
+import { ClientRequest } from "http";
+import AxiaCore from "../axia";
 /**
  * Response data for HTTP requests.
  */
@@ -15,33 +15,34 @@ export declare class RequestResponseData {
     status: number;
     statusText: string;
     request: ClientRequest | XMLHttpRequest;
+    constructor(data: any, headers: any, status: number, statusText: string, request: ClientRequest | XMLHttpRequest);
 }
 /**
  * Abstract class defining a generic endpoint that all endpoints must implement (extend).
  */
 export declare abstract class APIBase {
     protected core: AxiaCore;
-    protected baseurl: string;
+    protected baseURL: string;
     protected db: StoreAPI;
     /**
-       * Sets the path of the APIs baseurl.
-       *
-       * @param baseurl Path of the APIs baseurl - ex: "/ext/bc/X"
-       */
-    setBaseURL: (baseurl: string) => void;
+     * Sets the path of the APIs baseURL.
+     *
+     * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/X"
+     */
+    setBaseURL: (baseURL: string) => void;
     /**
-       * Returns the baseurl's path.
-       */
+     * Returns the baseURL's path.
+     */
     getBaseURL: () => string;
     /**
-       * Returns the baseurl's database.
-       */
+     * Returns the baseURL's database.
+     */
     getDB: () => StoreAPI;
     /**
-       *
-       * @param core Reference to the Axia instance using this baseurl
-       * @param baseurl Path to the baseurl - ex: "/ext/bc/X"
-       */
-    constructor(core: AxiaCore, baseurl: string);
+     *
+     * @param core Reference to the Axia instance using this baseURL
+     * @param baseURL Path to the baseURL
+     */
+    constructor(core: AxiaCore, baseURL: string);
 }
 //# sourceMappingURL=apibase.d.ts.map

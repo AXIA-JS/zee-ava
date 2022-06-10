@@ -18,12 +18,12 @@ export interface GetAtomicTxParams {
   txID: string
 }
 
-export interface ExportAVAXParams extends CredsInterface {
+export interface ExportAXCParams extends CredsInterface {
   to: string
   amount: string
 }
 
-export interface ExportParams extends ExportAVAXParams {
+export interface ExportParams extends ExportAXCParams {
   assetID: string
 }
 
@@ -34,12 +34,12 @@ export interface GetUTXOsParams {
   startIndex?: Index
 }
 
-export interface ImportAVAXParams extends CredsInterface {
+export interface ImportAXCParams extends CredsInterface {
   to: string
   sourceChain: string
 }
 
-export interface ImportParams extends ImportAVAXParams {}
+export interface ImportParams extends ImportAXCParams {}
 
 export interface ImportKeyParams extends CredsInterface {
   privateKey: string

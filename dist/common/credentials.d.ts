@@ -2,9 +2,9 @@
  * @packageDocumentation
  * @module Common-Signature
  */
-import { NBytes } from './nbytes';
-import { Buffer } from 'buffer/';
-import { Serializable, SerializedEncoding } from '../utils/serialization';
+import { NBytes } from "./nbytes";
+import { Buffer } from "buffer/";
+import { Serializable, SerializedEncoding } from "../utils/serialization";
 /**
  * Type representing a [[Signature]] index used in [[Input]]
  */
@@ -51,18 +51,23 @@ export declare abstract class Credential extends Serializable {
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
-    protected sigArray: Array<Signature>;
+    protected sigArray: Signature[];
     abstract getCredentialID(): number;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
-       * Adds a signature to the credentials and returns the index off the added signature.
-       */
+     * Adds a signature to the credentials and returns the index off the added signature.
+     */
     addSignature: (sig: Signature) => number;
-    fromBuffer(bytes: any, offset?: number): number;
+    fromBuffer(bytes: Buffer, offset?: number): number;
     toBuffer(): Buffer;
     abstract clone(): this;
     abstract create(...args: any[]): this;
     abstract select(id: number, ...args: any[]): Credential;
-    constructor(sigarray?: Array<Signature>);
+    constructor(sigarray?: Signature[]);
 }
 //# sourceMappingURL=credentials.d.ts.map

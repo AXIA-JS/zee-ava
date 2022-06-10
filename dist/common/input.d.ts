@@ -2,23 +2,23 @@
  * @packageDocumentation
  * @module Common-Inputs
  */
-import { Buffer } from 'buffer/';
-import BN from 'bn.js';
-import { SigIdx } from './credentials';
-import { Serializable, SerializedEncoding } from '../utils/serialization';
+import { Buffer } from "buffer/";
+import BN from "bn.js";
+import { SigIdx } from "./credentials";
+import { Serializable, SerializedEncoding } from "../utils/serialization";
 export declare abstract class Input extends Serializable {
     protected _typeName: string;
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected sigCount: Buffer;
-    protected sigIdxs: Array<SigIdx>;
-    static comparator: () => (a: Input, b: Input) => (1 | -1 | 0);
+    protected sigIdxs: SigIdx[];
+    static comparator: () => (a: Input, b: Input) => 1 | -1 | 0;
     abstract getInputID(): number;
     /**
      * Returns the array of [[SigIdx]] for this [[Input]]
      */
-    getSigIdxs: () => Array<SigIdx>;
+    getSigIdxs: () => SigIdx[];
     abstract getCredentialID(): number;
     /**
      * Creates and adds a [[SigIdx]] to the [[Input]].
@@ -45,7 +45,7 @@ export declare abstract class StandardParseableInput extends Serializable {
     /**
      * Returns a function used to sort an array of [[StandardParseableInput]]s
      */
-    static comparator: () => (a: StandardParseableInput, b: StandardParseableInput) => (1 | -1 | 0);
+    static comparator: () => (a: StandardParseableInput, b: StandardParseableInput) => 1 | -1 | 0;
     getInput: () => Input;
     abstract fromBuffer(bytes: Buffer, offset?: number): number;
     toBuffer(): Buffer;
@@ -63,7 +63,7 @@ export declare abstract class StandardTransferableInput extends StandardParseabl
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected txid: Buffer;
     protected outputidx: Buffer;
-    protected assetid: Buffer;
+    protected assetID: Buffer;
     /**
      * Returns a {@link https://github.com/feross/buffer|Buffer} of the TxID.
      */

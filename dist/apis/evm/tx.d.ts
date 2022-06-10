@@ -2,11 +2,11 @@
  * @packageDocumentation
  * @module API-EVM-Transactions
  */
-import { Buffer } from 'buffer/';
-import { KeyChain, KeyPair } from './keychain';
-import { EVMStandardTx, EVMStandardUnsignedTx } from '../../common/evmtx';
-import { EVMBaseTx } from './basetx';
-import { SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import { KeyChain, KeyPair } from "./keychain";
+import { EVMStandardTx, EVMStandardUnsignedTx } from "../../common/evmtx";
+import { EVMBaseTx } from "./basetx";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Takes a buffer representing the output and returns the proper [[EVMBaseTx]] instance.
  *

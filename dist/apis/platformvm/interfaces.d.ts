@@ -2,130 +2,173 @@
  * @packageDocumentation
  * @module PlatformVM-Interfaces
  */
-import { iIndex, iUTXOID, iUTXOResponse } from "./../../common/interfaces";
-import { Tx, UTXOSet } from "./../../apis/platformvm";
+/// <reference types="node" />
 import BN from "bn.js";
-import { Buffer } from "buffer/";
-import { PersistanceOptions } from "src/utils";
-export interface iPlatformVMUTXOResponse extends iUTXOResponse {
-    utxos: UTXOSet;
+import { PersistanceOptions } from "../../utils/persistenceoptions";
+import { TransferableOutput } from ".";
+import { UTXOSet } from "../platformvm/utxos";
+export interface GetStakeParams {
+    addresses: string[];
+    encoding: string;
 }
-export interface iGetBalanceResponse {
-    balance: string;
-    unlocked: string;
-    lockedStakeable: string;
-    lockedNotStakeable: string;
-    utxoIDs: iUTXOID[];
+export interface GetStakeResponse {
+    staked: BN;
+    stakedOutputs: TransferableOutput[];
 }
-export interface iGetBalanceParams {
-    address: string;
+export interface GetRewardUTXOsParams {
+    txID: string;
+    encoding: string;
 }
-export interface iGetMinStakeResponse {
-    minValidatorStake: BN;
-    minDelegatorStake: BN;
+export interface GetRewardUTXOsResponse {
+    numFetched: number;
+    utxos: string[];
+    encoding: string;
 }
-export interface iCreateBlockchainParams {
+export interface GetValidatorsAtParams {
+    height: number;
+    subnetID?: string;
+}
+export interface GetValidatorsAtResponse {
+    validators: object;
+}
+export interface GetCurrentValidatorsParams {
+    subnetID?: Buffer | string;
+    nodeIDs?: string[];
+}
+export interface SampleValidatorsParams {
+    size: number | string;
+    subnetID?: Buffer | string | undefined;
+}
+export interface SampleValidatorsParams {
+    size: number | string;
+    subnetID?: Buffer | string | undefined;
+}
+export interface AddValidatorParams {
     username: string;
     password: string;
+    nodeID: string;
+    startTime: number;
+    endTime: number;
+    stakeAmount: string;
+    rewardAddress: string;
+    delegationFeeRate?: string | undefined;
+}
+export interface AddDelegatorParams {
+    username: string;
+    password: string;
+    nodeID: string;
+    startTime: number;
+    endTime: number;
+    stakeAmount: string;
+    rewardAddress: string;
+}
+export interface GetPendingValidatorsParams {
+    subnetID?: Buffer | string;
+    nodeIDs?: string[];
+}
+export interface ExportAXCParams {
+    username: string;
+    password: string;
+    amount: string;
+    to: string;
+}
+export interface ImportAXCParams {
+    username: string;
+    password: string;
+    sourceChain: string;
+    to: string;
+}
+export interface ExportKeyParams {
+    username: string;
+    password: string;
+    address: string;
+}
+export interface ImportKeyParams {
+    username: string;
+    password: string;
+    privateKey: string;
+}
+export interface GetBalanceResponse {
+    balance: BN | number;
+    unlocked: BN | number;
+    lockedStakeable: BN | number;
+    lockedNotStakeable: BN | number;
+    utxoIDs: {
+        txID: string;
+        outputIndex: number;
+    }[];
+}
+export interface CreateAddressParams {
+    username: string;
+    password: string;
+}
+export interface ListAddressesParams {
+    username: string;
+    password: string;
+}
+export interface StartIndex {
+    address: string;
+    utxo: string;
+}
+export interface GetUTXOsParams {
+    addresses: string[] | string;
+    sourceChain?: string | undefined;
+    limit: number | 0;
+    startIndex?: StartIndex | undefined;
+    persistOpts?: PersistanceOptions | undefined;
+    encoding?: string;
+}
+export interface EndIndex {
+    address: string;
+    utxo: string;
+}
+export interface GetUTXOsResponse {
+    numFetched: number;
+    utxos: UTXOSet;
+    endIndex: EndIndex;
+}
+export interface CreateSubnetParams {
+    username: string;
+    password: string;
+    controlKeys: string[];
+    threshold: number;
+}
+export interface Subnet {
+    ids: string;
+    controlKeys: string[];
+    threshold: number;
+}
+export interface CreateBlockchainParams {
+    username: string;
+    password: string;
+    subnetID?: Buffer | string | undefined;
     vmID: string;
     fxIDs: number[];
     name: string;
     genesisData: string;
-    subnetID?: Buffer | string;
 }
-export interface igetBlockchainStatusParams {
-    blockchainID: string;
+export interface Blockchain {
+    id: string;
+    name: string;
+    subnetID: string;
+    vmID: string;
 }
-export interface iUser {
-    username: string;
-    password: string;
-}
-export interface iCreateUserParams extends iUser {
-}
-export interface iListAddressesParams extends iUser {
-}
-export interface iValidatorsParams {
-    subnetID?: Buffer | string;
-}
-export interface iGetCurrentValidatorsParams extends iValidatorsParams {
-}
-export interface iGetPendingValidators extends iValidatorsParams {
-}
-export interface iSampleValidators extends iValidatorsParams {
-    size: string;
-}
-export interface iValidatorParams {
-    username: string;
-    password: string;
-    nodeID: string;
-    startTime: Date | string | number;
-    endTime: Date | string | number;
-    stakeAmount?: BN | string;
-    rewardAddress?: string;
-}
-export interface iAddValidatorParams extends iValidatorParams {
-    delegationFeeRate?: BN | string;
-}
-export interface iAddSubnetValidatorParams extends iValidatorParams {
-    weight: number;
-    subnetID?: string;
-}
-export interface iAddDelegatorParams extends iValidatorParams {
-}
-export interface iCreateSubnetParams extends iUser {
-    controlKeys: string[];
-    threshold: number;
-}
-export interface iValidatedByParams {
-    blockchainID: string;
-}
-export interface iValidatesParams {
-    subnetID: Buffer | string;
-}
-export interface iExportAXCParams extends iUser {
-    amount: BN | string;
-    to: string;
-}
-export interface iImportAXCParams extends iUser {
-    to: string;
-    sourceChain: string;
-}
-export interface iIssueTxParams {
-    tx: string | Buffer | Tx;
-}
-export interface iMinStake {
-    minValidatorStake: BN;
-    minDelegatorStake: BN;
-}
-export interface iGetStakeParams {
-    addresses: string[];
-}
-export interface iGetSubnetsParams {
-    ids?: string[];
-}
-export interface iExportKeyParams extends iUser {
-    address: string;
-}
-export interface iImportKeyParams extends iUser {
-    privateKey: string;
-}
-export interface iGetTx {
+export interface GetTxStatusParams {
     txID: string;
+    includeReason?: boolean | true;
 }
-export interface iGetTxParams extends iGetTx {
-}
-export interface iGetTxStatusParams extends iGetTx {
-    includeReason: boolean;
-}
-export interface iStatus {
+export interface GetTxStatusResponse {
     status: string;
     reason: string;
 }
-export interface iGetUTXOsParams {
-    addresses: string[] | string;
-    limit: number;
-    sourceChain?: string;
-    startIndex?: iIndex;
-    persistOpts?: PersistanceOptions;
+export interface GetMinStakeResponse {
+    minValidatorStake: BN;
+    minDelegatorStake: BN;
+}
+export interface GetMaxStakeAmountParams {
+    subnetID?: string;
+    nodeID: string;
+    startTime: BN;
+    endTime: BN;
 }
 //# sourceMappingURL=interfaces.d.ts.map

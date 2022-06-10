@@ -2,7 +2,7 @@
  * @packageDocumentation
  * @module Utils-PersistanceOptions
  */
-import { MergeRule } from './constants';
+import { MergeRule } from "./constants";
 /**
  * A class for defining the persistance behavior of this an API call.
  *

@@ -1,20 +1,16 @@
-import { 
-  Axia,
-  BN
-} from "../../dist";
-import { AVMAPI } from "../../dist/apis/avm";
-  
-const ip: string = 'localhost';
-const port: number = 9650;
-const protocol: string = 'http';
-const networkID: number = 12345;
-const axia: Axia = new Axia(ip, port, protocol, networkID);
-const xchain: AVMAPI = axia.XChain();
-  
+import { Axia, BN } from "../../src"
+import { AVMAPI } from "../../src/apis/avm"
+
+const ip: string = "localhost"
+const port: number = 9650
+const protocol: string = "http"
+const networkID: number = 1337
+const axia: Axia = new Axia(ip, port, protocol, networkID)
+const xchain: AVMAPI = axia.XChain()
+
 const main = async (): Promise<any> => {
-  const defaultTxFee: BN = await xchain.getDefaultTxFee();
-  console.log(defaultTxFee);
+  const defaultTxFee: BN = xchain.getDefaultTxFee()
+  console.log(defaultTxFee.toString())
 }
-    
+
 main()
-  

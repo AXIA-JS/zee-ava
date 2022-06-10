@@ -9,7 +9,7 @@ import BN from "bn.js";
  */
 export declare class PayloadTypes {
     private static instance;
-    protected types: Array<string>;
+    protected types: string[];
     /**
      * Given an encoded payload buffer returns the payload content (minus typeID).
      */
@@ -33,7 +33,7 @@ export declare class PayloadTypes {
     /**
      * Given a TypeID returns the proper [[PayloadBase]].
      */
-    select(typeid: number, ...args: Array<any>): PayloadBase;
+    select(typeID: number, ...args: any[]): PayloadBase;
     /**
      * Given a [[PayloadBase]] which may not be cast properly, returns a properly cast [[PayloadBase]].
      */
@@ -184,7 +184,7 @@ export declare abstract class ChainAddressPayload extends PayloadBase {
     /**
      * @param payload Buffer or address string
      */
-    constructor(payload?: any);
+    constructor(payload?: any, hrp?: string);
 }
 /**
  * Class for payloads representing X-Chin addresses.
@@ -206,10 +206,6 @@ export declare class PCHAINADDRPayload extends ChainAddressPayload {
 export declare class CCHAINADDRPayload extends ChainAddressPayload {
     protected typeid: number;
     protected chainid: string;
-    /**
-     * Returns an address string for the payload.
-     */
-    returnType(): string;
 }
 /**
  * Class for payloads representing data serialized by bintools.cb58Encode().

@@ -1,5 +1,5 @@
 # Auth RPC
 
-Tests for the Axia [Health RPC](https://docs.axc.network/build/axiago-apis/health-api)
+Example scripts for the Axia [Health RPC](https://docs.axc.network/build/axiago-apis/health-api)
 
-* [getLiveness.ts](./getLiveness.ts)
+* [health.ts](./health.ts)

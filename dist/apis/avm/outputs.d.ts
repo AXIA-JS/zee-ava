@@ -2,10 +2,10 @@
  * @packageDocumentation
  * @module API-AVM-Outputs
  */
-import { Buffer } from 'buffer/';
-import BN from 'bn.js';
-import { Output, StandardAmountOutput, StandardTransferableOutput, BaseNFTOutput } from '../../common/output';
-import { SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import BN from "bn.js";
+import { Output, StandardAmountOutput, StandardTransferableOutput, BaseNFTOutput } from "../../common/output";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Takes a buffer representing the output and returns the proper Output instance.
  *
@@ -13,7 +13,7 @@ import { SerializedEncoding } from '../../utils/serialization';
  *
  * @returns An instance of an [[Output]]-extended class.
  */
-export declare const SelectOutputClass: (outputid: number, ...args: Array<any>) => Output;
+export declare const SelectOutputClass: (outputid: number, ...args: any[]) => Output;
 export declare class TransferableOutput extends StandardTransferableOutput {
     protected _typeName: string;
     protected _typeID: any;
@@ -47,10 +47,15 @@ export declare class SECPTransferOutput extends AmountOutput {
     protected _typeName: string;
     protected _codecID: number;
     protected _typeID: number;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
-       * Returns the outputID for this output
-       */
+     * Returns the outputID for this output
+     */
     getOutputID(): number;
     create(...args: any[]): this;
     clone(): this;
@@ -62,6 +67,11 @@ export declare class SECPMintOutput extends Output {
     protected _typeName: string;
     protected _codecID: number;
     protected _typeID: number;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
      * Returns the outputID for this output
@@ -83,6 +93,11 @@ export declare class NFTMintOutput extends NFTOutput {
     protected _typeName: string;
     protected _codecID: number;
     protected _typeID: number;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
      * Returns the outputID for this output
@@ -102,11 +117,12 @@ export declare class NFTMintOutput extends NFTOutput {
      * An [[Output]] class which contains an NFT mint for an assetID.
      *
      * @param groupID A number specifies the group this NFT is issued to
+     * @param addresses An array of {@link https://github.com/feross/buffer|Buffer}s representing  addresses
      * @param locktime A {@link https://github.com/indutny/bn.js/|BN} representing the locktime
      * @param threshold A number representing the the threshold number of signers required to sign the transaction
-     * @param addresses An array of {@link https://github.com/feross/buffer|Buffer}s representing addresses
+  
      */
-    constructor(groupID?: number, addresses?: Array<Buffer>, locktime?: BN, threshold?: number);
+    constructor(groupID?: number, addresses?: Buffer[], locktime?: BN, threshold?: number);
 }
 /**
  * An [[Output]] class which specifies an Output that carries an NFT and uses secp256k1 signature scheme.
@@ -119,6 +135,11 @@ export declare class NFTTransferOutput extends NFTOutput {
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected sizePayload: Buffer;
     protected payload: Buffer;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
      * Returns the outputID for this output
@@ -152,6 +173,6 @@ export declare class NFTTransferOutput extends NFTOutput {
        * @param threshold A number representing the the threshold number of signers required to sign the transaction
   
        */
-    constructor(groupID?: number, payload?: Buffer, addresses?: Array<Buffer>, locktime?: BN, threshold?: number);
+    constructor(groupID?: number, payload?: Buffer, addresses?: Buffer[], locktime?: BN, threshold?: number);
 }
 //# sourceMappingURL=outputs.d.ts.map

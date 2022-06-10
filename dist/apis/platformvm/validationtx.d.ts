@@ -2,13 +2,13 @@
  * @packageDocumentation
  * @module API-PlatformVM-ValidationTx
  */
-import BN from 'bn.js';
-import { BaseTx } from './basetx';
-import { TransferableOutput } from '../platformvm/outputs';
-import { TransferableInput } from '../platformvm/inputs';
-import { Buffer } from 'buffer/';
-import { ParseableOutput } from './outputs';
-import { SerializedEncoding } from '../../utils/serialization';
+import BN from "bn.js";
+import { BaseTx } from "./basetx";
+import { TransferableOutput } from "../platformvm/outputs";
+import { TransferableInput } from "../platformvm/inputs";
+import { Buffer } from "buffer/";
+import { ParseableOutput } from "./outputs";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Abstract class representing an transactions with validation information.
  */
@@ -41,7 +41,7 @@ export declare abstract class ValidatorTx extends BaseTx {
      * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[ValidatorTx]].
      */
     toBuffer(): Buffer;
-    constructor(networkid: number, blockchainid: Buffer, outs: Array<TransferableOutput>, ins: Array<TransferableInput>, memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN);
+    constructor(networkID: number, blockchainID: Buffer, outs: TransferableOutput[], ins: TransferableInput[], memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN);
 }
 export declare abstract class WeightedValidatorTx extends ValidatorTx {
     protected _typeName: string;
@@ -65,8 +65,8 @@ export declare abstract class WeightedValidatorTx extends ValidatorTx {
     /**
      * Class representing an unsigned AddSubnetValidatorTx transaction.
      *
-     * @param networkid Optional. Networkid, [[DefaultNetworkID]]
-     * @param blockchainid Optional. Blockchainid, default Buffer.alloc(32, 16)
+     * @param networkID Optional. Networkid, [[DefaultNetworkID]]
+     * @param blockchainID Optional. Blockchainid, default Buffer.alloc(32, 16)
      * @param outs Optional. Array of the [[TransferableOutput]]s
      * @param ins Optional. Array of the [[TransferableInput]]s
      * @param memo Optional. {@link https://github.com/feross/buffer|Buffer} for the memo field
@@ -75,7 +75,7 @@ export declare abstract class WeightedValidatorTx extends ValidatorTx {
      * @param endTime Optional. The Unix time when the validator stops validating the Primary Network (and staked AXC is returned).
      * @param weight Optional. The amount of nAXC the validator is staking.
      */
-    constructor(networkid?: number, blockchainid?: Buffer, outs?: Array<TransferableOutput>, ins?: Array<TransferableInput>, memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, weight?: BN);
+    constructor(networkID?: number, blockchainID?: Buffer, outs?: TransferableOutput[], ins?: TransferableInput[], memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, weight?: BN);
 }
 /**
  * Class representing an unsigned AddDelegatorTx transaction.
@@ -85,12 +85,12 @@ export declare class AddDelegatorTx extends WeightedValidatorTx {
     protected _typeID: number;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
-    protected stakeOuts: Array<TransferableOutput>;
+    protected stakeOuts: TransferableOutput[];
     protected rewardOwners: ParseableOutput;
     /**
-       * Returns the id of the [[AddDelegatorTx]]
-       */
-    getTxType: () => number;
+     * Returns the id of the [[AddDelegatorTx]]
+     */
+    getTxType(): number;
     /**
      * Returns a {@link https://github.com/indutny/bn.js/|BN} for the stake amount.
      */
@@ -102,7 +102,7 @@ export declare class AddDelegatorTx extends WeightedValidatorTx {
     /**
      * Returns the array of outputs being staked.
      */
-    getStakeOuts(): Array<TransferableOutput>;
+    getStakeOuts(): TransferableOutput[];
     /**
      * Should match stakeAmount. Used in sanity checking.
      */
@@ -111,7 +111,7 @@ export declare class AddDelegatorTx extends WeightedValidatorTx {
      * Returns a {@link https://github.com/feross/buffer|Buffer} for the reward address.
      */
     getRewardOwners(): ParseableOutput;
-    getTotalOuts(): Array<TransferableOutput>;
+    getTotalOuts(): TransferableOutput[];
     fromBuffer(bytes: Buffer, offset?: number): number;
     /**
      * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddDelegatorTx]].
@@ -122,8 +122,8 @@ export declare class AddDelegatorTx extends WeightedValidatorTx {
     /**
      * Class representing an unsigned AddDelegatorTx transaction.
      *
-     * @param networkid Optional. Networkid, [[DefaultNetworkID]]
-     * @param blockchainid Optional. Blockchainid, default Buffer.alloc(32, 16)
+     * @param networkID Optional. Networkid, [[DefaultNetworkID]]
+     * @param blockchainID Optional. Blockchainid, default Buffer.alloc(32, 16)
      * @param outs Optional. Array of the [[TransferableOutput]]s
      * @param ins Optional. Array of the [[TransferableInput]]s
      * @param memo Optional. {@link https://github.com/feross/buffer|Buffer} for the memo field
@@ -134,7 +134,7 @@ export declare class AddDelegatorTx extends WeightedValidatorTx {
      * @param stakeOuts Optional. The outputs used in paying the stake.
      * @param rewardOwners Optional. The [[ParseableOutput]] containing a [[SECPOwnerOutput]] for the rewards.
      */
-    constructor(networkid?: number, blockchainid?: Buffer, outs?: Array<TransferableOutput>, ins?: Array<TransferableInput>, memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, stakeAmount?: BN, stakeOuts?: Array<TransferableOutput>, rewardOwners?: ParseableOutput);
+    constructor(networkID?: number, blockchainID?: Buffer, outs?: TransferableOutput[], ins?: TransferableInput[], memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, stakeAmount?: BN, stakeOuts?: TransferableOutput[], rewardOwners?: ParseableOutput);
 }
 export declare class AddValidatorTx extends AddDelegatorTx {
     protected _typeName: string;
@@ -144,9 +144,9 @@ export declare class AddValidatorTx extends AddDelegatorTx {
     protected delegationFee: number;
     private static delegatorMultiplier;
     /**
-       * Returns the id of the [[AddValidatorTx]]
-       */
-    getTxType: () => number;
+     * Returns the id of the [[AddValidatorTx]]
+     */
+    getTxType(): number;
     /**
      * Returns the delegation fee (represents a percentage from 0 to 100);
      */
@@ -160,8 +160,8 @@ export declare class AddValidatorTx extends AddDelegatorTx {
     /**
      * Class representing an unsigned AddValidatorTx transaction.
      *
-     * @param networkid Optional. Networkid, [[DefaultNetworkID]]
-     * @param blockchainid Optional. Blockchainid, default Buffer.alloc(32, 16)
+     * @param networkID Optional. Networkid, [[DefaultNetworkID]]
+     * @param blockchainID Optional. Blockchainid, default Buffer.alloc(32, 16)
      * @param outs Optional. Array of the [[TransferableOutput]]s
      * @param ins Optional. Array of the [[TransferableInput]]s
      * @param memo Optional. {@link https://github.com/feross/buffer|Buffer} for the memo field
@@ -176,6 +176,6 @@ export declare class AddValidatorTx extends AddDelegatorTx {
      * For example, if delegationFeeRate is 1.2345 and someone delegates to this validator, then when the delegation
      * period is over, 1.2345% of the reward goes to the validator and the rest goes to the delegator.
      */
-    constructor(networkid?: number, blockchainid?: Buffer, outs?: Array<TransferableOutput>, ins?: Array<TransferableInput>, memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, stakeAmount?: BN, stakeOuts?: Array<TransferableOutput>, rewardOwners?: ParseableOutput, delegationFee?: number);
+    constructor(networkID?: number, blockchainID?: Buffer, outs?: TransferableOutput[], ins?: TransferableInput[], memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, stakeAmount?: BN, stakeOuts?: TransferableOutput[], rewardOwners?: ParseableOutput, delegationFee?: number);
 }
 //# sourceMappingURL=validationtx.d.ts.map

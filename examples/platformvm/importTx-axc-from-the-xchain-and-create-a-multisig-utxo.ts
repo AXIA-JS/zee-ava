@@ -51,11 +51,11 @@ const fee: BN = pchain.getDefaultTxFee()
 const threshold: number = 2
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Import AVAX to P-Chain from X-Chain and consume a multisig atomic output and create a multisig utxo"
+  "Import AXC to P-Chain from X-Chain and consume a multisig atomic output and create a multisig utxo"
 )
 
 const main = async (): Promise<any> => {
-  const avaxAssetID: Buffer = await pchain.getAVAXAssetID()
+  const axcAssetID: Buffer = await pchain.getAXCAssetID()
   const platformvmUTXOResponse: any = await pchain.getUTXOs(
     pAddressStrings,
     xChainID
@@ -71,14 +71,14 @@ const main = async (): Promise<any> => {
     const outputidx: Buffer = utxo.getOutputIdx()
     const assetID: Buffer = utxo.getAssetID()
 
-    if (avaxAssetID.toString("hex") === assetID.toString("hex")) {
+    if (axcAssetID.toString("hex") === assetID.toString("hex")) {
       const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
       secpTransferInput.addSignatureIdx(1, pAddresses[2])
       secpTransferInput.addSignatureIdx(2, pAddresses[1])
       const input: TransferableInput = new TransferableInput(
         txid,
         outputidx,
-        avaxAssetID,
+        axcAssetID,
         secpTransferInput
       )
       importedInputs.push(input)
@@ -92,7 +92,7 @@ const main = async (): Promise<any> => {
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetID,
+    axcAssetID,
     secpTransferOutput
   )
   outputs.push(transferableOutput)

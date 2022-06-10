@@ -233,8 +233,8 @@ describe("PChain", (): void => {
       () => /PrivateKey-\w*/
     ],
     // [
-    //   "exportAVAX",
-    //   () => pchain.exportAVAX(user, passwd, new BN(10), xChainAddr),
+    //   "exportAXC",
+    //   () => pchain.exportAXC(user, passwd, new BN(10), xChainAddr),
     //   (x) => x,
     //   Matcher.toThrow,
     //   () =>
@@ -259,8 +259,8 @@ describe("PChain", (): void => {
       () => ({ status: "Unknown" })
     ],
     [
-      "importAVAX",
-      () => pchain.importAVAX(user, passwd, addrB.value, "X"),
+      "importAXC",
+      () => pchain.importAXC(user, passwd, addrB.value, "X"),
       (x) => x,
       Matcher.toThrow,
       () => "no spendable funds were found"

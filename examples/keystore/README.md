@@ -1,6 +1,6 @@
 # Keystore RPC
 
-Tests for the Axia [Keystore RPC](https://docs.axc.network/build/axiago-apis/keystore-api)
+Example scripts for the Axia [Keystore RPC](https://docs.axc.network/build/axiago-apis/keystore)
 
 * [createUser.ts](./createUser.ts)
 * [deleteUser.ts](./deleteUser.ts)

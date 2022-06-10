@@ -2,13 +2,13 @@
  * @packageDocumentation
  * @module Common-Transactions
  */
-import { Buffer } from 'buffer/';
-import { Credential } from './credentials';
-import BN from 'bn.js';
-import { StandardKeyChain, StandardKeyPair } from './keychain';
-import { StandardTransferableInput } from './input';
-import { StandardTransferableOutput } from './output';
-import { Serializable, SerializedEncoding } from '../utils/serialization';
+import { Buffer } from "buffer/";
+import { Credential } from "./credentials";
+import BN from "bn.js";
+import { StandardKeyChain, StandardKeyPair } from "./keychain";
+import { StandardTransferableInput } from "./input";
+import { StandardTransferableOutput } from "./output";
+import { Serializable, SerializedEncoding } from "../utils/serialization";
 /**
  * Class representing a base for all transactions.
  */
@@ -17,41 +17,41 @@ export declare abstract class StandardBaseTx<KPClass extends StandardKeyPair, KC
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
-    protected networkid: Buffer;
-    protected blockchainid: Buffer;
+    protected networkID: Buffer;
+    protected blockchainID: Buffer;
     protected numouts: Buffer;
-    protected outs: Array<StandardTransferableOutput>;
+    protected outs: StandardTransferableOutput[];
     protected numins: Buffer;
-    protected ins: Array<StandardTransferableInput>;
+    protected ins: StandardTransferableInput[];
     protected memo: Buffer;
     /**
      * Returns the id of the [[StandardBaseTx]]
      */
-    abstract getTxType: () => number;
+    abstract getTxType(): number;
     /**
      * Returns the NetworkID as a number
      */
-    getNetworkID: () => number;
+    getNetworkID(): number;
     /**
      * Returns the Buffer representation of the BlockchainID
      */
-    getBlockchainID: () => Buffer;
+    getBlockchainID(): Buffer;
     /**
      * Returns the array of [[StandardTransferableInput]]s
      */
-    abstract getIns(): Array<StandardTransferableInput>;
+    abstract getIns(): StandardTransferableInput[];
     /**
      * Returns the array of [[StandardTransferableOutput]]s
      */
-    abstract getOuts(): Array<StandardTransferableOutput>;
+    abstract getOuts(): StandardTransferableOutput[];
     /**
      * Returns the array of combined total [[StandardTransferableOutput]]s
      */
-    abstract getTotalOuts(): Array<StandardTransferableOutput>;
+    abstract getTotalOuts(): StandardTransferableOutput[];
     /**
      * Returns the {@link https://github.com/feross/buffer|Buffer} representation of the memo
      */
-    getMemo: () => Buffer;
+    getMemo(): Buffer;
     /**
      * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[StandardBaseTx]].
      */
@@ -68,20 +68,20 @@ export declare abstract class StandardBaseTx<KPClass extends StandardKeyPair, KC
      *
      * @returns An array of [[Credential]]s
      */
-    abstract sign(msg: Buffer, kc: StandardKeyChain<KPClass>): Array<Credential>;
+    abstract sign(msg: Buffer, kc: StandardKeyChain<KPClass>): Credential[];
     abstract clone(): this;
     abstract create(...args: any[]): this;
     abstract select(id: number, ...args: any[]): this;
     /**
      * Class representing a StandardBaseTx which is the foundation for all transactions.
      *
-     * @param networkid Optional networkid, [[DefaultNetworkID]]
-     * @param blockchainid Optional blockchainid, default Buffer.alloc(32, 16)
+     * @param networkID Optional networkID, [[DefaultNetworkID]]
+     * @param blockchainID Optional blockchainID, default Buffer.alloc(32, 16)
      * @param outs Optional array of the [[TransferableOutput]]s
      * @param ins Optional array of the [[TransferableInput]]s
      * @param memo Optional {@link https://github.com/feross/buffer|Buffer} for the memo field
      */
-    constructor(networkid?: number, blockchainid?: Buffer, outs?: Array<StandardTransferableOutput>, ins?: Array<StandardTransferableInput>, memo?: Buffer);
+    constructor(networkID?: number, blockchainID?: Buffer, outs?: StandardTransferableOutput[], ins?: StandardTransferableInput[], memo?: Buffer);
 }
 /**
  * Class representing an unsigned transaction.
@@ -91,28 +91,28 @@ export declare abstract class StandardUnsignedTx<KPClass extends StandardKeyPair
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
-    protected codecid: number;
+    protected codecID: number;
     protected transaction: SBTx;
     /**
      * Returns the CodecID as a number
      */
-    getCodecID: () => number;
+    getCodecID(): number;
     /**
-    * Returns the {@link https://github.com/feross/buffer|Buffer} representation of the CodecID
-    */
-    getCodecIDBuffer: () => Buffer;
+     * Returns the {@link https://github.com/feross/buffer|Buffer} representation of the CodecID
+     */
+    getCodecIDBuffer(): Buffer;
     /**
      * Returns the inputTotal as a BN
      */
-    getInputTotal: (assetID: Buffer) => BN;
+    getInputTotal(assetID: Buffer): BN;
     /**
      * Returns the outputTotal as a BN
      */
-    getOutputTotal: (assetID: Buffer) => BN;
+    getOutputTotal(assetID: Buffer): BN;
     /**
      * Returns the number of burned tokens as a BN
      */
-    getBurn: (assetID: Buffer) => BN;
+    getBurn(assetID: Buffer): BN;
     /**
      * Returns the Transaction
      */
@@ -127,7 +127,7 @@ export declare abstract class StandardUnsignedTx<KPClass extends StandardKeyPair
      * @returns A signed [[StandardTx]]
      */
     abstract sign(kc: KCClass): StandardTx<KPClass, KCClass, StandardUnsignedTx<KPClass, KCClass, SBTx>>;
-    constructor(transaction?: SBTx, codecid?: number);
+    constructor(transaction?: SBTx, codecID?: number);
 }
 /**
  * Class representing a signed transaction.
@@ -137,11 +137,15 @@ export declare abstract class StandardTx<KPClass extends StandardKeyPair, KCClas
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     protected unsignedTx: SUBTx;
-    protected credentials: Array<Credential>;
+    protected credentials: Credential[];
+    /**
+     * Returns the [[Credential[]]]
+     */
+    getCredentials(): Credential[];
     /**
      * Returns the [[StandardUnsignedTx]]
      */
-    getUnsignedTx: () => SUBTx;
+    getUnsignedTx(): SUBTx;
     abstract fromBuffer(bytes: Buffer, offset?: number): number;
     /**
      * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[StandardTx]].
@@ -171,6 +175,6 @@ export declare abstract class StandardTx<KPClass extends StandardKeyPair, KCClas
      * @param unsignedTx Optional [[StandardUnsignedTx]]
      * @param signatures Optional array of [[Credential]]s
      */
-    constructor(unsignedTx?: SUBTx, credentials?: Array<Credential>);
+    constructor(unsignedTx?: SUBTx, credentials?: Credential[]);
 }
 //# sourceMappingURL=tx.d.ts.map

@@ -28,7 +28,7 @@ const pChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildImportTx to import AVAX to the P-Chain from the X-Chain"
+  "PlatformVM utility method buildImportTx to import AXC to the P-Chain from the X-Chain"
 )
 const asOf: BN = UnixNow()
 

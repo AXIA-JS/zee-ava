@@ -2,7 +2,7 @@
  * @packageDocumentation
  * @module Utils-DB
  */
-import store from 'store2';
+import { StoreAPI } from "store2";
 /**
  * A class for interacting with the {@link https://github.com/nbubna/store| store2 module}
  *
@@ -19,14 +19,14 @@ export default class DB {
     private static store;
     private constructor();
     /**
-       * Retrieves the database singleton.
-       */
+     * Retrieves the database singleton.
+     */
     static getInstance(): DB;
     /**
-       * Gets a namespace from the database singleton.
-       *
-       * @param ns Namespace to retrieve.
-       */
-    static getNamespace(ns: string): store.StoreAPI;
+     * Gets a namespace from the database singleton.
+     *
+     * @param ns Namespace to retrieve.
+     */
+    static getNamespace(ns: string): StoreAPI;
 }
 //# sourceMappingURL=db.d.ts.map

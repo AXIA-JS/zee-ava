@@ -2,10 +2,10 @@
  * @packageDocumentation
  * @module API-PlatformVM-Inputs
  */
-import { Buffer } from 'buffer/';
-import { Input, StandardTransferableInput, StandardAmountInput, StandardParseableInput } from '../../common/input';
-import { SerializedEncoding } from '../../utils/serialization';
-import BN from 'bn.js';
+import { Buffer } from "buffer/";
+import { Input, StandardTransferableInput, StandardAmountInput, StandardParseableInput } from "../../common/input";
+import { SerializedEncoding } from "../../utils/serialization";
+import BN from "bn.js";
 /**
  * Takes a buffer representing the output and returns the proper [[Input]] instance.
  *
@@ -13,7 +13,7 @@ import BN from 'bn.js';
  *
  * @returns An instance of an [[Input]]-extended class.
  */
-export declare const SelectInputClass: (inputid: number, ...args: Array<any>) => Input;
+export declare const SelectInputClass: (inputid: number, ...args: any[]) => Input;
 export declare class ParseableInput extends StandardParseableInput {
     protected _typeName: string;
     protected _typeID: any;

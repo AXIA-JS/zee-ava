@@ -2,15 +2,15 @@
  * @packageDocumentation
  * @module Auth-Interfaces
  */
-export interface iNewTokenParams {
+export interface NewTokenInterface {
     password: string;
     endpoints: string[];
 }
-export interface iRevokeTokenParams {
+export interface RevokeTokenInterface {
     password: string;
     token: string;
 }
-export interface iChangePasswordParams {
+export interface ChangePasswordInterface {
     oldPassword: string;
     newPassword: string;
 }

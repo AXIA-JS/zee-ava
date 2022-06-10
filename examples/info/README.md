@@ -1,6 +1,6 @@
 # Info RPC
 
-Tests for the Axia [Info RPC](https://docs.axc.network/build/axiago-apis/info-api)
+Example scripts for the Axia [Info RPC](https://docs.axc.network/build/axiago-apis/info-api)
 
 * [getBlockchainID.ts](./getBlockchainID.ts)
 * [getNetworkID.ts](./getNetworkID.ts)
@@ -11,3 +11,4 @@ Tests for the Axia [Info RPC](https://docs.axc.network/build/axiago-apis/info-ap
 * [getTxFee.ts](./getTxFee.ts)
 * [isBootstrapped.ts](./isBootstrapped.ts)
 * [peers.ts](./peers.ts)
+* [uptime.ts](./uptime.ts)

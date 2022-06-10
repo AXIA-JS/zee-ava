@@ -2,11 +2,11 @@
  * @packageDocumentation
  * @module Common-Transactions
  */
-import { Buffer } from 'buffer/';
-import { Credential } from './credentials';
-import BN from 'bn.js';
-import { StandardKeyChain, StandardKeyPair } from './keychain';
-import { Serializable, SerializedEncoding } from '../utils/serialization';
+import { Buffer } from "buffer/";
+import { Credential } from "./credentials";
+import BN from "bn.js";
+import { StandardKeyChain, StandardKeyPair } from "./keychain";
+import { Serializable, SerializedEncoding } from "../utils/serialization";
 /**
  * Class representing a base for all transactions.
  */
@@ -15,20 +15,20 @@ export declare abstract class EVMStandardBaseTx<KPClass extends StandardKeyPair,
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
-    protected networkid: Buffer;
-    protected blockchainid: Buffer;
+    protected networkID: Buffer;
+    protected blockchainID: Buffer;
     /**
      * Returns the id of the [[StandardBaseTx]]
      */
-    abstract getTxType: () => number;
+    abstract getTxType(): number;
     /**
      * Returns the NetworkID as a number
      */
-    getNetworkID: () => number;
+    getNetworkID(): number;
     /**
      * Returns the Buffer representation of the BlockchainID
      */
-    getBlockchainID: () => Buffer;
+    getBlockchainID(): Buffer;
     /**
      * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[StandardBaseTx]].
      */
@@ -43,12 +43,12 @@ export declare abstract class EVMStandardBaseTx<KPClass extends StandardKeyPair,
     /**
      * Class representing a StandardBaseTx which is the foundation for all transactions.
      *
-     * @param networkid Optional networkid, [[DefaultNetworkID]]
-     * @param blockchainid Optional blockchainid, default Buffer.alloc(32, 16)
+     * @param networkID Optional networkID, [[DefaultNetworkID]]
+     * @param blockchainID Optional blockchainID, default Buffer.alloc(32, 16)
      * @param outs Optional array of the [[TransferableOutput]]s
      * @param ins Optional array of the [[TransferableInput]]s
      */
-    constructor(networkid?: number, blockchainid?: Buffer);
+    constructor(networkID?: number, blockchainID?: Buffer);
 }
 /**
  * Class representing an unsigned transaction.
@@ -58,28 +58,28 @@ export declare abstract class EVMStandardUnsignedTx<KPClass extends StandardKeyP
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
-    protected codecid: number;
+    protected codecID: number;
     protected transaction: SBTx;
     /**
      * Returns the CodecID as a number
      */
-    getCodecID: () => number;
+    getCodecID(): number;
     /**
-    * Returns the {@link https://github.com/feross/buffer|Buffer} representation of the CodecID
-    */
-    getCodecIDBuffer: () => Buffer;
+     * Returns the {@link https://github.com/feross/buffer|Buffer} representation of the CodecID
+     */
+    getCodecIDBuffer(): Buffer;
     /**
      * Returns the inputTotal as a BN
      */
-    getInputTotal: (assetID: Buffer) => BN;
+    getInputTotal(assetID: Buffer): BN;
     /**
      * Returns the outputTotal as a BN
      */
-    getOutputTotal: (assetID: Buffer) => BN;
+    getOutputTotal(assetID: Buffer): BN;
     /**
      * Returns the number of burned tokens as a BN
      */
-    getBurn: (assetID: Buffer) => BN;
+    getBurn(assetID: Buffer): BN;
     /**
      * Returns the Transaction
      */
@@ -94,7 +94,7 @@ export declare abstract class EVMStandardUnsignedTx<KPClass extends StandardKeyP
      * @returns A signed [[StandardTx]]
      */
     abstract sign(kc: KCClass): EVMStandardTx<KPClass, KCClass, EVMStandardUnsignedTx<KPClass, KCClass, SBTx>>;
-    constructor(transaction?: SBTx, codecid?: number);
+    constructor(transaction?: SBTx, codecID?: number);
 }
 /**
  * Class representing a signed transaction.
@@ -108,7 +108,7 @@ export declare abstract class EVMStandardTx<KPClass extends StandardKeyPair, KCC
     /**
      * Returns the [[StandardUnsignedTx]]
      */
-    getUnsignedTx: () => SUBTx;
+    getUnsignedTx(): SUBTx;
     abstract fromBuffer(bytes: Buffer, offset?: number): number;
     /**
      * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[StandardTx]].

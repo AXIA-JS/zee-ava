@@ -2,7 +2,7 @@
  * @packageDocumentation
  * @module API-EVM-Credentials
  */
-import { Credential } from '../../common/credentials';
+import { Credential } from "../../common/credentials";
 /**
  * Takes a buffer representing the credential and returns the proper [[Credential]] instance.
  *

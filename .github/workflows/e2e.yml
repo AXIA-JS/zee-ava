@@ -51,6 +51,6 @@ jobs:
           go run ./examples/local/fivenodenetwork/main.go &
       - name: AxiaJS E2E Test
         env: 
-          AVALANCHEGO_IP: localhost
-          AVALANCHEGO_PORT: 9650
+          AXIAGO_IP: localhost
+          AXIAGO_PORT: 9650
         run: sleep 60 && yarn test -i --roots e2e_tests

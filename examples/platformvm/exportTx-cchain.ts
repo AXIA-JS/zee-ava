@@ -18,7 +18,7 @@ import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,
   Defaults,
-  MILLIAVAX
+  MILLIAXC
 } from "../../src/utils"
 
 const ip: string = "localhost"
@@ -48,13 +48,13 @@ const pChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
-const fee: BN = MILLIAVAX
+const fee: BN = MILLIAXC
 const threshold: number = 2
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("Manually Export AVAX from P-Chain to C-Chain")
+const memo: Buffer = Buffer.from("Manually Export AXC from P-Chain to C-Chain")
 
 const main = async (): Promise<any> => {
-  const avaxAssetID: Buffer = await pchain.getAVAXAssetID()
+  const axcAssetID: Buffer = await pchain.getAXCAssetID()
   const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   console.log(unlocked.sub(fee).toString())
@@ -65,7 +65,7 @@ const main = async (): Promise<any> => {
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetID,
+    axcAssetID,
     secpTransferOutput
   )
   exportedOuts.push(transferableOutput)
@@ -88,7 +88,7 @@ const main = async (): Promise<any> => {
     const input: TransferableInput = new TransferableInput(
       txid,
       outputidx,
-      avaxAssetID,
+      axcAssetID,
       secpTransferInput
     )
     inputs.push(input)

@@ -2,11 +2,11 @@
  * @packageDocumentation
  * @module API-EVM-Outputs
  */
-import { Buffer } from 'buffer/';
-import BN from 'bn.js';
-import { Output, StandardAmountOutput, StandardTransferableOutput } from '../../common/output';
-import { SerializedEncoding } from '../../utils/serialization';
-import { EVMInput } from './inputs';
+import { Buffer } from "buffer/";
+import BN from "bn.js";
+import { Output, StandardAmountOutput, StandardTransferableOutput } from "../../common/output";
+import { SerializedEncoding } from "../../utils/serialization";
+import { EVMInput } from "./inputs";
 /**
  * Takes a buffer representing the output and returns the proper Output instance.
  *
@@ -38,8 +38,8 @@ export declare class SECPTransferOutput extends AmountOutput {
     protected _typeName: string;
     protected _typeID: number;
     /**
-       * Returns the outputID for this output
-       */
+     * Returns the outputID for this output
+     */
     getOutputID(): number;
     create(...args: any[]): this;
     clone(): this;
@@ -50,9 +50,9 @@ export declare class EVMOutput {
     protected amountValue: BN;
     protected assetID: Buffer;
     /**
-    * Returns a function used to sort an array of [[EVMOutput]]s
-    */
-    static comparator: () => (a: EVMOutput | EVMInput, b: EVMOutput | EVMInput) => (1 | -1 | 0);
+     * Returns a function used to sort an array of [[EVMOutput]]s
+     */
+    static comparator: () => (a: EVMOutput | EVMInput, b: EVMOutput | EVMInput) => 1 | -1 | 0;
     /**
      * Returns the address of the input as {@link https://github.com/feross/buffer|Buffer}
      */
@@ -66,7 +66,7 @@ export declare class EVMOutput {
      */
     getAmount: () => BN;
     /**
-     * Returns the assetid of the input as {@link https://github.com/feross/buffer|Buffer}
+     * Returns the assetID of the input as {@link https://github.com/feross/buffer|Buffer}
      */
     getAssetID: () => Buffer;
     /**

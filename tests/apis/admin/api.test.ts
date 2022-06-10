@@ -1,159 +1,248 @@
-import mockAxios from 'jest-mock-axios';
+import mockAxios from "jest-mock-axios"
+import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
+import { Axia } from "src"
+import {
+  GetLoggerLevelResponse,
+  LoadVMsResponse,
+  SetLoggerLevelResponse
+} from "src/apis/admin/interfaces"
+import { AdminAPI } from "../../../src/apis/admin/api"
 
-import { Axia } from 'src';
-import { AdminAPI } from 'src/apis/admin/api';
+describe("Admin", (): void => {
+  const ip: string = "127.0.0.1"
+  const port: number = 9650
+  const protocol: string = "https"
+  const axia: Axia = new Axia(
+    ip,
+    port,
+    protocol,
+    12345,
+    "What is my purpose? You pass butter. Oh my god.",
+    undefined,
+    undefined,
+    false
+  )
+  let admin: AdminAPI
 
-describe('Admin', () => {
-  const ip = '127.0.0.1';
-  const port = 9650;
-  const protocol = 'https';
+  beforeAll((): void => {
+    admin = axia.Admin()
+  })
 
-  const username = 'AvaLabs';
-  const password = 'password';
+  afterEach((): void => {
+    mockAxios.reset()
+  })
 
-  const axia:Axia = new Axia(ip, port, protocol, 12345, 'What is my purpose? You pass butter. Oh my god.', undefined, undefined, false);
-  let admin:AdminAPI;
-
-  beforeAll(() => {
-    admin = axia.Admin();
-  });
-
-  afterEach(() => {
-    mockAxios.reset();
-  });
-
-  test('alias', async () => {
-    const ep:string = '/ext/something';
-    const al:string = '/ext/anotherthing';
-    const result:Promise<boolean> = admin.alias(ep, al);
-    const payload:object = {
+  test("alias", async (): Promise<void> => {
+    const ep: string = "/ext/something"
+    const al: string = "/ext/anotherthing"
+    const result: Promise<boolean> = admin.alias(ep, al)
+    const payload: object = {
       result: {
-        success: true,
-      },
-    };
-    const responseObj = {
-      data: payload,
-    };
+        success: true
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:boolean = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: boolean = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
-    expect(response).toBe(true);
-  });
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response).toBe(true)
+  })
 
-  test('aliasChain', async () => {
-    const ch:string = 'abcd';
-    const al:string = 'myChain';
-    const result:Promise<boolean> = admin.aliasChain(ch, al);
-    const payload:object = {
+  test("aliasChain", async (): Promise<void> => {
+    const ch: string = "abcd"
+    const al: string = "myChain"
+    const result: Promise<boolean> = admin.aliasChain(ch, al)
+    const payload: object = {
       result: {
-        success: true,
-      },
-    };
-    const responseObj = {
-      data: payload,
-    };
+        success: true
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:boolean = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: boolean = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
-    expect(response).toBe(true);
-  });
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response).toBe(true)
+  })
 
-  test('getChainAliases', async () => {
-    const ch:string = 'chain';
-    const result:Promise<string[]> = admin.getChainAliases(ch);
-    const payload:object = {
+  test("badAliasChain", async (): Promise<void> => {
+    const ch: any = 2
+    const al: string = "myChasdfasdfasain"
+    const result: Promise<boolean> = admin.aliasChain(ch, al)
+    const payload: object = {
       result: {
-        aliases: [
-            "alias1",
-            "alias2"
-        ],
-      },
-    };
-    const responseObj = {
-      data: payload,
-    };
+        success: false
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:string[] = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: boolean = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response["success"]).toBe(false)
+  })
+
+  test("getChainAliases", async (): Promise<void> => {
+    const ch: string = "chain"
+    const result: Promise<string[]> = admin.getChainAliases(ch)
+    const payload: object = {
+      result: {
+        aliases: ["alias1", "alias2"]
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
+
+    mockAxios.mockResponse(responseObj)
+    const response: string[] = await result
+
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
     // @ts-ignore
-    expect(response).toBe(payload.result.aliases);
-  });
+    expect(response).toBe(payload.result.aliases)
+  })
 
-  test('lockProfile', async () => {
-    const result:Promise<boolean> = admin.lockProfile();
-    const payload:object = {
+  test("getLoggerLevel", async (): Promise<void> => {
+    const result: Promise<GetLoggerLevelResponse> = admin.getLoggerLevel()
+    const payload: object = {
       result: {
-        success: true,
-      },
-    };
-    const responseObj = {
-      data: payload,
-    };
+        loggerLevels: { C: { logLevel: "DEBUG", displayLevel: "ERROR" } }
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:boolean = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: GetLoggerLevelResponse = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
-    expect(response).toBe(true);
-  });
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    // @ts-ignore
+    expect(response).toBe(payload.result)
+  })
 
-  test('memoryProfile', async () => {
-    const result:Promise<boolean> = admin.memoryProfile();
-    const payload:object = {
+  test("loadVMs", async (): Promise<void> => {
+    const result: Promise<LoadVMsResponse> = admin.loadVMs()
+    const payload: object = {
+      result: { newVMs: {} }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
+
+    mockAxios.mockResponse(responseObj)
+    const response: LoadVMsResponse = await result
+
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    // @ts-ignore
+    expect(response).toBe(payload.result)
+  })
+
+  test("lockProfile", async () => {
+    const result: Promise<boolean> = admin.lockProfile()
+    const payload: object = {
       result: {
-        success: true,
-      },
-    };
-    const responseObj = {
-      data: payload,
-    };
+        success: true
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:boolean = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: boolean = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
-    expect(response).toBe(true);
-  });
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response).toBe(true)
+  })
 
-  test('startCPUProfiler', async () => {
-    const result:Promise<boolean> = admin.startCPUProfiler();
-    const payload:object = {
+  test("memoryProfile", async (): Promise<void> => {
+    const result: Promise<boolean> = admin.memoryProfile()
+    const payload: object = {
       result: {
-        success: true,
-      },
-    };
-    const responseObj = {
-      data: payload,
-    };
+        success: true
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:boolean = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: boolean = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
-    expect(response).toBe(true);
-  });
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response).toBe(true)
+  })
 
-  test('stopCPUProfiler', async () => {
-    const result:Promise<boolean> = admin.stopCPUProfiler();
-    const payload:object = {
+  test("setLoggerLevel", async (): Promise<void> => {
+    const loggerName: string = "C"
+    const logLevel: string = "DEBUG"
+    const displayLevel: string = "INFO"
+    const result: Promise<SetLoggerLevelResponse> = admin.setLoggerLevel(
+      loggerName,
+      logLevel,
+      displayLevel
+    )
+    const payload: object = {
       result: {
-        success: true,
-      },
-    };
-    const responseObj = {
-      data: payload,
-    };
+        success: true
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:boolean = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: SetLoggerLevelResponse = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
-    expect(response).toBe(true);
-  });
-});
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    // @ts-ignore
+    expect(response).toBe(payload.result)
+  })
+
+  test("startCPUProfiler", async (): Promise<void> => {
+    const result: Promise<boolean> = admin.startCPUProfiler()
+    const payload: object = {
+      result: {
+        success: true
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
+
+    mockAxios.mockResponse(responseObj)
+    const response: boolean = await result
+
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response).toBe(true)
+  })
+
+  test("stopCPUProfiler", async (): Promise<void> => {
+    const result: Promise<boolean> = admin.stopCPUProfiler()
+    const payload: object = {
+      result: {
+        success: true
+      }
+    }
+    const responseObj: HttpResponse = {
+      data: payload
+    }
+
+    mockAxios.mockResponse(responseObj)
+    const response: boolean = await result
+
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response).toBe(true)
+  })
+})

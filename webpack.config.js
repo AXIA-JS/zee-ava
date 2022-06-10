@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
 const gitRevisionPlugin = new GitRevisionPlugin();
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -10,51 +10,58 @@ module.exports = {
   entry: {
     axia: './dist/index.js',
   },
-  
+
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: ['.tsx', '.ts', '.js'],
+    fallback: {
+      "stream": require.resolve("stream-browserify"),
+      "crypto": require.resolve("crypto-browserify"),
+      "assert": require.resolve("assert/")
+    }
   },
   output: {
     //filename: '[name]-[git-revision-version].js',
     filename: '[name].js',
     path: path.resolve(__dirname, 'web'),
-    library: "axia",
-    libraryTarget: "umd",
-    umdNamedDefine: true
+    library: 'axia',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
   },
   plugins: [
     gitRevisionPlugin,
     new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
-      'VERSION': JSON.stringify(gitRevisionPlugin.version()),
-      'COMMITHASH': JSON.stringify(gitRevisionPlugin.commithash()),
-      'BRANCH': JSON.stringify(gitRevisionPlugin.branch())
+      VERSION: JSON.stringify(gitRevisionPlugin.version()),
+      COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash()),
+      BRANCH: JSON.stringify(gitRevisionPlugin.branch()),
     }),
     new HtmlWebpackPlugin({
-      title: "Caching",
-    })
+      title: 'Caching',
+    }),
   ],
   optimization: {
-    minimizer: [new TerserPlugin({
-      terserOptions: {
-        ecma: 2015,
-        warnings: false,
-        mangle: false,
-        keep_classnames: true,
-        keep_fnames: true
-      },
-    })],
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          ecma: 2015,
+          warnings: false,
+          mangle: false,
+          keep_classnames: true,
+          keep_fnames: true,
+        },
+      }),
+    ],
   },
 };

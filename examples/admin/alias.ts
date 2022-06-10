@@ -1,21 +1,18 @@
-import { 
-  Axia
-} from "../../dist";
-import { AdminAPI } from "../../dist/apis/admin";
-  
-const ip: string = 'localhost';
-const port: number = 9650;
-const protocol: string = 'http';
-const networkID: number = 12345;
-const axia: Axia = new Axia(ip, port, protocol, networkID);
-const admin: AdminAPI = axia.Admin();
-  
+import { Axia } from "../../src"
+import { AdminAPI } from "../../src/apis/admin"
+
+const ip: string = "localhost"
+const port: number = 9650
+const protocol: string = "http"
+const networkID: number = 1337
+const axia: Axia = new Axia(ip, port, protocol, networkID)
+const admin: AdminAPI = axia.Admin()
+
 const main = async (): Promise<any> => {
-  const endpoint: string = "/ext/bc/X";
-  const alias: string = "xchain";
-  const successful: boolean = await admin.alias(endpoint, alias);
-  console.log(successful);
+  const endpoint: string = "/ext/bc/X"
+  const alias: string = "xchain"
+  const successful: boolean = await admin.alias(endpoint, alias)
+  console.log(successful)
 }
-    
+
 main()
-  

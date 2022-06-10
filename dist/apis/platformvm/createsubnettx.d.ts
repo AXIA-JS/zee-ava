@@ -2,11 +2,11 @@
  * @packageDocumentation
  * @module API-PlatformVM-CreateSubnetTx
  */
-import { Buffer } from 'buffer/';
-import { BaseTx } from './basetx';
-import { TransferableOutput, SECPOwnerOutput } from './outputs';
-import { TransferableInput } from './inputs';
-import { SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import { BaseTx } from "./basetx";
+import { TransferableOutput, SECPOwnerOutput } from "./outputs";
+import { TransferableInput } from "./inputs";
+import { SerializedEncoding } from "../../utils/serialization";
 export declare class CreateSubnetTx extends BaseTx {
     protected _typeName: string;
     protected _typeID: number;
@@ -16,7 +16,7 @@ export declare class CreateSubnetTx extends BaseTx {
     /**
      * Returns the id of the [[CreateSubnetTx]]
      */
-    getTxType: () => number;
+    getTxType(): number;
     /**
      * Returns a {@link https://github.com/feross/buffer|Buffer} for the reward address.
      */
@@ -39,13 +39,13 @@ export declare class CreateSubnetTx extends BaseTx {
     /**
      * Class representing an unsigned Create Subnet transaction.
      *
-     * @param networkid Optional networkid, [[DefaultNetworkID]]
-     * @param blockchainid Optional blockchainid, default Buffer.alloc(32, 16)
+     * @param networkID Optional networkID, [[DefaultNetworkID]]
+     * @param blockchainID Optional blockchainID, default Buffer.alloc(32, 16)
      * @param outs Optional array of the [[TransferableOutput]]s
      * @param ins Optional array of the [[TransferableInput]]s
      * @param memo Optional {@link https://github.com/feross/buffer|Buffer} for the memo field
      * @param subnetOwners Optional [[SECPOwnerOutput]] class for specifying who owns the subnet.
-    */
-    constructor(networkid?: number, blockchainid?: Buffer, outs?: Array<TransferableOutput>, ins?: Array<TransferableInput>, memo?: Buffer, subnetOwners?: SECPOwnerOutput);
+     */
+    constructor(networkID?: number, blockchainID?: Buffer, outs?: TransferableOutput[], ins?: TransferableInput[], memo?: Buffer, subnetOwners?: SECPOwnerOutput);
 }
 //# sourceMappingURL=createsubnettx.d.ts.map

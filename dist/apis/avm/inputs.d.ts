@@ -2,9 +2,9 @@
  * @packageDocumentation
  * @module API-AVM-Inputs
  */
-import { Buffer } from 'buffer/';
-import { Input, StandardTransferableInput, StandardAmountInput } from '../../common/input';
-import { SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import { Input, StandardTransferableInput, StandardAmountInput } from "../../common/input";
+import { SerializedEncoding } from "../../utils/serialization";
 /**
  * Takes a buffer representing the output and returns the proper [[Input]] instance.
  *
@@ -12,7 +12,7 @@ import { SerializedEncoding } from '../../utils/serialization';
  *
  * @returns An instance of an [[Input]]-extended class.
  */
-export declare const SelectInputClass: (inputid: number, ...args: Array<any>) => Input;
+export declare const SelectInputClass: (inputid: number, ...args: any[]) => Input;
 export declare class TransferableInput extends StandardTransferableInput {
     protected _typeName: string;
     protected _typeID: any;
@@ -35,10 +35,15 @@ export declare class SECPTransferInput extends AmountInput {
     protected _typeName: string;
     protected _codecID: number;
     protected _typeID: number;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
-       * Returns the inputID for this input
-       */
+     * Returns the inputID for this input
+     */
     getInputID(): number;
     getCredentialID(): number;
     create(...args: any[]): this;

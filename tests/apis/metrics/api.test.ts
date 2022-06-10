@@ -1,26 +1,36 @@
-import mockAxios from 'jest-mock-axios';
-import { Axia } from 'src';
-import { MetricsAPI } from 'src/apis/metrics/api';
+import mockAxios from "jest-mock-axios"
+import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
+import { Axia } from "src"
+import { MetricsAPI } from "../../../src/apis/metrics/api"
 
-describe('Metrics', () => {
-  const ip = '127.0.0.1';
-  const port = 9650;
-  const protocol = 'https';
+describe("Metrics", (): void => {
+  const ip: string = "127.0.0.1"
+  const port: number = 9650
+  const protocol: string = "https"
 
-  const axia = new Axia(ip, port, protocol, 12345, undefined, undefined, undefined, true);
-  let metrics:MetricsAPI;
+  const axia: Axia = new Axia(
+    ip,
+    port,
+    protocol,
+    12345,
+    undefined,
+    undefined,
+    undefined,
+    true
+  )
+  let metrics: MetricsAPI
 
-  beforeAll(() => {
-    metrics = new MetricsAPI(axia);
-  });
+  beforeAll((): void => {
+    metrics = new MetricsAPI(axia)
+  })
 
-  afterEach(() => {
-    mockAxios.reset();
-  });
+  afterEach((): void => {
+    mockAxios.reset()
+  })
 
-  test('getMetrics', async () => {
-    const result:Promise<string> = metrics.getMetrics();
-    const payload:string = `
+  test("getMetrics", async (): Promise<void> => {
+    const result: Promise<string> = metrics.getMetrics()
+    const payload: string = `
               gecko_timestamp_handler_get_failed_bucket{le="100"} 0
               gecko_timestamp_handler_get_failed_bucket{le="1000"} 0
               gecko_timestamp_handler_get_failed_bucket{le="10000"} 0
@@ -30,15 +40,15 @@ describe('Metrics', () => {
               gecko_timestamp_handler_get_failed_bucket{le="1e+08"} 0
               gecko_timestamp_handler_get_failed_bucket{le="1e+09"} 0
               gecko_timestamp_handler_get_failed_bucket{le="+Inf"} 0
-        `;
-    const responseObj = {
-      data: payload,
-    };
+        `
+    const responseObj: HttpResponse = {
+      data: payload
+    }
 
-    mockAxios.mockResponse(responseObj);
-    const response:string = await result;
+    mockAxios.mockResponse(responseObj)
+    const response: string = await result
 
-    expect(mockAxios.request).toHaveBeenCalledTimes(1);
-    expect(response).toBe(payload);
-  });
-});
+    expect(mockAxios.request).toHaveBeenCalledTimes(1)
+    expect(response).toBe(payload)
+  })
+})

@@ -20,22 +20,22 @@ const jrpcapi_1 = require("../../common/jrpcapi");
  */
 class HealthAPI extends jrpcapi_1.JRPCAPI {
     /**
-       * This class should not be instantiated directly. Instead use the [[Axia.addAPI]] method.
-       *
-       * @param core A reference to the Axia class
-       * @param baseurl Defaults to the string "/ext/health" as the path to blockchain's baseurl
-       */
-    constructor(core, baseurl = '/ext/health') {
-        super(core, baseurl);
+     * This class should not be instantiated directly. Instead use the [[Axia.addAPI]] method.
+     *
+     * @param core A reference to the Axia class
+     * @param baseURL Defaults to the string "/ext/health" as the path to rpc's baseURL
+     */
+    constructor(core, baseURL = "/ext/health") {
+        super(core, baseURL);
         /**
-           *
-           * @returns Promise for an object containing the health check response
-           */
-        this.getLiveness = () => __awaiter(this, void 0, void 0, function* () {
-            return this.callMethod('health.getLiveness')
-                .then((response) => response.data.result);
+         *
+         * @returns Promise for a [[HealthResponse]]
+         */
+        this.health = () => __awaiter(this, void 0, void 0, function* () {
+            const response = yield this.callMethod("health.health");
+            return response.data.result;
         });
     }
 }
 exports.HealthAPI = HealthAPI;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBpLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2FwaXMvaGVhbHRoL2FwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7QUFLQSxrREFBK0M7QUFJL0M7Ozs7OztHQU1HO0FBQ0gsTUFBYSxTQUFVLFNBQVEsaUJBQU87SUFRcEM7Ozs7O1NBS0s7SUFDTCxZQUFZLElBQWtCLEVBQUUsVUFBaUIsYUFBYTtRQUFJLEtBQUssQ0FBQyxJQUFJLEVBQUUsT0FBTyxDQUFDLENBQUM7UUFidkY7OzthQUdLO1FBQ0wsZ0JBQVcsR0FBRyxHQUF5QixFQUFFO1lBQUMsT0FBQSxJQUFJLENBQUMsVUFBVSxDQUFDLG9CQUFvQixDQUFDO2lCQUM1RSxJQUFJLENBQUMsQ0FBQyxRQUE0QixFQUFFLEVBQUUsQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFBO1VBQUEsQ0FBQztJQVF3QixDQUFDO0NBQzFGO0FBZkQsOEJBZUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIEBwYWNrYWdlRG9jdW1lbnRhdGlvblxuICogQG1vZHVsZSBBUEktSGVhbHRoXG4gKi9cbmltcG9ydCBBdmFsYW5jaGVDb3JlIGZyb20gJy4uLy4uL2F2YWxhbmNoZSc7XG5pbXBvcnQgeyBKUlBDQVBJIH0gZnJvbSAnLi4vLi4vY29tbW9uL2pycGNhcGknO1xuaW1wb3J0IHsgUmVxdWVzdFJlc3BvbnNlRGF0YSB9IGZyb20gJy4uLy4uL2NvbW1vbi9hcGliYXNlJztcblxuXG4vKipcbiAqIENsYXNzIGZvciBpbnRlcmFjdGluZyB3aXRoIGEgbm9kZSBBUEkgdGhhdCBpcyB1c2luZyB0aGUgbm9kZSdzIEhlYWx0aEFwaS5cbiAqXG4gKiBAY2F0ZWdvcnkgUlBDQVBJc1xuICpcbiAqIEByZW1hcmtzIFRoaXMgZXh0ZW5kcyB0aGUgW1tKUlBDQVBJXV0gY2xhc3MuIFRoaXMgY2xhc3Mgc2hvdWxkIG5vdCBiZSBkaXJlY3RseSBjYWxsZWQuIEluc3RlYWQsIHVzZSB0aGUgW1tBdmFsYW5jaGUuYWRkQVBJXV0gZnVuY3Rpb24gdG8gcmVnaXN0ZXIgdGhpcyBpbnRlcmZhY2Ugd2l0aCBBdmFsYW5jaGUuXG4gKi9cbmV4cG9ydCBjbGFzcyBIZWFsdGhBUEkgZXh0ZW5kcyBKUlBDQVBJIHtcbiAgLyoqXG4gICAgICpcbiAgICAgKiBAcmV0dXJucyBQcm9taXNlIGZvciBhbiBvYmplY3QgY29udGFpbmluZyB0aGUgaGVhbHRoIGNoZWNrIHJlc3BvbnNlXG4gICAgICovXG4gIGdldExpdmVuZXNzID0gYXN5bmMgKCk6UHJvbWlzZTxvYmplY3Q+ID0+IHRoaXMuY2FsbE1ldGhvZCgnaGVhbHRoLmdldExpdmVuZXNzJylcbiAgICAudGhlbigocmVzcG9uc2U6UmVxdWVzdFJlc3BvbnNlRGF0YSkgPT4gcmVzcG9uc2UuZGF0YS5yZXN1bHQpO1xuXG4gIC8qKlxuICAgICAqIFRoaXMgY2xhc3Mgc2hvdWxkIG5vdCBiZSBpbnN0YW50aWF0ZWQgZGlyZWN0bHkuIEluc3RlYWQgdXNlIHRoZSBbW0F2YWxhbmNoZS5hZGRBUEldXSBtZXRob2QuXG4gICAgICpcbiAgICAgKiBAcGFyYW0gY29yZSBBIHJlZmVyZW5jZSB0byB0aGUgQXZhbGFuY2hlIGNsYXNzXG4gICAgICogQHBhcmFtIGJhc2V1cmwgRGVmYXVsdHMgdG8gdGhlIHN0cmluZyBcIi9leHQvaGVhbHRoXCIgYXMgdGhlIHBhdGggdG8gYmxvY2tjaGFpbidzIGJhc2V1cmxcbiAgICAgKi9cbiAgY29uc3RydWN0b3IoY29yZTpBdmFsYW5jaGVDb3JlLCBiYXNldXJsOnN0cmluZyA9ICcvZXh0L2hlYWx0aCcpIHsgc3VwZXIoY29yZSwgYmFzZXVybCk7IH1cbn1cblxuIl19
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBpLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2FwaXMvaGVhbHRoL2FwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7QUFLQSxrREFBOEM7QUFJOUM7Ozs7OztHQU1HO0FBQ0gsTUFBYSxTQUFVLFNBQVEsaUJBQU87SUFVcEM7Ozs7O09BS0c7SUFDSCxZQUFZLElBQWMsRUFBRSxVQUFrQixhQUFhO1FBQ3pELEtBQUssQ0FBQyxJQUFJLEVBQUUsT0FBTyxDQUFDLENBQUE7UUFoQnRCOzs7V0FHRztRQUNILFdBQU0sR0FBRyxHQUFrQyxFQUFFO1lBQzNDLE1BQU0sUUFBUSxHQUF3QixNQUFNLElBQUksQ0FBQyxVQUFVLENBQUMsZUFBZSxDQUFDLENBQUE7WUFDNUUsT0FBTyxRQUFRLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQTtRQUM3QixDQUFDLENBQUEsQ0FBQTtJQVVELENBQUM7Q0FDRjtBQW5CRCw4QkFtQkMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIEBwYWNrYWdlRG9jdW1lbnRhdGlvblxuICogQG1vZHVsZSBBUEktSGVhbHRoXG4gKi9cbmltcG9ydCBBeGlhQ29yZSBmcm9tIFwiLi4vLi4vYXhpYVwiXG5pbXBvcnQgeyBKUlBDQVBJIH0gZnJvbSBcIi4uLy4uL2NvbW1vbi9qcnBjYXBpXCJcbmltcG9ydCB7IFJlcXVlc3RSZXNwb25zZURhdGEgfSBmcm9tIFwiLi4vLi4vY29tbW9uL2FwaWJhc2VcIlxuaW1wb3J0IHsgSGVhbHRoUmVzcG9uc2UgfSBmcm9tIFwiLi9pbnRlcmZhY2VzXCJcblxuLyoqXG4gKiBDbGFzcyBmb3IgaW50ZXJhY3Rpbmcgd2l0aCBhIG5vZGUgQVBJIHRoYXQgaXMgdXNpbmcgdGhlIG5vZGUncyBIZWFsdGhBcGkuXG4gKlxuICogQGNhdGVnb3J5IFJQQ0FQSXNcbiAqXG4gKiBAcmVtYXJrcyBUaGlzIGV4dGVuZHMgdGhlIFtbSlJQQ0FQSV1dIGNsYXNzLiBUaGlzIGNsYXNzIHNob3VsZCBub3QgYmUgZGlyZWN0bHkgY2FsbGVkLiBJbnN0ZWFkLCB1c2UgdGhlIFtbQXhpYS5hZGRBUEldXSBmdW5jdGlvbiB0byByZWdpc3RlciB0aGlzIGludGVyZmFjZSB3aXRoIEF4aWEuXG4gKi9cbmV4cG9ydCBjbGFzcyBIZWFsdGhBUEkgZXh0ZW5kcyBKUlBDQVBJIHtcbiAgLyoqXG4gICAqXG4gICAqIEByZXR1cm5zIFByb21pc2UgZm9yIGEgW1tIZWFsdGhSZXNwb25zZV1dXG4gICAqL1xuICBoZWFsdGggPSBhc3luYyAoKTogUHJvbWlzZTxIZWFsdGhSZXNwb25zZT4gPT4ge1xuICAgIGNvbnN0IHJlc3BvbnNlOiBSZXF1ZXN0UmVzcG9uc2VEYXRhID0gYXdhaXQgdGhpcy5jYWxsTWV0aG9kKFwiaGVhbHRoLmhlYWx0aFwiKVxuICAgIHJldHVybiByZXNwb25zZS5kYXRhLnJlc3VsdFxuICB9XG5cbiAgLyoqXG4gICAqIFRoaXMgY2xhc3Mgc2hvdWxkIG5vdCBiZSBpbnN0YW50aWF0ZWQgZGlyZWN0bHkuIEluc3RlYWQgdXNlIHRoZSBbW0F4aWEuYWRkQVBJXV0gbWV0aG9kLlxuICAgKlxuICAgKiBAcGFyYW0gY29yZSBBIHJlZmVyZW5jZSB0byB0aGUgQXhpYSBjbGFzc1xuICAgKiBAcGFyYW0gYmFzZVVSTCBEZWZhdWx0cyB0byB0aGUgc3RyaW5nIFwiL2V4dC9oZWFsdGhcIiBhcyB0aGUgcGF0aCB0byBycGMncyBiYXNlVVJMXG4gICAqL1xuICBjb25zdHJ1Y3Rvcihjb3JlOiBBeGlhQ29yZSwgYmFzZVVSTDogc3RyaW5nID0gXCIvZXh0L2hlYWx0aFwiKSB7XG4gICAgc3VwZXIoY29yZSwgYmFzZVVSTClcbiAgfVxufVxuIl19

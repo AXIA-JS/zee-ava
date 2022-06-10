@@ -1,6 +1,6 @@
 import { Axia, BinTools, BN, Buffer } from "../../src"
 import {
-  AVMAPI,
+  PlatformVMAPI,
   KeyChain,
   SECPTransferOutput,
   SECPTransferInput,
@@ -12,7 +12,7 @@ import {
   UnsignedTx,
   Tx,
   BaseTx
-} from "../../src/apis/avm"
+} from "../../src/apis/platformvm"
 import { GetBalanceResponse } from "../../src/apis/avm/interfaces"
 import {
   PrivateKeyPrefix,
@@ -27,37 +27,38 @@ const protocol: string = "http"
 const networkID: number = 1337
 const xBlockchainID: string = Defaults.network[networkID].X.blockchainID
 const xBlockchainIDBuf: Buffer = bintools.cb58Decode(xBlockchainID)
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
+const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const xchain: AVMAPI = axia.XChain()
-const xKeychain: KeyChain = xchain.keyChain()
+const pchain: PlatformVMAPI = axia.PChain()
+const pKeychain: KeyChain = pchain.keyChain()
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 // X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-xKeychain.importKey(privKey)
+pKeychain.importKey(privKey)
+
 privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
 // X-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
-xKeychain.importKey(privKey)
+pKeychain.importKey(privKey)
+
 privKey = "PrivateKey-24b2s6EqkBp9bFG5S3Xxi4bjdxFqeRk56ck7QdQArVbwKkAvxz"
 // X-custom1aekly2mwnsz6lswd6u0jqvd9u6yddt5884pyuc
-xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
-const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
+pKeychain.importKey(privKey)
+const xAddresses: Buffer[] = pchain.keyChain().getAddresses()
+const xAddressStrings: string[] = pchain.keyChain().getAddressStrings()
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
-const fee: BN = xchain.getDefaultTxFee()
+const fee: BN = pchain.getDefaultTxFee()
 const threshold: number = 3
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "AVM manual create multisig BaseTx to send AVAX"
+  "AVM manual create multisig BaseTx to send AXC"
 )
 // Uncomment for codecID 00 01
 // const codecID: number = 1
 
 const main = async (): Promise<any> => {
-  const getBalanceResponse: GetBalanceResponse = await xchain.getBalance(
-    xAddressStrings[0],
-    avaxAssetID
+  const getBalanceResponse: GetBalanceResponse = await pchain.getBalance(
+    xAddressStrings[0]
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
@@ -69,12 +70,12 @@ const main = async (): Promise<any> => {
   // Uncomment for codecID 00 01
   //   secpTransferOutput.setCodecID(codecID)
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetIDBuf,
+    axcAssetIDBuf,
     secpTransferOutput
   )
   outputs.push(transferableOutput)
 
-  const avmUTXOResponse: any = await xchain.getUTXOs(xAddressStrings)
+  const avmUTXOResponse: any = await pchain.getUTXOs(xAddressStrings)
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO): void => {
@@ -91,7 +92,7 @@ const main = async (): Promise<any> => {
     const input: TransferableInput = new TransferableInput(
       txid,
       outputidx,
-      avaxAssetIDBuf,
+      axcAssetIDBuf,
       secpTransferInput
     )
     inputs.push(input)
@@ -107,8 +108,8 @@ const main = async (): Promise<any> => {
   // Uncomment for codecID 00 01
   // baseTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(baseTx)
-  const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await xchain.issueTx(tx)
+  const tx: Tx = unsignedTx.sign(pKeychain)
+  const txid: string = await pchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 main()

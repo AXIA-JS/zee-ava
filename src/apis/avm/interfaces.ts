@@ -8,7 +8,7 @@ import BN from "bn.js"
 import { CredsInterface } from "../../common"
 import { UTXOSet } from "./utxos"
 
-export interface GetAVAXAssetIDParams {
+export interface GetAXCAssetIDParams {
   name: string
   symbol: string
   assetID: Buffer

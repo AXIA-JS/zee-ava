@@ -2,12 +2,12 @@
  * @packageDocumentation
  * @module API-AVM-Operations
  */
-import { Buffer } from 'buffer/';
-import { NFTTransferOutput, SECPMintOutput, SECPTransferOutput } from './outputs';
-import { NBytes } from '../../common/nbytes';
-import { SigIdx } from '../../common/credentials';
-import { OutputOwners } from '../../common/output';
-import { Serializable, SerializedEncoding } from '../../utils/serialization';
+import { Buffer } from "buffer/";
+import { NFTTransferOutput, SECPMintOutput, SECPTransferOutput } from "./outputs";
+import { NBytes } from "../../common/nbytes";
+import { SigIdx } from "../../common/credentials";
+import { OutputOwners } from "../../common/output";
+import { Serializable, SerializedEncoding } from "../../utils/serialization";
 /**
  * Takes a buffer representing the output and returns the proper [[Operation]] instance.
  *
@@ -15,7 +15,7 @@ import { Serializable, SerializedEncoding } from '../../utils/serialization';
  *
  * @returns An instance of an [[Operation]]-extended class.
  */
-export declare const SelectOperationClass: (opid: number, ...args: Array<any>) => Operation;
+export declare const SelectOperationClass: (opid: number, ...args: any[]) => Operation;
 /**
  * A class representing an operation. All operation types must extend on this class.
  */
@@ -25,23 +25,23 @@ export declare abstract class Operation extends Serializable {
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected sigCount: Buffer;
-    protected sigIdxs: Array<SigIdx>;
-    static comparator: () => (a: Operation, b: Operation) => (1 | -1 | 0);
+    protected sigIdxs: SigIdx[];
+    static comparator: () => (a: Operation, b: Operation) => 1 | -1 | 0;
     abstract getOperationID(): number;
     /**
-       * Returns the array of [[SigIdx]] for this [[Operation]]
-       */
-    getSigIdxs: () => Array<SigIdx>;
+     * Returns the array of [[SigIdx]] for this [[Operation]]
+     */
+    getSigIdxs: () => SigIdx[];
     /**
      * Returns the credential ID.
      */
     abstract getCredentialID(): number;
     /**
-       * Creates and adds a [[SigIdx]] to the [[Operation]].
-       *
-       * @param addressIdx The index of the address to reference in the signatures
-       * @param address The address of the source of the signature
-       */
+     * Creates and adds a [[SigIdx]] to the [[Operation]].
+     *
+     * @param addressIdx The index of the address to reference in the signatures
+     * @param address The address of the source of the signature
+     */
     addSignatureIdx: (addressIdx: number, address: Buffer) => void;
     fromBuffer(bytes: Buffer, offset?: number): number;
     toBuffer(): Buffer;
@@ -59,13 +59,13 @@ export declare class TransferableOperation extends Serializable {
     protected _typeID: any;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
-    protected assetid: Buffer;
-    protected utxoIDs: Array<UTXOID>;
+    protected assetID: Buffer;
+    protected utxoIDs: UTXOID[];
     protected operation: Operation;
     /**
      * Returns a function used to sort an array of [[TransferableOperation]]s
      */
-    static comparator: () => (a: TransferableOperation, b: TransferableOperation) => (1 | -1 | 0);
+    static comparator: () => (a: TransferableOperation, b: TransferableOperation) => 1 | -1 | 0;
     /**
      * Returns the assetID as a {@link https://github.com/feross/buffer|Buffer}.
      */
@@ -73,14 +73,14 @@ export declare class TransferableOperation extends Serializable {
     /**
      * Returns an array of UTXOIDs in this operation.
      */
-    getUTXOIDs: () => Array<UTXOID>;
+    getUTXOIDs: () => UTXOID[];
     /**
      * Returns the operation
      */
     getOperation: () => Operation;
     fromBuffer(bytes: Buffer, offset?: number): number;
     toBuffer(): Buffer;
-    constructor(assetid?: Buffer, utxoids?: Array<UTXOID | string | Buffer>, operation?: Operation);
+    constructor(assetID?: Buffer, utxoids?: UTXOID[] | string[] | Buffer[], operation?: Operation);
 }
 /**
  * An [[Operation]] class which specifies a SECP256k1 Mint Op.
@@ -93,6 +93,11 @@ export declare class SECPMintOperation extends Operation {
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected mintOutput: SECPMintOutput;
     protected transferOutput: SECPTransferOutput;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
      * Returns the operation ID.
@@ -137,7 +142,12 @@ export declare class NFTMintOperation extends Operation {
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected groupID: Buffer;
     protected payload: Buffer;
-    protected outputOwners: Array<OutputOwners>;
+    protected outputOwners: OutputOwners[];
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
      * Returns the operation ID.
@@ -150,6 +160,10 @@ export declare class NFTMintOperation extends Operation {
     /**
      * Returns the payload.
      */
+    getGroupID: () => Buffer;
+    /**
+     * Returns the payload.
+     */
     getPayload: () => Buffer;
     /**
      * Returns the payload's raw {@link https://github.com/feross/buffer|Buffer} with length prepended, for use with [[PayloadBase]]'s fromBuffer
@@ -158,7 +172,7 @@ export declare class NFTMintOperation extends Operation {
     /**
      * Returns the outputOwners.
      */
-    getOutputOwners: () => Array<OutputOwners>;
+    getOutputOwners: () => OutputOwners[];
     /**
      * Popuates the instance from a {@link https://github.com/feross/buffer|Buffer} representing the [[NFTMintOperation]] and returns the updated offset.
      */
@@ -178,7 +192,7 @@ export declare class NFTMintOperation extends Operation {
      * @param payload A {@link https://github.com/feross/buffer|Buffer} of the NFT payload
      * @param outputOwners An array of outputOwners
      */
-    constructor(groupID?: number, payload?: Buffer, outputOwners?: Array<OutputOwners>);
+    constructor(groupID?: number, payload?: Buffer, outputOwners?: OutputOwners[]);
 }
 /**
  * A [[Operation]] class which specifies a NFT Transfer Op.
@@ -190,6 +204,11 @@ export declare class NFTTransferOperation extends Operation {
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     protected output: NFTTransferOutput;
+    /**
+     * Set the codecID
+     *
+     * @param codecID The codecID to set
+     */
     setCodecID(codecID: number): void;
     /**
      * Returns the operation ID.
@@ -201,27 +220,24 @@ export declare class NFTTransferOperation extends Operation {
     getCredentialID(): number;
     getOutput: () => NFTTransferOutput;
     /**
-       * Popuates the instance from a {@link https://github.com/feross/buffer|Buffer} representing the [[NFTTransferOperation]] and returns the updated offset.
-       */
+     * Popuates the instance from a {@link https://github.com/feross/buffer|Buffer} representing the [[NFTTransferOperation]] and returns the updated offset.
+     */
     fromBuffer(bytes: Buffer, offset?: number): number;
     /**
-       * Returns the buffer representing the [[NFTTransferOperation]] instance.
-       */
+     * Returns the buffer representing the [[NFTTransferOperation]] instance.
+     */
     toBuffer(): Buffer;
     /**
-       * Returns a base-58 string representing the [[NFTTransferOperation]].
-       */
+     * Returns a base-58 string representing the [[NFTTransferOperation]].
+     */
     toString(): string;
     /**
-       * An [[Operation]] class which contains an NFT on an assetID.
-       *
-       * @param output An [[NFTTransferOutput]]
-       */
+     * An [[Operation]] class which contains an NFT on an assetID.
+     *
+     * @param output An [[NFTTransferOutput]]
+     */
     constructor(output?: NFTTransferOutput);
 }
-/**
- * CKC - Make generic, use everywhere.
- */
 /**
  * Class for representing a UTXOID used in [[TransferableOp]] types
  */
@@ -231,26 +247,26 @@ export declare class UTXOID extends NBytes {
     protected bytes: Buffer;
     protected bsize: number;
     /**
-       * Returns a function used to sort an array of [[UTXOID]]s
-       */
-    static comparator: () => (a: UTXOID, b: UTXOID) => (1 | -1 | 0);
+     * Returns a function used to sort an array of [[UTXOID]]s
+     */
+    static comparator: () => (a: UTXOID, b: UTXOID) => 1 | -1 | 0;
     /**
-       * Returns a base-58 representation of the [[UTXOID]].
-       */
+     * Returns a base-58 representation of the [[UTXOID]].
+     */
     toString(): string;
     /**
-       * Takes a base-58 string containing an [[UTXOID]], parses it, populates the class, and returns the length of the UTXOID in bytes.
-       *
-       * @param bytes A base-58 string containing a raw [[UTXOID]]
-       *
-       * @returns The length of the raw [[UTXOID]]
-       */
+     * Takes a base-58 string containing an [[UTXOID]], parses it, populates the class, and returns the length of the UTXOID in bytes.
+     *
+     * @param bytes A base-58 string containing a raw [[UTXOID]]
+     *
+     * @returns The length of the raw [[UTXOID]]
+     */
     fromString(utxoid: string): number;
     clone(): this;
     create(...args: any[]): this;
     /**
-       * Class for representing a UTXOID used in [[TransferableOp]] types
-       */
+     * Class for representing a UTXOID used in [[TransferableOp]] types
+     */
     constructor();
 }
 //# sourceMappingURL=ops.d.ts.map

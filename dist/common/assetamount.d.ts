@@ -2,10 +2,10 @@
  * @packageDocumentation
  * @module Common-AssetAmount
  */
-import { Buffer } from 'buffer/';
-import BN from 'bn.js';
-import { StandardTransferableOutput } from './output';
-import { StandardTransferableInput } from './input';
+import { Buffer } from "buffer/";
+import BN from "bn.js";
+import { StandardTransferableOutput } from "./output";
+import { StandardTransferableInput } from "./input";
 /**
  * Class for managing asset amounts in the UTXOSet fee calcuation
  */
@@ -31,29 +31,29 @@ export declare class AssetAmount {
     constructor(assetID: Buffer, amount: BN, burn: BN);
 }
 export declare abstract class StandardAssetAmountDestination<TO extends StandardTransferableOutput, TI extends StandardTransferableInput> {
-    protected amounts: Array<AssetAmount>;
-    protected destinations: Array<Buffer>;
-    protected senders: Array<Buffer>;
-    protected changeAddresses: Array<Buffer>;
+    protected amounts: AssetAmount[];
+    protected destinations: Buffer[];
+    protected senders: Buffer[];
+    protected changeAddresses: Buffer[];
     protected amountkey: object;
-    protected inputs: Array<TI>;
-    protected outputs: Array<TO>;
-    protected change: Array<TO>;
+    protected inputs: TI[];
+    protected outputs: TO[];
+    protected change: TO[];
     addAssetAmount: (assetID: Buffer, amount: BN, burn: BN) => void;
     addInput: (input: TI) => void;
     addOutput: (output: TO) => void;
     addChange: (output: TO) => void;
-    getAmounts: () => Array<AssetAmount>;
-    getDestinations: () => Array<Buffer>;
-    getSenders: () => Array<Buffer>;
-    getChangeAddresses: () => Array<Buffer>;
+    getAmounts: () => AssetAmount[];
+    getDestinations: () => Buffer[];
+    getSenders: () => Buffer[];
+    getChangeAddresses: () => Buffer[];
     getAssetAmount: (assetHexStr: string) => AssetAmount;
     assetExists: (assetHexStr: string) => boolean;
-    getInputs: () => Array<TI>;
-    getOutputs: () => Array<TO>;
-    getChangeOutputs: () => Array<TO>;
-    getAllOutputs: () => Array<TO>;
+    getInputs: () => TI[];
+    getOutputs: () => TO[];
+    getChangeOutputs: () => TO[];
+    getAllOutputs: () => TO[];
     canComplete: () => boolean;
-    constructor(destinations: Array<Buffer>, senders: Array<Buffer>, changeAddresses: Array<Buffer>);
+    constructor(destinations: Buffer[], senders: Buffer[], changeAddresses: Buffer[]);
 }
 //# sourceMappingURL=assetamount.d.ts.map

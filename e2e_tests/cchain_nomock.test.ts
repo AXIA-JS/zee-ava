@@ -37,8 +37,8 @@ describe("CChain", (): void => {
       () => whaleAddr
     ],
     [
-      "exportAVAX",
-      () => cchain.exportAVAX(user, passwd, xChainAddr, new BN(10)),
+      "exportAXC",
+      () => cchain.exportAXC(user, passwd, xChainAddr, new BN(10)),
       (x) => x,
       Matcher.Get,
       () => exportTxHash

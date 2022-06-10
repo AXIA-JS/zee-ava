@@ -1,66 +1,68 @@
-import { 
-  Axia, BinTools, BN, Buffer
-} from "../../src"
-import { 
-  AVMAPI, 
-  KeyChain as AVMKeyChain 
-} from "../../src/apis/avm"
+import { Axia, BN } from "../../src"
+import { AVMAPI, KeyChain as AVMKeyChain } from "../../src/apis/avm"
 import {
-  EVMAPI, 
+  EVMAPI,
   KeyChain as EVMKeyChain,
-  UnsignedTx, 
+  UnsignedTx,
   Tx
 } from "../../src/apis/evm"
-import { Defaults } from "../../src/utils"
-          
+import {
+  PrivateKeyPrefix,
+  DefaultLocalGenesisPrivateKey,
+  Defaults,
+  costExportTx
+} from "../../src/utils"
+
 const ip: string = "localhost"
 const port: number = 9650
 const protocol: string = "http"
-const networkID: number = 12345
+const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const xchain: AVMAPI = axia.XChain()
 const cchain: EVMAPI = axia.CChain()
-const bintools: BinTools = BinTools.getInstance()
+const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 const xKeychain: AVMKeyChain = xchain.keyChain()
-const privKey: string = "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
 const cKeychain: EVMKeyChain = cchain.keyChain()
 xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const cAddressStrings: string[] = cchain.keyChain().getAddressStrings()
-const xChainBlockchainIdStr: string = Defaults.network['12345'].X.blockchainID
+const xChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
+const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
-const Web3 = require('web3');
-const path: string = '/ext/bc/C/rpc'
+const Web3 = require("web3")
+const path: string = "/ext/bc/C/rpc"
 const web3 = new Web3(`${protocol}://${ip}:${port}${path}`)
 const threshold: number = 1
-          
+
 const main = async (): Promise<any> => {
-  const axcAssetIDBuf: Buffer = await xchain.getAXCAssetID()
-  const axcAssetIDStr: string = bintools.cb58Encode(axcAssetIDBuf)
   let balance: BN = await web3.eth.getBalance(cHexAddress)
-  const fee: BN = cchain.getDefaultTxFee()
   balance = new BN(balance.toString().substring(0, 17))
+  const baseFeeResponse: string = await cchain.getBaseFee()
+  const baseFee = new BN(parseInt(baseFeeResponse, 16))
   const txcount = await web3.eth.getTransactionCount(cHexAddress)
-  const nonce: number = txcount;
+  const nonce: number = txcount
   const locktime: BN = new BN(0)
-  const axcAmount: BN = balance.sub(fee)
-      
-  const unsignedTx: UnsignedTx = await cchain.buildExportTx(
+  let axcAmount: BN = new BN(1e7)
+  let fee: BN = baseFee.div(new BN(1e9))
+  fee = fee.add(new BN(1e6))
+
+  let unsignedTx: UnsignedTx = await cchain.buildExportTx(
     axcAmount,
-    axcAssetIDStr,
+    axcAssetID,
     xChainBlockchainIdStr,
     cHexAddress,
     cAddressStrings[0],
     xAddressStrings,
     nonce,
     locktime,
-    threshold
+    threshold,
+    fee
   )
-  
+
   const tx: Tx = unsignedTx.sign(cKeychain)
   const txid: string = await cchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
-        
+
 main()

@@ -1,11 +1,6 @@
-import { 
-  Axia,
-  BinTools,
-  BN,
-  Buffer
-} from "../../src";
+import { Axia, BN, Buffer } from "../../src"
 import {
-  AVMAPI, 
+  AVMAPI,
   KeyChain,
   UTXOSet,
   UnsignedTx,
@@ -14,39 +9,56 @@ import {
   SECPMintOutput,
   SECPTransferOutput
 } from "../../src/apis/avm"
-      
+import { GetUTXOsResponse } from "../../src/apis/avm/interfaces"
+import {
+  PrivateKeyPrefix,
+  DefaultLocalGenesisPrivateKey
+} from "../../src/utils"
+
 const ip: string = "localhost"
 const port: number = 9650
 const protocol: string = "http"
-const networkID: number = 12345
+const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const xchain: AVMAPI = axia.XChain()
-const bintools: BinTools = BinTools.getInstance()
 const xKeychain: KeyChain = xchain.keyChain()
-const privKey: string = "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
+const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
 const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const outputs: SECPMintOutput[] = []
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("AVM utility method buildCreateAssetTx to create an ANT")
+const memo: Buffer = Buffer.from(
+  "AVM utility method buildCreateAssetTx to create an ANT"
+)
 const name: string = "TestToken"
 const symbol: string = "TEST"
 const denomination: number = 3
-      
+
 const main = async (): Promise<any> => {
-  const avmUTXOResponse: any = await xchain.getUTXOs(xAddressStrings)
+  const avmUTXOResponse: GetUTXOsResponse = await xchain.getUTXOs(
+    xAddressStrings
+  )
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
-  
+
   const amount: BN = new BN(507)
-  const vcapSecpOutput = new SECPTransferOutput(amount, xAddresses, locktime, threshold)
+  const vcapSecpOutput = new SECPTransferOutput(
+    amount,
+    xAddresses,
+    locktime,
+    threshold
+  )
   const initialStates: InitialStates = new InitialStates()
   initialStates.addOutput(vcapSecpOutput)
-  
-  const secpMintOutput: SECPMintOutput = new SECPMintOutput(xAddresses, locktime, threshold)
+
+  const secpMintOutput: SECPMintOutput = new SECPMintOutput(
+    xAddresses,
+    locktime,
+    threshold
+  )
   outputs.push(secpMintOutput)
-  
+
   const unsignedTx: UnsignedTx = await xchain.buildCreateAssetTx(
     utxoSet,
     xAddressStrings,
@@ -62,6 +74,5 @@ const main = async (): Promise<any> => {
   const txid: string = await xchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
-    
+
 main()
-    

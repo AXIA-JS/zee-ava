@@ -3,78 +3,67 @@
  * @module Common-APIBase
  */
 
-import { StoreAPI } from 'store2';
-import { ClientRequest } from 'http';
-import BinTools from '../utils/bintools';
-import DB from '../utils/db';
-import AxiaCore from '../axia';
-
-/**
- * @ignore
- */
-const bintools = BinTools.getInstance();
+import { StoreAPI } from "store2"
+import { ClientRequest } from "http"
+import DB from "../utils/db"
+import AxiaCore from "../axia"
 
 /**
  * Response data for HTTP requests.
  */
 export class RequestResponseData {
-  data: any;
-
-  headers:any;
-
-  status: number;
-
-  statusText: string;
-
-  request:ClientRequest | XMLHttpRequest;
+  constructor(
+    public data: any,
+    public headers: any,
+    public status: number,
+    public statusText: string,
+    public request: ClientRequest | XMLHttpRequest
+  ) {}
 }
 
 /**
  * Abstract class defining a generic endpoint that all endpoints must implement (extend).
  */
 export abstract class APIBase {
-  protected core:AxiaCore;
-
-  protected baseurl:string;
-
-  protected db:StoreAPI;
+  protected core: AxiaCore
+  protected baseURL: string
+  protected db: StoreAPI
 
   /**
-     * Sets the path of the APIs baseurl.
-     *
-     * @param baseurl Path of the APIs baseurl - ex: "/ext/bc/X"
-     */
-  setBaseURL = (baseurl:string) => {
-    if (this.db && this.baseurl !== baseurl) {
-      const backup = this.db.getAll();
-      this.db.clearAll();
-      this.baseurl = baseurl;
-      this.db = DB.getNamespace(baseurl);
-      this.db.setAll(backup, true);
+   * Sets the path of the APIs baseURL.
+   *
+   * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/X"
+   */
+  setBaseURL = (baseURL: string) => {
+    if (this.db && this.baseURL !== baseURL) {
+      const backup = this.db.getAll()
+      this.db.clearAll()
+      this.baseURL = baseURL
+      this.db = DB.getNamespace(baseURL)
+      this.db.setAll(backup, true)
     } else {
-      this.baseurl = baseurl;
-      this.db = DB.getNamespace(baseurl);
+      this.baseURL = baseURL
+      this.db = DB.getNamespace(baseURL)
     }
-  };
+  }
 
   /**
-     * Returns the baseurl's path.
-     */
-  getBaseURL = () : string => this.baseurl;
+   * Returns the baseURL's path.
+   */
+  getBaseURL = (): string => this.baseURL
 
   /**
-     * Returns the baseurl's database.
-     */
-  getDB = ():StoreAPI => this.db;
+   * Returns the baseURL's database.
+   */
+  getDB = (): StoreAPI => this.db
 
   /**
-     *
-     * @param core Reference to the Axia instance using this baseurl
-     * @param baseurl Path to the baseurl - ex: "/ext/bc/X"
-     */
-  constructor(core:AxiaCore, baseurl:string) {
-    this.core = core;
-    this.setBaseURL(baseurl);
+   *
+   * @param core Reference to the Axia instance using this baseURL
+   * @param baseURL Path to the baseURL
+   */
+  constructor(core: AxiaCore, baseURL: string) {
+    this.core = core
+    this.setBaseURL(baseURL)
   }
 }
-

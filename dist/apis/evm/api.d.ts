@@ -2,14 +2,14 @@
  * @packageDocumentation
  * @module API-EVM
  */
-import { Buffer } from 'buffer/';
-import BN from 'bn.js';
-import AxiaCore from '../../axia';
-import { JRPCAPI } from '../../common/jrpcapi';
-import { UTXOSet } from './utxos';
-import { KeyChain } from './keychain';
-import { Tx, UnsignedTx } from './tx';
-import { Index } from './../../common/interfaces';
+import { Buffer } from "buffer/";
+import BN from "bn.js";
+import AxiaCore from "../../axia";
+import { JRPCAPI } from "../../common/jrpcapi";
+import { UTXOSet } from "./utxos";
+import { KeyChain } from "./keychain";
+import { Tx, UnsignedTx } from "./tx";
+import { Index } from "./../../common/interfaces";
 /**
  * Class for interacting with a node's EVMAPI
  *
@@ -61,12 +61,12 @@ export declare class EVMAPI extends JRPCAPI {
     parseAddress: (addr: string) => Buffer;
     addressFromBuffer: (address: Buffer) => string;
     /**
-       * Retrieves an assets name and symbol.
-       *
-       * @param assetID Either a {@link https://github.com/feross/buffer|Buffer} or an b58 serialized string for the AssetID or its alias.
-       *
-       * @returns Returns a Promise<Asset> with keys "name", "symbol", "assetID" and "denomination".
-       */
+     * Retrieves an assets name and symbol.
+     *
+     * @param assetID Either a {@link https://github.com/feross/buffer|Buffer} or an b58 serialized string for the AssetID or its alias.
+     *
+     * @returns Returns a Promise Asset with keys "name", "symbol", "assetID" and "denomination".
+     */
     getAssetDescription: (assetID: Buffer | string) => Promise<any>;
     /**
      * Fetches the AXC AssetID and returns it in a Promise.
@@ -91,6 +91,33 @@ export declare class EVMAPI extends JRPCAPI {
      */
     getDefaultTxFee: () => BN;
     /**
+     * returns the amount of [assetID] for the given address in the state of the given block number.
+     * "latest", "pending", and "accepted" meta block numbers are also allowed.
+     *
+     * @param hexAddress The hex representation of the address
+     * @param blockHeight The block height
+     * @param assetID The asset ID
+     *
+     * @returns Returns a Promise object containing the balance
+     */
+    getAssetBalance: (hexAddress: string, blockHeight: string, assetID: string) => Promise<object>;
+    /**
+     * Returns the status of a provided atomic transaction ID by calling the node's `getAtomicTxStatus` method.
+     *
+     * @param txID The string representation of the transaction ID
+     *
+     * @returns Returns a Promise string containing the status retrieved from the node
+     */
+    getAtomicTxStatus: (txID: string) => Promise<string>;
+    /**
+     * Returns the transaction data of a provided transaction ID by calling the node's `getAtomicTx` method.
+     *
+     * @param txID The string representation of the transaction ID
+     *
+     * @returns Returns a Promise string containing the bytes retrieved from the node
+     */
+    getAtomicTx: (txID: string) => Promise<string>;
+    /**
      * Gets the tx fee for this chain.
      *
      * @returns The tx fee as a {@link https://github.com/indutny/bn.js/|BN}
@@ -98,30 +125,30 @@ export declare class EVMAPI extends JRPCAPI {
     getTxFee: () => BN;
     /**
      * Send ANT (Axia Native Token) assets including AXC from the C-Chain to an account on the X-Chain.
-      *
-      * After calling this method, you must call the X-Chain’s import method to complete the transfer.
-      *
-      * @param username The Keystore user that controls the X-Chain account specified in `to`
-      * @param password The password of the Keystore user
-      * @param to The account on the X-Chain to send the AXC to.
-      * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
-      * @param assetID The asset id which is being sent
-      *
-      * @returns String representing the transaction id
-      */
+     *
+     * After calling this method, you must call the X-Chain’s import method to complete the transfer.
+     *
+     * @param username The Keystore user that controls the X-Chain account specified in `to`
+     * @param password The password of the Keystore user
+     * @param to The account on the X-Chain to send the AXC to.
+     * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
+     * @param assetID The asset id which is being sent
+     *
+     * @returns String representing the transaction id
+     */
     export: (username: string, password: string, to: string, amount: BN, assetID: string) => Promise<string>;
     /**
      * Send AXC from the C-Chain to an account on the X-Chain.
-      *
-      * After calling this method, you must call the X-Chain’s importAXC method to complete the transfer.
-      *
-      * @param username The Keystore user that controls the X-Chain account specified in `to`
-      * @param password The password of the Keystore user
-      * @param to The account on the X-Chain to send the AXC to.
-      * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
-      *
-      * @returns String representing the transaction id
-      */
+     *
+     * After calling this method, you must call the X-Chain’s importAXC method to complete the transfer.
+     *
+     * @param username The Keystore user that controls the X-Chain account specified in `to`
+     * @param password The password of the Keystore user
+     * @param to The account on the X-Chain to send the AXC to.
+     * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
+     *
+     * @returns String representing the transaction id
+     */
     exportAXC: (username: string, password: string, to: string, amount: BN) => Promise<string>;
     /**
      * Retrieves the UTXOs related to the addresses provided from the node's `getUTXOs` method.
@@ -136,7 +163,7 @@ export declare class EVMAPI extends JRPCAPI {
      */
     getUTXOs: (addresses: string[] | string, sourceChain?: string, limit?: number, startIndex?: Index) => Promise<{
         numFetched: number;
-        utxos;
+        utxos: any;
         endIndex: Index;
     }>;
     /**
@@ -173,7 +200,7 @@ export declare class EVMAPI extends JRPCAPI {
      *
      * @param username The name of the user to store the private key
      * @param password The password that unlocks the user
-     * @param privateKey A string representing the private key in the vm's format
+     * @param privateKey A string representing the private key in the vm"s format
      *
      * @returns The address for the imported private key.
      */
@@ -183,7 +210,7 @@ export declare class EVMAPI extends JRPCAPI {
      *
      * @param tx A string, {@link https://github.com/feross/buffer|Buffer}, or [[Tx]] representing a transaction
      *
-     * @returns A Promise<string> representing the transaction ID of the posted transaction.
+     * @returns A Promise string representing the transaction ID of the posted transaction.
      */
     issueTx: (tx: string | Buffer | Tx) => Promise<string>;
     /**
@@ -193,9 +220,9 @@ export declare class EVMAPI extends JRPCAPI {
      * @param password The password used to decrypt the private key
      * @param address The address whose private key should be exported
      *
-     * @returns Promise with the decrypted private key as store in the database
+     * @returns Promise with the decrypted private key and private key hex as store in the database
      */
-    exportKey: (username: string, password: string, address: string) => Promise<string>;
+    exportKey: (username: string, password: string, address: string) => Promise<object>;
     /**
      * Helper function which creates an unsigned Import Tx. For more granular control, you may create your own
      * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s).
@@ -211,7 +238,7 @@ export declare class EVMAPI extends JRPCAPI {
      * @remarks
      * This helper exists because the endpoint API should be the primary point of entry for most functionality.
      */
-    buildImportTx: (utxoset: UTXOSet, toAddress: string, ownerAddresses: string[], sourceChain: Buffer | string, fromAddresses: string[]) => Promise<UnsignedTx>;
+    buildImportTx: (utxoset: UTXOSet, toAddress: string, ownerAddresses: string[], sourceChain: Buffer | string, fromAddresses: string[], fee?: BN) => Promise<UnsignedTx>;
     /**
      * Helper function which creates an unsigned Export Tx. For more granular control, you may create your own
      * [[UnsignedTx]] manually (with their corresponding [[TransferableInput]]s, [[TransferableOutput]]s).
@@ -228,13 +255,18 @@ export declare class EVMAPI extends JRPCAPI {
      *
      * @returns An unsigned transaction ([[UnsignedTx]]) which contains an [[ExportTx]].
      */
-    buildExportTx: (amount: BN, assetID: Buffer | string, destinationChain: Buffer | string, fromAddressHex: string, fromAddressBech: string, toAddresses: string[], nonce?: number, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
+    buildExportTx: (amount: BN, assetID: Buffer | string, destinationChain: Buffer | string, fromAddressHex: string, fromAddressBech: string, toAddresses: string[], nonce?: number, locktime?: BN, threshold?: number, fee?: BN) => Promise<UnsignedTx>;
     /**
      * Gets a reference to the keychain for this class.
      *
      * @returns The instance of [[KeyChain]] for this class
      */
     keyChain: () => KeyChain;
+    /**
+     *
+     * @returns new instance of [[KeyChain]]
+     */
+    newKeyChain: () => KeyChain;
     /**
      * @ignore
      */
@@ -244,9 +276,19 @@ export declare class EVMAPI extends JRPCAPI {
      * Instead use the [[Axia.addAPI]] method.
      *
      * @param core A reference to the Axia class
-     * @param baseurl Defaults to the string "/ext/bc/C/axc" as the path to blockchain's baseurl
-     * @param blockchainID The Blockchain's ID. Defaults to an empty string: ''
+     * @param baseURL Defaults to the string "/ext/bc/C/axc" as the path to blockchain's baseURL
+     * @param blockchainID The Blockchain's ID. Defaults to an empty string: ""
      */
-    constructor(core: AxiaCore, baseurl?: string, blockchainID?: string);
+    constructor(core: AxiaCore, baseURL?: string, blockchainID?: string);
+    /**
+     * @returns a Promise string containing the base fee for the next block.
+     */
+    getBaseFee: () => Promise<string>;
+    /**
+     * returns the priority fee needed to be included in a block.
+     *
+     * @returns Returns a Promise string containing the priority fee needed to be included in a block.
+     */
+    getMaxPriorityFeePerGas: () => Promise<string>;
 }
 //# sourceMappingURL=api.d.ts.map

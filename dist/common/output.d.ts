@@ -2,10 +2,10 @@
  * @packageDocumentation
  * @module Common-Output
  */
-import { Buffer } from 'buffer/';
-import BN from 'bn.js';
-import { NBytes } from './nbytes';
-import { Serializable, SerializedEncoding } from '../utils/serialization';
+import { Buffer } from "buffer/";
+import BN from "bn.js";
+import { NBytes } from "./nbytes";
+import { Serializable, SerializedEncoding } from "../utils/serialization";
 /**
  * Class for representing an address used in [[Output]] types
  */
@@ -17,18 +17,18 @@ export declare class Address extends NBytes {
     /**
      * Returns a function used to sort an array of [[Address]]es
      */
-    static comparator: () => (a: Address, b: Address) => (1 | -1 | 0);
+    static comparator: () => (a: Address, b: Address) => 1 | -1 | 0;
     /**
-       * Returns a base-58 representation of the [[Address]].
-       */
+     * Returns a base-58 representation of the [[Address]].
+     */
     toString(): string;
     /**
-       * Takes a base-58 string containing an [[Address]], parses it, populates the class, and returns the length of the Address in bytes.
-       *
-       * @param bytes A base-58 string containing a raw [[Address]]
-       *
-       * @returns The length of the raw [[Address]]
-       */
+     * Takes a base-58 string containing an [[Address]], parses it, populates the class, and returns the length of the Address in bytes.
+     *
+     * @param bytes A base-58 string containing a raw [[Address]]
+     *
+     * @returns The length of the raw [[Address]]
+     */
     fromString(addr: string): number;
     clone(): this;
     create(...args: any[]): this;
@@ -48,7 +48,7 @@ export declare class OutputOwners extends Serializable {
     protected locktime: Buffer;
     protected threshold: Buffer;
     protected numaddrs: Buffer;
-    protected addresses: Array<Address>;
+    protected addresses: Address[];
     /**
      * Returns the threshold of signers required to spend this output.
      */
@@ -60,7 +60,7 @@ export declare class OutputOwners extends Serializable {
     /**
      * Returns an array of {@link https://github.com/feross/buffer|Buffer}s for the addresses.
      */
-    getAddresses: () => Array<Buffer>;
+    getAddresses: () => Buffer[];
     /**
      * Returns the index of the address.
      *
@@ -80,11 +80,11 @@ export declare class OutputOwners extends Serializable {
     /**
      * Given an array of address {@link https://github.com/feross/buffer|Buffer}s and an optional timestamp, returns true if the addresses meet the threshold required to spend the output.
      */
-    meetsThreshold: (addresses: Array<Buffer>, asOf?: BN) => boolean;
+    meetsThreshold: (addresses: Buffer[], asOf?: BN) => boolean;
     /**
      * Given an array of addresses and an optional timestamp, select an array of address {@link https://github.com/feross/buffer|Buffer}s of qualified spenders for the output.
      */
-    getSpenders: (addresses: Array<Buffer>, asOf?: BN) => Array<Buffer>;
+    getSpenders: (addresses: Buffer[], asOf?: BN) => Buffer[];
     /**
      * Returns a base-58 string representing the [[Output]].
      */
@@ -97,7 +97,7 @@ export declare class OutputOwners extends Serializable {
      * Returns a base-58 string representing the [[Output]].
      */
     toString(): string;
-    static comparator: () => (a: Output, b: Output) => (1 | -1 | 0);
+    static comparator: () => (a: Output, b: Output) => 1 | -1 | 0;
     /**
      * An [[Output]] class which contains addresses, locktimes, and thresholds.
      *
@@ -105,7 +105,7 @@ export declare class OutputOwners extends Serializable {
      * @param locktime A {@link https://github.com/indutny/bn.js/|BN} representing the locktime
      * @param threshold A number representing the the threshold number of signers required to sign the transaction
      */
-    constructor(addresses?: Array<Buffer>, locktime?: BN, threshold?: number);
+    constructor(addresses?: Buffer[], locktime?: BN, threshold?: number);
 }
 export declare abstract class Output extends OutputOwners {
     protected _typeName: string;
@@ -133,7 +133,7 @@ export declare abstract class StandardParseableOutput extends Serializable {
     /**
      * Returns a function used to sort an array of [[ParseableOutput]]s
      */
-    static comparator: () => (a: StandardParseableOutput, b: StandardParseableOutput) => (1 | -1 | 0);
+    static comparator: () => (a: StandardParseableOutput, b: StandardParseableOutput) => 1 | -1 | 0;
     getOutput: () => Output;
     abstract fromBuffer(bytes: Buffer, offset?: number): number;
     toBuffer(): Buffer;
@@ -174,7 +174,7 @@ export declare abstract class StandardAmountOutput extends Output {
     /**
      * Returns the amount as a {@link https://github.com/indutny/bn.js/|BN}.
      */
-    getAmount: () => BN;
+    getAmount(): BN;
     /**
      * Popuates the instance from a {@link https://github.com/feross/buffer|Buffer} representing the [[StandardAmountOutput]] and returns the size of the output.
      */
@@ -191,7 +191,7 @@ export declare abstract class StandardAmountOutput extends Output {
      * @param locktime A {@link https://github.com/indutny/bn.js/|BN} representing the locktime
      * @param threshold A number representing the the threshold number of signers required to sign the transaction
      */
-    constructor(amount?: BN, addresses?: Array<Buffer>, locktime?: BN, threshold?: number);
+    constructor(amount?: BN, addresses?: Buffer[], locktime?: BN, threshold?: number);
 }
 /**
  * An [[Output]] class which specifies an NFT.

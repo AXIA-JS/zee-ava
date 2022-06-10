@@ -19,7 +19,7 @@ Follow the steps below if you do not wish to use the five node script, but inste
 This option does not require executing a docker container, but it may not lead to the same results of CI, depending on the branch, version, and configuration options of the nodes executed by avash.
 
 * Launch `avash`
-* Set env vars `AVALANCHEGO_IP`, `AVALANCHEGO_PORT` to point to one of the nodes of avash
+* Set env vars `AXIAGO_IP`, `AXIAGO_PORT` to point to one of the nodes of avash
 * From axiajs dir execute: `yarn test -i --roots e2e_tests`
 
 Example workflow
@@ -31,5 +31,5 @@ avash> runscript scripts/five_node_staking.lua
 
 # Open another terminal tab/window
 cd /path/to/axiajs
-AVALANCHEGO_IP=localhost AVALANCHEGO_PORT=9650 yarn test -i --roots e2e_tests
+AXIAGO_IP=localhost AXIAGO_PORT=9650 yarn test -i --roots e2e_tests
 ```

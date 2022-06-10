@@ -36,11 +36,11 @@ pKeychain.importKey(privKey)
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
 const pChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
+const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
-  "AVM utility method buildExportTx to export AVAX to the P-Chain from the X-Chain"
+  "AVM utility method buildExportTx to export AXC to the P-Chain from the X-Chain"
 )
 const fee: BN = xchain.getDefaultTxFee()
 const cb58: SerializedType = "cb58"
@@ -50,7 +50,7 @@ const main = async (): Promise<any> => {
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const getBalanceResponse: any = await xchain.getBalance(
     xAddressStrings[0],
-    avaxAssetID
+    axcAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const amount: BN = balance.sub(fee)

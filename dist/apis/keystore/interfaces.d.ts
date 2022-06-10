@@ -1,18 +1,9 @@
 /**
  * @packageDocumentation
- * @module Info-Interfaces
+ * @module Keystore-Interfaces
  */
-export interface iCredentials {
-    username: string;
-    password: string;
-}
-export interface iCreateUserParams extends iCredentials {
-}
-export interface iExportUserParams extends iCredentials {
-}
-export interface iImportUserParams extends iCredentials {
+import { CredsInterface } from "../../common";
+export interface ImportUserParams extends CredsInterface {
     user: string;
-}
-export interface iDeleteUserParams extends iCredentials {
 }
 //# sourceMappingURL=interfaces.d.ts.map

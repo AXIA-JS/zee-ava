@@ -2,9 +2,9 @@
  * @packageDocumentation
  * @module API-Metrics
  */
-import AxiaCore from '../../axia';
-import { RESTAPI } from '../../common/restapi';
-import { AxiosRequestConfig } from 'axios';
+import AxiaCore from "../../axia";
+import { RESTAPI } from "../../common/restapi";
+import { AxiosRequestConfig } from "axios";
 /**
  * Class for interacting with a node API that is using the node's MetricsApi.
  *
@@ -15,16 +15,16 @@ import { AxiosRequestConfig } from 'axios';
 export declare class MetricsAPI extends RESTAPI {
     protected axConf: () => AxiosRequestConfig;
     /**
-       *
-       * @returns Promise for an object containing the metrics response
-       */
+     *
+     * @returns Promise for an object containing the metrics response
+     */
     getMetrics: () => Promise<string>;
     /**
-       * This class should not be instantiated directly. Instead use the [[Axia.addAPI]] method.
-       *
-       * @param core A reference to the Axia class
-       * @param baseurl Defaults to the string "/ext/metrics" as the path to blockchain's baseurl
-       */
-    constructor(core: AxiaCore, baseurl?: string);
+     * This class should not be instantiated directly. Instead use the [[Axia.addAPI]] method.
+     *
+     * @param core A reference to the Axia class
+     * @param baseURL Defaults to the string "/ext/metrics" as the path to rpc's baseurl
+     */
+    constructor(core: AxiaCore, baseURL?: string);
 }
 //# sourceMappingURL=api.d.ts.map

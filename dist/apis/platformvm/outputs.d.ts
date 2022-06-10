@@ -2,10 +2,10 @@
  * @packageDocumentation
  * @module API-PlatformVM-Outputs
  */
-import { Buffer } from 'buffer/';
-import { Output, StandardAmountOutput, StandardTransferableOutput, StandardParseableOutput } from '../../common/output';
-import { SerializedEncoding } from '../../utils/serialization';
-import BN from 'bn.js';
+import { Buffer } from "buffer/";
+import { Output, StandardAmountOutput, StandardTransferableOutput, StandardParseableOutput } from "../../common/output";
+import { SerializedEncoding } from "../../utils/serialization";
+import BN from "bn.js";
 /**
  * Takes a buffer representing the output and returns the proper Output instance.
  *
@@ -13,7 +13,7 @@ import BN from 'bn.js';
  *
  * @returns An instance of an [[Output]]-extended class.
  */
-export declare const SelectOutputClass: (outputid: number, ...args: Array<any>) => Output;
+export declare const SelectOutputClass: (outputid: number, ...args: any[]) => Output;
 export declare class TransferableOutput extends StandardTransferableOutput {
     protected _typeName: string;
     protected _typeID: any;
@@ -90,7 +90,7 @@ export declare class StakeableLockOut extends AmountOutput {
      * @param stakeableLocktime A {@link https://github.com/indutny/bn.js/|BN} representing the stakeable locktime
      * @param transferableOutput A [[ParseableOutput]] which is embedded into this output.
      */
-    constructor(amount?: BN, addresses?: Array<Buffer>, locktime?: BN, threshold?: number, stakeableLocktime?: BN, transferableOutput?: ParseableOutput);
+    constructor(amount?: BN, addresses?: Buffer[], locktime?: BN, threshold?: number, stakeableLocktime?: BN, transferableOutput?: ParseableOutput);
 }
 /**
  * An [[Output]] class which only specifies an Output ownership and uses secp256k1 signature scheme.

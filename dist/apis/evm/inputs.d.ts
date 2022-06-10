@@ -2,12 +2,12 @@
  * @packageDocumentation
  * @module API-EVM-Inputs
  */
-import { Buffer } from 'buffer/';
-import { Input, StandardTransferableInput, StandardAmountInput } from '../../common/input';
-import { SerializedEncoding } from '../../utils/serialization';
-import { EVMOutput } from './outputs';
-import BN from 'bn.js';
-import { SigIdx } from '../../common/credentials';
+import { Buffer } from "buffer/";
+import { Input, StandardTransferableInput, StandardAmountInput } from "../../common/input";
+import { SerializedEncoding } from "../../utils/serialization";
+import { EVMOutput } from "./outputs";
+import BN from "bn.js";
+import { SigIdx } from "../../common/credentials";
 /**
  * Takes a buffer representing the output and returns the proper [[Input]] instance.
  *
@@ -20,6 +20,12 @@ export declare class TransferableInput extends StandardTransferableInput {
     protected _typeName: string;
     protected _typeID: any;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
+    /**
+     *
+     * Assesses the amount to be paid based on the number of signatures required
+     * @returns the amount to be paid
+     */
+    getCost: () => number;
     /**
      * Takes a {@link https://github.com/feross/buffer|Buffer} containing a [[TransferableInput]], parses it, populates the class, and returns the length of the [[TransferableInput]] in bytes.
      *
@@ -38,8 +44,8 @@ export declare class SECPTransferInput extends AmountInput {
     protected _typeName: string;
     protected _typeID: number;
     /**
-       * Returns the inputID for this input
-       */
+     * Returns the inputID for this input
+     */
     getInputID(): number;
     getCredentialID: () => number;
     create(...args: any[]): this;

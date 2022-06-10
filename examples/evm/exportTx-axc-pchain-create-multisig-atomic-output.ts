@@ -17,7 +17,7 @@ import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,
   Defaults,
-  ONEAVAX
+  ONEAXC
 } from "../../src/utils"
 const Web3 = require("web3")
 
@@ -53,8 +53,8 @@ const pChainId: string = Defaults.network[networkID].P.blockchainID
 const pChainIdBuf: Buffer = bintools.cb58Decode(pChainId)
 const cChainId: string = Defaults.network[networkID].C.blockchainID
 const cChainIdBuf: Buffer = bintools.cb58Decode(cChainId)
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
+const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const cHexAddress: string = "0xeA6B543A9E625C04745EcA3D7a74D74B733b8C15"
 const evmInputs: EVMInput[] = []
 const exportedOuts: TransferableOutput[] = []
@@ -72,21 +72,21 @@ const main = async (): Promise<any> => {
 
   const evmInput: EVMInput = new EVMInput(
     cHexAddress,
-    ONEAVAX,
-    avaxAssetID,
+    ONEAXC,
+    axcAssetID,
     nonce
   )
   evmInput.addSignatureIdx(0, cAddresses[0])
   evmInputs.push(evmInput)
 
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
-    ONEAVAX.sub(fee.mul(new BN(2))),
+    ONEAXC.sub(fee.mul(new BN(2))),
     pAddresses,
     locktime,
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetIDBuf,
+    axcAssetIDBuf,
     secpTransferOutput
   )
   exportedOuts.push(transferableOutput)

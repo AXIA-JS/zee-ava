@@ -3,46 +3,13 @@
  * @module API-PlatformVM-KeyChain
  */
 import { Buffer } from "buffer/";
-import { SECP256k1KeyChain, SECP256k1KeyPair } from '../../common/secp256k1';
+import { SECP256k1KeyChain, SECP256k1KeyPair } from "../../common/secp256k1";
 /**
  * Class for representing a private and public keypair on the Platform Chain.
  */
 export declare class KeyPair extends SECP256k1KeyPair {
-    protected chainid: string;
-    protected hrp: string;
-    /**
-     * Returns the address's string representation.
-     *
-     * @returns A string representation of the address
-     */
-    getAddressString: () => string;
-    /**
-       * Returns the chainID associated with this key.
-       *
-       * @returns The [[KeyPair]]'s chainID
-       */
-    getChainID: () => string;
-    /**
-     * Sets the the chainID associated with this key.
-     *
-     * @param chainid String for the chainID
-     */
-    setChainID: (chainid: string) => void;
-    /**
-     * Returns the Human-Readable-Part of the network associated with this key.
-     *
-     * @returns The [[KeyPair]]'s Human-Readable-Part of the network's Bech32 addressing scheme
-     */
-    getHRP: () => string;
-    /**
-     * Sets the the Human-Readable-Part of the network associated with this key.
-     *
-     * @param hrp String for the Human-Readable-Part of Bech32 addresses
-     */
-    setHRP: (hrp: string) => void;
     clone(): this;
     create(...args: any[]): this;
-    constructor(hrp: string, chainid: string);
 }
 /**
  * Class for representing a key chain in Axia.
@@ -51,7 +18,7 @@ export declare class KeyPair extends SECP256k1KeyPair {
  */
 export declare class KeyChain extends SECP256k1KeyChain<KeyPair> {
     hrp: string;
-    chainid: string;
+    chainID: string;
     /**
      * Makes a new key pair, returns the address.
      *
@@ -73,6 +40,6 @@ export declare class KeyChain extends SECP256k1KeyChain<KeyPair> {
     /**
      * Returns instance of KeyChain.
      */
-    constructor(hrp: string, chainid: string);
+    constructor(hrp: string, chainID: string);
 }
 //# sourceMappingURL=keychain.d.ts.map

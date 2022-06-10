@@ -2,8 +2,8 @@
  * @packageDocumentation
  * @module Common-NBytes
  */
-import { Buffer } from 'buffer/';
-import { Serializable, SerializedEncoding } from '../utils/serialization';
+import { Buffer } from "buffer/";
+import { Serializable, SerializedEncoding } from "../utils/serialization";
 /**
  * Abstract class that implements basic functionality for managing a
  * {@link https://github.com/feross/buffer|Buffer} of an exact length.
