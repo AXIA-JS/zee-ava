@@ -8,8 +8,8 @@ import BN from "bn.js"
 export const PrivateKeyPrefix: string = "PrivateKey-"
 export const NodeIDPrefix: string = "NodeID-"
 export const PrimaryAssetAlias: string = "AXC"
-export const MainnetAPI: string = "api.axc.network"
-export const FujiAPI: string = "api.axc-test.network"
+export const MainnetAPI: string = "api.avax.network"
+export const FujiAPI: string = "api.avax-test.network"
 
 export interface C {
   blockchainID: string

@@ -28,13 +28,7 @@ const xBlockchainID: string = Defaults.network[networkID].X.blockchainID
 const xBlockchainIDBuf: Buffer = bintools.cb58Decode(xBlockchainID)
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
-const axia: Axia = new Axia(
-  ip,
-  port,
-  protocol,
-  networkID,
-  xBlockchainID
-)
+const axia: Axia = new Axia(ip, port, protocol, networkID, xBlockchainID)
 const xchain: AVMAPI = axia.XChain()
 const xKeychain: KeyChain = xchain.keyChain()
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -53,9 +47,7 @@ const inputs: TransferableInput[] = []
 const fee: BN = xchain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from(
-  "AVM manual spend multisig BaseTx to send AXC"
-)
+const memo: Buffer = Buffer.from("AVM manual spend multisig BaseTx to send AXC")
 // Uncomment for codecID 00 01
 // const codecID: number = 1
 

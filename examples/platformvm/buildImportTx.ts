@@ -1,18 +1,13 @@
-import { 
-  Axia,
-  BinTools,
-  BN,
-  Buffer
-} from "../../src";
+import { Axia, BinTools, BN, Buffer } from "../../src"
 import {
-  PlatformVMAPI, 
+  PlatformVMAPI,
   KeyChain,
   UTXOSet,
   UnsignedTx,
-  Tx,
+  Tx
 } from "../../src/apis/platformvm"
 import { Defaults, UnixNow } from "../../src/utils"
-      
+
 const ip: string = "localhost"
 const port: number = 9650
 const protocol: string = "http"
@@ -21,18 +16,24 @@ const axia: Axia = new Axia(ip, port, protocol, networkID)
 const pchain: PlatformVMAPI = axia.PChain()
 const bintools: BinTools = BinTools.getInstance()
 const pKeychain: KeyChain = pchain.keyChain()
-const privKey: string = "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
+const privKey: string =
+  "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
 pKeychain.importKey(privKey)
 const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
-const xChainBlockchainID: string = Defaults.network['12345'].X.blockchainID
-const pChainBlockchainID: string = Defaults.network['12345'].P.blockchainID
+const xChainBlockchainID: string = Defaults.network["12345"].X.blockchainID
+const pChainBlockchainID: string = Defaults.network["12345"].P.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("PlatformVM utility method buildImportTx to import AXC to the P-Chain from the X-Chain")
+const memo: Buffer = Buffer.from(
+  "PlatformVM utility method buildImportTx to import AXC to the P-Chain from the X-Chain"
+)
 const asOf: BN = UnixNow()
-   
+
 const main = async (): Promise<any> => {
-  const platformVMUTXOResponse: any = await pchain.getUTXOs(pAddressStrings, pChainBlockchainID)
+  const platformVMUTXOResponse: any = await pchain.getUTXOs(
+    pAddressStrings,
+    pChainBlockchainID
+  )
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
   const unsignedTx: UnsignedTx = await pchain.buildImportTx(
     utxoSet,
@@ -50,6 +51,5 @@ const main = async (): Promise<any> => {
   const txid: string = await pchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
-    
+
 main()
-    

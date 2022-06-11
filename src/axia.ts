@@ -2,11 +2,7 @@
  * @packageDocumentation
  * @module AxiaCore
  */
-import axios, {
-  AxiosRequestConfig,
-  AxiosResponse,
-  Method
-} from "axios"
+import axios, { AxiosRequestConfig, AxiosResponse, Method } from "axios"
 import { APIBase, RequestResponseData } from "./common/apibase"
 import { ProtocolError } from "./utils/errors"
 import { fetchAdapter } from "./utils/fetchadapter"
@@ -59,9 +55,7 @@ export default class AxiaCore {
     const protocols: string[] = ["http", "https"]
     if (!protocols.includes(protocol)) {
       /* istanbul ignore next */
-      throw new ProtocolError(
-        "Error - AxiaCore.setAddress: Invalid protocol"
-      )
+      throw new ProtocolError("Error - AxiaCore.setAddress: Invalid protocol")
     }
 
     this.host = host
@@ -257,11 +251,7 @@ export default class AxiaCore {
    */
   addAPI = <GA extends APIBase>(
     apiName: string,
-    ConstructorFN: new (
-      axc: AxiaCore,
-      baseurl?: string,
-      ...args: any[]
-    ) => GA,
+    ConstructorFN: new (axc: AxiaCore, baseurl?: string, ...args: any[]) => GA,
     baseurl: string = undefined,
     ...args: any[]
   ) => {
