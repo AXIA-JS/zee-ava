@@ -50,7 +50,7 @@ describe("XChain", (): void => {
         xchain.send(
           badUser,
           passwd,
-          "AVAX",
+          "AXC",
           10,
           addrB.value,
           [addrC.value],
@@ -67,7 +67,7 @@ describe("XChain", (): void => {
         xchain.send(
           user,
           badPass,
-          "AVAX",
+          "AXC",
           10,
           addrB.value,
           [addrC.value],
@@ -80,7 +80,7 @@ describe("XChain", (): void => {
     ],
     [
       "getBalance",
-      () => xchain.getBalance(whaleAddr, "AVAX"),
+      () => xchain.getBalance(whaleAddr, "AXC"),
       (x) => x.balance,
       Matcher.toBe,
       () => "300000000000000000"
@@ -105,7 +105,7 @@ describe("XChain", (): void => {
         xchain.send(
           user,
           passwd,
-          "AVAX",
+          "AXC",
           10,
           addrB.value,
           [whaleAddr],
@@ -123,8 +123,8 @@ describe("XChain", (): void => {
           user,
           passwd,
           [
-            { assetID: "AVAX", amount: 10, to: addrB.value },
-            { assetID: "AVAX", amount: 20, to: addrC.value }
+            { assetID: "AXC", amount: 10, to: addrB.value },
+            { assetID: "AXC", amount: 20, to: addrC.value }
           ],
           [whaleAddr],
           whaleAddr,
