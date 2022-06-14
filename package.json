@@ -1,6 +1,6 @@
 {
   "name": "@zee-ava/avajs",
-  "version": "3.14.5",
+  "version": "3.14.7",
   "description": "Axia Platform JS Library",
   "main": "dist/index.js",
   "scripts": {

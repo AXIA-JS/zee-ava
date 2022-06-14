@@ -9,7 +9,7 @@ export const PrivateKeyPrefix: string = "PrivateKey-"
 export const NodeIDPrefix: string = "NodeID-"
 export const PrimaryAssetAlias: string = "AVAX"
 export const MainnetAPI: string = "api.avax.network"
-export const FujiAPI: string = "api.avax-test.network"
+export const FujiAPI: string = "18.222.205.99:9650"
 
 export interface C {
   blockchainID: string

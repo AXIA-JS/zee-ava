@@ -13,7 +13,7 @@ exports.PrivateKeyPrefix = "PrivateKey-";
 exports.NodeIDPrefix = "NodeID-";
 exports.PrimaryAssetAlias = "AVAX";
 exports.MainnetAPI = "api.avax.network";
-exports.FujiAPI = "api.avax-test.network";
+exports.FujiAPI = "18.222.205.99:9650";
 exports.NetworkIDToHRP = {
     0: "custom",
     1: "axc",
