@@ -799,13 +799,13 @@ export class AVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Axia Native Token) assets including AXC from the X-Chain to an account on the P-Chain or C-Chain.
+   * Send ANT (Axia Native Token) assets including AXC from the X-Chain to an account on the CoreChain or AppChain.
    *
-   * After calling this method, you must call the P-Chain's `import` or the C-Chain’s `import` method to complete the transfer.
+   * After calling this method, you must call the CoreChain's `import` or the AppChain’s `import` method to complete the transfer.
    *
-   * @param username The Keystore user that controls the P-Chain or C-Chain account specified in `to`
+   * @param username The Keystore user that controls the CoreChain or AppChain account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The account on the P-Chain or C-Chain to send the asset to.
+   * @param to The account on the CoreChain or AppChain to send the asset to.
    * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
    * @param assetID The asset id which is being sent
    *
@@ -833,7 +833,7 @@ export class AVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Axia Native Token) assets including AXC from an account on the P-Chain or C-Chain to an address on the X-Chain. This transaction
+   * Send ANT (Axia Native Token) assets including AXC from an account on the CoreChain or AppChain to an address on the X-Chain. This transaction
    * must be signed with the key of the account that the asset is sent from and which pays
    * the transaction fee.
    *
@@ -1250,14 +1250,14 @@ export class AVMAPI extends JRPCAPI {
       caller
     ).map((a: string): Buffer => bintools.stringToAddress(a))
 
-    let srcChain: string = undefined
+    let srappChain: string = undefined
 
     if (typeof sourceChain === "undefined") {
       throw new ChainIdError(
         "Error - AVMAPI.buildImportTx: Source ChainID is undefined."
       )
     } else if (typeof sourceChain === "string") {
-      srcChain = sourceChain
+      srappChain = sourceChain
       sourceChain = bintools.cb58Decode(sourceChain)
     } else if (!(sourceChain instanceof Buffer)) {
       throw new ChainIdError(
@@ -1267,7 +1267,7 @@ export class AVMAPI extends JRPCAPI {
     }
 
     const atomicUTXOs: UTXOSet = (
-      await this.getUTXOs(ownerAddresses, srcChain, 0, undefined)
+      await this.getUTXOs(ownerAddresses, srappChain, 0, undefined)
     ).utxos
     const axcAssetID: Buffer = await this.getAXCAssetID()
     const atomics: UTXO[] = atomicUTXOs.getAllUTXOs()
@@ -1275,7 +1275,7 @@ export class AVMAPI extends JRPCAPI {
     if (atomics.length === 0) {
       throw new NoAtomicUTXOsError(
         "Error - AVMAPI.buildImportTx: No atomic UTXOs to import from " +
-          srcChain +
+          srappChain +
           " using addresses: " +
           ownerAddresses.join(", ")
       )

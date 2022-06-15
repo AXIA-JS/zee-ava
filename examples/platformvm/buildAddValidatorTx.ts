@@ -17,15 +17,15 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
-const pKeychain: KeyChain = pchain.keyChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
+const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 pKeychain.importKey(privKey)
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildAddValidatorTx to add a validator to the primary subnet"
+  "PlatformVM utility method buildAddValidatorTx to add a validator to the primary allyChain"
 )
 const asOf: BN = UnixNow()
 const nodeID: string = "NodeID-DueWyGi3B9jtKfa9mPoecd4YSDJ1ftF69"
@@ -34,11 +34,11 @@ const endTime: BN = startTime.add(new BN(26300000))
 const delegationFee: number = 10
 
 const main = async (): Promise<any> => {
-  const stakeAmount: any = await pchain.getMinStake()
-  const platformVMUTXOResponse: any = await pchain.getUTXOs(pAddressStrings)
+  const stakeAmount: any = await corechain.getMinStake()
+  const platformVMUTXOResponse: any = await corechain.getUTXOs(pAddressStrings)
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
 
-  const unsignedTx: UnsignedTx = await pchain.buildAddValidatorTx(
+  const unsignedTx: UnsignedTx = await corechain.buildAddValidatorTx(
     utxoSet,
     pAddressStrings,
     pAddressStrings,
@@ -56,7 +56,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(pKeychain)
-  const txid: string = await pchain.issueTx(tx)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

@@ -42,9 +42,9 @@ export default class Axia extends AxiaCore {
      */
     Auth: () => AuthAPI;
     /**
-     * Returns a reference to the EVMAPI RPC pointed at the C-Chain.
+     * Returns a reference to the EVMAPI RPC pointed at the AppChain.
      */
-    CChain: () => EVMAPI;
+    AppChain: () => EVMAPI;
     /**
      * Returns a reference to the AVM RPC pointed at the X-Chain.
      */
@@ -71,9 +71,9 @@ export default class Axia extends AxiaCore {
      */
     NodeKeys: () => KeystoreAPI;
     /**
-     * Returns a reference to the PlatformVM RPC pointed at the P-Chain.
+     * Returns a reference to the PlatformVM RPC pointed at the CoreChain.
      */
-    PChain: () => PlatformVMAPI;
+    CoreChain: () => PlatformVMAPI;
     /**
      * Creates a new Axia instance. Sets the address and port of the main Axia Client.
      *
@@ -84,12 +84,12 @@ export default class Axia extends AxiaCore {
      * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
      * @param XChainID Sets the blockchainID for the AVM. Will try to auto-detect,
      * otherwise default "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
-     * @param CChainID Sets the blockchainID for the EVM. Will try to auto-detect,
+     * @param AppChainID Sets the blockchainID for the EVM. Will try to auto-detect,
      * otherwise default "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
      * @param hrp The human-readable part of the bech32 addresses
      * @param skipinit Skips creating the APIs. Defaults to false
      */
-    constructor(host?: string, port?: number, protocol?: string, networkID?: number, XChainID?: string, CChainID?: string, hrp?: string, skipinit?: boolean);
+    constructor(host?: string, port?: number, protocol?: string, networkID?: number, XChainID?: string, AppChainID?: string, hrp?: string, skipinit?: boolean);
 }
 export { Axia };
 export { AxiaCore };

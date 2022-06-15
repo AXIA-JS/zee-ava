@@ -6,12 +6,12 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 
 const main = async (): Promise<any> => {
-  const subnetID: string = "11111111111111111111111111111111LpoYY"
+  const allyChainID: string = "11111111111111111111111111111111LpoYY"
   const nodeIDs: string[] = []
-  const currentValidators: object = await pchain.getCurrentValidators(subnetID)
+  const currentValidators: object = await corechain.getCurrentValidators(allyChainID)
   console.log(currentValidators)
 }
 

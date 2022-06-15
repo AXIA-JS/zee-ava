@@ -105,7 +105,7 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
         this.refreshBlockchainID = (blockchainID = undefined) => {
             const netid = this.core.getNetworkID();
             if (typeof blockchainID === 'undefined' && typeof constants_1.Defaults.network[netid] !== "undefined") {
-                this.blockchainID = constants_1.PlatformChainID; //default to P-Chain
+                this.blockchainID = constants_1.PlatformChainID; //default to CoreChain
                 return true;
             }
             if (typeof blockchainID === 'string') {
@@ -251,7 +251,7 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
             }
         });
         /**
-         * Retrieves an assetID for a subnet's staking assset.
+         * Retrieves an assetID for a allyChain's staking assset.
          *
          * @returns Returns a Promise<string> with cb58 encoded value of the assetID.
          */
@@ -264,15 +264,15 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
          *
          * @param username The username of the Keystore user that controls the new account
          * @param password The password of the Keystore user that controls the new account
-         * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the SubnetID or its alias.
+         * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the AllyChainID or its alias.
          * @param vmID The ID of the Virtual Machine the blockchain runs. Can also be an alias of the Virtual Machine.
          * @param FXIDs The ids of the FXs the VM is running.
          * @param name A human-readable name for the new blockchain
          * @param genesis The base 58 (with checksum) representation of the genesis state of the new blockchain. Virtual Machines should have a static API method named buildGenesis that can be used to generate genesisData.
          *
-         * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Subnet’s control keys and by the account paying the transaction fee.
+         * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the AllyChain’s control keys and by the account paying the transaction fee.
          */
-        this.createBlockchain = (username, password, subnetID = undefined, vmID, fxIDs, name, genesis) => __awaiter(this, void 0, void 0, function* () {
+        this.createBlockchain = (username, password, allyChainID = undefined, vmID, fxIDs, name, genesis) => __awaiter(this, void 0, void 0, function* () {
             const params = {
                 username,
                 password,
@@ -281,11 +281,11 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
                 name,
                 genesisData: genesis,
             };
-            if (typeof subnetID === 'string') {
-                params.subnetID = subnetID;
+            if (typeof allyChainID === 'string') {
+                params.allyChainID = allyChainID;
             }
-            else if (typeof subnetID !== 'undefined') {
-                params.subnetID = bintools.cb58Encode(subnetID);
+            else if (typeof allyChainID !== 'undefined') {
+                params.allyChainID = bintools.cb58Encode(allyChainID);
             }
             return this.callMethod('platform.createBlockchain', params)
                 .then((response) => response.data.result.txID);
@@ -354,7 +354,7 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
                 .then((response) => response.data.result.addresses);
         });
         /**
-         * Send AXC from an account on the P-Chain to an address on the X-Chain. This transaction
+         * Send AXC from an account on the CoreChain to an address on the X-Chain. This transaction
          * must be signed with the key of the account that the AXC is sent from and which pays
          * the transaction fee. After issuing this transaction, you must call the X-Chain’s
          * importAXC method to complete the transfer.
@@ -551,19 +551,19 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
             const to = this._cleanAddressArray(toAddresses, 'buildBaseTx').map((a) => bintools.stringToAddress(a));
             const from = this._cleanAddressArray(fromAddresses, 'buildBaseTx').map((a) => bintools.stringToAddress(a));
             const change = this._cleanAddressArray(changeAddresses, 'buildBaseTx').map((a) => bintools.stringToAddress(a));
-            let srcChain = undefined;
+            let srappChain = undefined;
             if (typeof sourceChain === "undefined") {
                 throw new Error("Error - ContractVMAPI.buildImportTx: Source ChainID is undefined.");
             }
             else if (typeof sourceChain === "string") {
-                srcChain = sourceChain;
+                srappChain = sourceChain;
                 sourceChain = bintools.cb58Decode(sourceChain);
             }
             else if (!(sourceChain instanceof buffer_1.Buffer)) {
-                srcChain = bintools.cb58Encode(sourceChain);
+                srappChain = bintools.cb58Encode(sourceChain);
                 throw new Error("Error - ContractVMAPI.buildImportTx: Invalid destinationChain type: " + (typeof sourceChain));
             }
-            const atomicUTXOs = yield (yield this.getUTXOs(ownerAddresses, srcChain, 0, undefined)).utxos;
+            const atomicUTXOs = yield (yield this.getUTXOs(ownerAddresses, srappChain, 0, undefined)).utxos;
             const axcAssetID = yield this.getAXCAssetID();
             if (memo instanceof payload_1.PayloadBase) {
                 memo = memo.getPayload();

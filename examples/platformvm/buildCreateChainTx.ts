@@ -21,9 +21,9 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 // Keychain with 4 keys-A, B, C, and D
-const pKeychain: KeyChain = pchain.keyChain()
+const pKeychain: KeyChain = corechain.keyChain()
 // Keypair A
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 // P-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
@@ -43,22 +43,22 @@ pKeychain.importKey(privKey)
 privKey = "PrivateKey-2uWuEQbY5t7NPzgqzDrXSgGPhi3uyKj2FeAvPUHYo6CmENHJfn"
 // P-custom1t3qjau2pf3ys83yallqt4y5xc3l6ya5f7wr6aq
 pKeychain.importKey(privKey)
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
-const pAddresses: Buffer[] = pchain.keyChain().getAddresses()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
+const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const asOf: BN = UnixNow()
 
 const main = async (): Promise<any> => {
-  const platformVMUTXOResponse: any = await pchain.getUTXOs(pAddressStrings)
+  const platformVMUTXOResponse: any = await corechain.getUTXOs(pAddressStrings)
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
 
   const genesisDataStr: string =
     "11111DdZMhYXUZiFV9FNpfpTSQroysjHyMuT5zapYkPYrmap7t7S3sDNNwFzngxR9x1XmoRj5JK1XomX8RHvXYY5h3qYeEsMQRF8Ypia7p1CFHDo6KGSjMdiQkrmpvL8AvoezSxVWKXt2ubmBCnSkpPjnQbBSF7gNg4sPu1PXdh1eKgthaSFREqqG5FKMrWNiS6U87kxCmbKjkmBvwnAd6TpNx75YEiS9YKMyHaBZjkRDNf6Nj1"
-  const subnetIDStr: string =
+  const allyChainIDStr: string =
     "2cXEvbdDaP6q6srB6x1T14raebpJaM4s2t9NE5kiXzLqLXQDWm"
   const memo: Buffer = Buffer.from(
     "Utility function to create a CreateChainTx transaction"
   )
-  const subnetID: Buffer = bintools.cb58Decode(subnetIDStr)
+  const allyChainID: Buffer = bintools.cb58Decode(allyChainIDStr)
   const chainName: string = "EPIC AVM"
   const vmID: string = "avm"
   const fxIDs: string[] = ["secp256k1fx", "nftfx", "propertyfx"]
@@ -69,27 +69,27 @@ const main = async (): Promise<any> => {
 
   // For VMs other than AVM. For AVM comment this line
   // const genesisData = genesisDataStr
-  const subnetAuthCredentials: [number, Buffer][] = [
+  const allyChainAuthCredentials: [number, Buffer][] = [
     [0, pAddresses[3]],
     [1, pAddresses[1]]
   ]
 
-  const unsignedTx: UnsignedTx = await pchain.buildCreateChainTx(
+  const unsignedTx: UnsignedTx = await corechain.buildCreateChainTx(
     utxoSet,
     pAddressStrings,
     pAddressStrings,
-    subnetID,
+    allyChainID,
     chainName,
     vmID,
     fxIDs,
     genesisData,
     memo,
     asOf,
-    subnetAuthCredentials
+    allyChainAuthCredentials
   )
 
   const tx: Tx = unsignedTx.sign(pKeychain)
-  const txid: string = await pchain.issueTx(tx)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

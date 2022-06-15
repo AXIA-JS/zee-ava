@@ -12,7 +12,7 @@ const main = async (): Promise<any> => {
   let balance: BN = await web3.eth.getBalance(cHexAddress)
   balance = new BN(balance.toString())
   const Balance = Web3.utils.fromWei(balance)
-  console.log({ CChainAddress: cHexAddress, Balance: Balance + " AXC" })
+  console.log({ AppChainAddress: cHexAddress, Balance: Balance + " AXC" })
 }
 
 main()

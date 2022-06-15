@@ -6,10 +6,10 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 
 const main = async (): Promise<any> => {
-  const blockchains: object[] = await pchain.getBlockchains()
+  const blockchains: object[] = await corechain.getBlockchains()
   console.log(blockchains)
 }
 

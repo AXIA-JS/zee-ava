@@ -83,9 +83,9 @@ export class PayloadTypes {
       case 6:
         return new XCHAINADDRPayload(...args)
       case 7:
-        return new PCHAINADDRPayload(...args)
+        return new CORECHAINADDRPayload(...args)
       case 8:
-        return new CCHAINADDRPayload(...args)
+        return new APPCHAINADDRPayload(...args)
       case 9:
         return new TXIDPayload(...args)
       case 10:
@@ -95,7 +95,7 @@ export class PayloadTypes {
       case 12:
         return new NFTIDPayload(...args)
       case 13:
-        return new SUBNETIDPayload(...args)
+        return new ALLYCHAINIDPayload(...args)
       case 14:
         return new CHAINIDPayload(...args)
       case 15:
@@ -163,13 +163,13 @@ export class PayloadTypes {
       "B64STR",
       "BIGNUM",
       "XCHAINADDR",
-      "PCHAINADDR",
-      "CCHAINADDR",
+      "CORECHAINADDR",
+      "APPCHAINADDR",
       "TXID",
       "ASSETID",
       "UTXOID",
       "NFTID",
-      "SUBNETID",
+      "ALLYCHAINID",
       "CHAINID",
       "NODEID",
       "SECPSIG",
@@ -472,17 +472,17 @@ export class XCHAINADDRPayload extends ChainAddressPayload {
 }
 
 /**
- * Class for payloads representing P-Chain addresses.
+ * Class for payloads representing CoreChain addresses.
  */
-export class PCHAINADDRPayload extends ChainAddressPayload {
+export class CORECHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 7
   protected chainid = "P"
 }
 
 /**
- * Class for payloads representing C-Chain addresses.
+ * Class for payloads representing AppChain addresses.
  */
-export class CCHAINADDRPayload extends ChainAddressPayload {
+export class APPCHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 8
   protected chainid = "C"
 }
@@ -539,9 +539,9 @@ export class NFTIDPayload extends UTXOIDPayload {
 }
 
 /**
- * Class for payloads representing SubnetIDs.
+ * Class for payloads representing AllyChainIDs.
  */
-export class SUBNETIDPayload extends cb58EncodedPayload {
+export class ALLYCHAINIDPayload extends cb58EncodedPayload {
   protected typeid = 13
 }
 

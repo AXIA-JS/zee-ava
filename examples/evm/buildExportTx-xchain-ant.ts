@@ -19,14 +19,14 @@ const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const xchain: AVMAPI = axia.XChain()
-const cchain: EVMAPI = axia.CChain()
+const appchain: EVMAPI = axia.AppChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 const xKeychain: AVMKeyChain = xchain.keyChain()
-const cKeychain: EVMKeyChain = cchain.keyChain()
+const cKeychain: EVMKeyChain = appchain.keyChain()
 xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
-const cAddressStrings: string[] = cchain.keyChain().getAddressStrings()
+const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
 const xChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const Web3 = require("web3")
@@ -38,7 +38,7 @@ const assetID: string = "8eqonZUiJZ655TLQdhFDCqY8oV4SPDMPzqfoVMVsSNE4wSMWu"
 const main = async (): Promise<any> => {
   let balance: BN = await web3.eth.getBalance(cHexAddress)
   balance = new BN(balance.toString().substring(0, 17))
-  const baseFeeResponse: string = await cchain.getBaseFee()
+  const baseFeeResponse: string = await appchain.getBaseFee()
   const baseFee = new BN(parseInt(baseFeeResponse, 16))
   const txcount = await web3.eth.getTransactionCount(cHexAddress)
   const nonce: number = txcount
@@ -46,7 +46,7 @@ const main = async (): Promise<any> => {
   let amount: BN = new BN(100)
   let fee: BN = baseFee
 
-  let unsignedTx: UnsignedTx = await cchain.buildExportTx(
+  let unsignedTx: UnsignedTx = await appchain.buildExportTx(
     amount,
     assetID,
     xChainBlockchainIdStr,
@@ -60,7 +60,7 @@ const main = async (): Promise<any> => {
   )
   const exportCost: number = costExportTx(unsignedTx)
   fee = baseFee.mul(new BN(exportCost))
-  unsignedTx = await cchain.buildExportTx(
+  unsignedTx = await appchain.buildExportTx(
     amount,
     assetID,
     xChainBlockchainIdStr,
@@ -74,7 +74,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(cKeychain)
-  const txid: string = await cchain.issueTx(tx)
+  const txid: string = await appchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

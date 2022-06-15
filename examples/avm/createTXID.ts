@@ -27,20 +27,20 @@ const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const xchain: AVMAPI = axia.XChain()
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 const xKeychain: AVMKeyChain = xchain.keyChain()
-const pKeychain: PlatformVMKeyChain = pchain.keyChain()
+const pKeychain: PlatformVMKeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
 pKeychain.importKey(privKey)
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
-const pChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
+const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
-  "AVM utility method buildExportTx to export AXC to the P-Chain from the X-Chain"
+  "AVM utility method buildExportTx to export AXC to the CoreChain from the X-Chain"
 )
 const fee: BN = xchain.getDefaultTxFee()
 const cb58: SerializedType = "cb58"
@@ -58,7 +58,7 @@ const main = async (): Promise<any> => {
   const unsignedTx: UnsignedTx = await xchain.buildExportTx(
     utxoSet,
     amount,
-    pChainBlockchainID,
+    coreChainBlockchainID,
     pAddressStrings,
     xAddressStrings,
     xAddressStrings,

@@ -124,7 +124,7 @@ export declare class EVMAPI extends JRPCAPI {
      */
     getTxFee: () => BN;
     /**
-     * Send ANT (Axia Native Token) assets including AXC from the C-Chain to an account on the X-Chain.
+     * Send ANT (Axia Native Token) assets including AXC from the AppChain to an account on the X-Chain.
      *
      * After calling this method, you must call the X-Chain’s import method to complete the transfer.
      *
@@ -138,7 +138,7 @@ export declare class EVMAPI extends JRPCAPI {
      */
     export: (username: string, password: string, to: string, amount: BN, assetID: string) => Promise<string>;
     /**
-     * Send AXC from the C-Chain to an account on the X-Chain.
+     * Send AXC from the AppChain to an account on the X-Chain.
      *
      * After calling this method, you must call the X-Chain’s importAXC method to complete the transfer.
      *
@@ -167,7 +167,7 @@ export declare class EVMAPI extends JRPCAPI {
         endIndex: Index;
     }>;
     /**
-     * Send ANT (Axia Native Token) assets including AXC from an account on the X-Chain to an address on the C-Chain. This transaction
+     * Send ANT (Axia Native Token) assets including AXC from an account on the X-Chain to an address on the AppChain. This transaction
      * must be signed with the key of the account that the asset is sent from and which pays
      * the transaction fee.
      *
@@ -181,7 +181,7 @@ export declare class EVMAPI extends JRPCAPI {
      */
     import: (username: string, password: string, to: string, sourceChain: string) => Promise<string>;
     /**
-     * Send AXC from an account on the X-Chain to an address on the C-Chain. This transaction
+     * Send AXC from an account on the X-Chain to an address on the AppChain. This transaction
      * must be signed with the key of the account that the AXC is sent from and which pays
      * the transaction fee.
      *

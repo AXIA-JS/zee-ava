@@ -34,9 +34,9 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 // Keychain with 4 keys-A, B, C, and D
-const pKeychain: KeyChain = pchain.keyChain()
+const pKeychain: KeyChain = corechain.keyChain()
 // Keypair A
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 // P-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
@@ -56,9 +56,9 @@ pKeychain.importKey(privKey)
 privKey = "PrivateKey-2uWuEQbY5t7NPzgqzDrXSgGPhi3uyKj2FeAvPUHYo6CmENHJfn"
 // P-custom1t3qjau2pf3ys83yallqt4y5xc3l6ya5f7wr6aq
 pKeychain.importKey(privKey)
-const pAddresses: Buffer[] = pchain.keyChain().getAddresses()
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
-const pChainBlockchainID: string = "11111111111111111111111111111111LpoYY"
+const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
+const coreChainBlockchainID: string = "11111111111111111111111111111111LpoYY"
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const fee: BN = ONEAXC
@@ -85,7 +85,7 @@ const main = async (): Promise<any> => {
   const initialStates: InitialStates = new InitialStates()
   initialStates.addOutput(vcapSecpOutput)
   const memo: Buffer = Buffer.from(
-    "Manually create a CreateChainTx which creates a 1-of-2 AXC utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 SubnetAuth"
+    "Manually create a CreateChainTx which creates a 1-of-2 AXC utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 AllyChainAuth"
   )
   const genesisAsset = new GenesisAsset(
     assetAlias,
@@ -98,8 +98,8 @@ const main = async (): Promise<any> => {
   const genesisAssets: GenesisAsset[] = []
   genesisAssets.push(genesisAsset)
   const genesisData: GenesisData = new GenesisData(genesisAssets, networkID)
-  const axcAssetID: Buffer = await pchain.getAXCAssetID()
-  const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
+  const axcAssetID: Buffer = await corechain.getAXCAssetID()
+  const getBalanceResponse: any = await corechain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     unlocked.sub(fee),
@@ -113,7 +113,7 @@ const main = async (): Promise<any> => {
   )
   outputs.push(transferableOutput)
 
-  const platformVMUTXOResponse: any = await pchain.getUTXOs(
+  const platformVMUTXOResponse: any = await corechain.getUTXOs(
     axcUTXOKeychainStrings
   )
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
@@ -139,21 +139,21 @@ const main = async (): Promise<any> => {
     }
   })
 
-  const subnetID: Buffer = bintools.cb58Decode(
+  const allyChainID: Buffer = bintools.cb58Decode(
     "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
   )
   const chainName: string = "EPIC AVM"
   const vmID: string = "avm"
   const fxIDs: string[] = ["secp256k1fx", "nftfx", "propertyfx"]
   fxIDs.sort()
-  const blockchainID: Buffer = bintools.cb58Decode(pChainBlockchainID)
+  const blockchainID: Buffer = bintools.cb58Decode(coreChainBlockchainID)
   const createChainTx: CreateChainTx = new CreateChainTx(
     networkID,
     blockchainID,
     outputs,
     inputs,
     memo,
-    subnetID,
+    allyChainID,
     chainName,
     vmID,
     fxIDs,
@@ -164,7 +164,7 @@ const main = async (): Promise<any> => {
   createChainTx.addSignatureIdx(1, pAddresses[1])
   const unsignedTx: UnsignedTx = new UnsignedTx(createChainTx)
   const tx: Tx = unsignedTx.sign(pKeychain)
-  const txid: string = await pchain.issueTx(tx)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

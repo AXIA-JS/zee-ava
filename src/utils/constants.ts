@@ -40,7 +40,7 @@ export interface P {
   alias: string
   vm: string
   creationTxFee: BN | number
-  createSubnetTx: BN | number
+  createAllyChainTx: BN | number
   createChainTx: BN | number
   minConsumption: number
   maxConsumption: number
@@ -123,11 +123,11 @@ export const DefaultNetworkID: number = 1
 export const PlatformChainID: string = "11111111111111111111111111111111LpoYY"
 export const PrimaryNetworkID: string = "11111111111111111111111111111111LpoYY"
 export const XChainAlias: string = "X"
-export const CChainAlias: string = "C"
-export const PChainAlias: string = "P"
+export const AppChainAlias: string = "C"
+export const CoreChainAlias: string = "P"
 export const XChainVMName: string = "avm"
-export const CChainVMName: string = "evm"
-export const PChainVMName: string = "platformvm"
+export const AppChainVMName: string = "evm"
+export const CoreChainVMName: string = "platformvm"
 
 // DO NOT use the following private keys and/or mnemonic on Fuji or Testnet
 // This address/account is for testing on the local avash network
@@ -172,11 +172,11 @@ const n0X: X = {
 
 const n0P: P = {
   blockchainID: PlatformChainID,
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: CoreChainAlias,
+  vm: CoreChainVMName,
   fee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
+  createAllyChainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -191,8 +191,8 @@ const n0P: P = {
 
 const n0C: C = {
   blockchainID: "2fFZQibQXcd6LTE4rpBPBAkLVXFE91Kit8pgxaBG1mRnh5xqbb",
-  alias: CChainAlias,
-  vm: CChainVMName,
+  alias: AppChainAlias,
+  vm: AppChainVMName,
   fee: MILLIAXC,
   gasPrice: GWEI.mul(new BN(470)), //equivalent to gas price
   chainID: 43111
@@ -214,10 +214,10 @@ const n1X: X = {
 const n1P: P = {
   blockchainID: PlatformChainID,
   axcAssetID: axcAssetID,
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: CoreChainAlias,
+  vm: CoreChainVMName,
   txFee: MILLIAXC,
-  createSubnetTx: ONEAXC,
+  createAllyChainTx: ONEAXC,
   createChainTx: ONEAXC,
   creationTxFee: CENTIAXC,
   minConsumption: 0.1,
@@ -233,8 +233,8 @@ const n1P: P = {
 
 const n1C: C = {
   blockchainID: "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5",
-  alias: CChainAlias,
-  vm: CChainVMName,
+  alias: AppChainAlias,
+  vm: AppChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee
@@ -261,11 +261,11 @@ const n2X: X = {
 
 const n2P: P = {
   blockchainID: PlatformChainID,
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: CoreChainAlias,
+  vm: CoreChainVMName,
   txFee: 0,
   creationTxFee: 0,
-  createSubnetTx: ONEAXC,
+  createAllyChainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -280,8 +280,8 @@ const n2P: P = {
 
 const n2C: C = {
   blockchainID: "2mUYSXfLrDtigwbzj1LxKVsHwELghc5sisoXrzJwLqAAQHF4i",
-  alias: CChainAlias,
-  vm: CChainVMName,
+  alias: AppChainAlias,
+  vm: AppChainVMName,
   gasPrice: 0
 }
 // End Cascade
@@ -298,11 +298,11 @@ const n3X: X = {
 
 const n3P: P = {
   blockchainID: "",
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: CoreChainAlias,
+  vm: CoreChainVMName,
   txFee: 0,
   creationTxFee: 0,
-  createSubnetTx: ONEAXC,
+  createAllyChainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -317,8 +317,8 @@ const n3P: P = {
 
 const n3C: C = {
   blockchainID: "zJytnh96Pc8rM337bBrtMvJDbEdDNjcXG3WkTNCiLp18ergm9",
-  alias: CChainAlias,
-  vm: CChainVMName,
+  alias: AppChainAlias,
+  vm: AppChainVMName,
   gasPrice: 0
 }
 // End Denali
@@ -335,11 +335,11 @@ const n4X: X = {
 
 const n4P: P = {
   blockchainID: PlatformChainID,
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: CoreChainAlias,
+  vm: CoreChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
+  createAllyChainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -354,8 +354,8 @@ const n4P: P = {
 
 const n4C: C = {
   blockchainID: "saMG5YgNsFxzjz4NMkEkt3bAH6hVxWdZkWcEnGB3Z15pcAmsK",
-  alias: CChainAlias,
-  vm: CChainVMName,
+  alias: AppChainAlias,
+  vm: AppChainVMName,
   gasPrice: GWEI.mul(new BN(470)),
   chainID: 43110
 }
@@ -376,11 +376,11 @@ const n5X: X = {
 const n5P: P = {
   blockchainID: PlatformChainID,
   axcAssetID: axcAssetID,
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: CoreChainAlias,
+  vm: CoreChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
+  createAllyChainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -395,8 +395,8 @@ const n5P: P = {
 
 const n5C: C = {
   blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
-  alias: CChainAlias,
-  vm: CChainVMName,
+  alias: AppChainAlias,
+  vm: AppChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee

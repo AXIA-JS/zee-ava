@@ -199,7 +199,7 @@ export abstract class WeightedValidatorTx extends ValidatorTx {
   }
 
   /**
-   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddSubnetValidatorTx]].
+   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddAllyChainValidatorTx]].
    */
   toBuffer(): Buffer {
     const superbuff: Buffer = super.toBuffer()
@@ -207,7 +207,7 @@ export abstract class WeightedValidatorTx extends ValidatorTx {
   }
 
   /**
-   * Class representing an unsigned AddSubnetValidatorTx transaction.
+   * Class representing an unsigned AddAllyChainValidatorTx transaction.
    *
    * @param networkID Optional. Networkid, [[DefaultNetworkID]]
    * @param blockchainID Optional. Blockchainid, default Buffer.alloc(32, 16)
@@ -238,11 +238,11 @@ export abstract class WeightedValidatorTx extends ValidatorTx {
 }
 
 /**
- * Class representing an unsigned AddDelegatorTx transaction.
+ * Class representing an unsigned AddNominatorTx transaction.
  */
-export class AddDelegatorTx extends WeightedValidatorTx {
-  protected _typeName = "AddDelegatorTx"
-  protected _typeID = PlatformVMConstants.ADDDELEGATORTX
+export class AddNominatorTx extends WeightedValidatorTx {
+  protected _typeName = "AddNominatorTx"
+  protected _typeID = PlatformVMConstants.ADDNOMINATORTX
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     let fields: object = super.serialize(encoding)
@@ -267,7 +267,7 @@ export class AddDelegatorTx extends WeightedValidatorTx {
   protected rewardOwners: ParseableOutput = undefined
 
   /**
-   * Returns the id of the [[AddDelegatorTx]]
+   * Returns the id of the [[AddNominatorTx]]
    */
   getTxType(): number {
     return this._typeID
@@ -335,7 +335,7 @@ export class AddDelegatorTx extends WeightedValidatorTx {
   }
 
   /**
-   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddDelegatorTx]].
+   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddNominatorTx]].
    */
   toBuffer(): Buffer {
     const superbuff: Buffer = super.toBuffer()
@@ -357,17 +357,17 @@ export class AddDelegatorTx extends WeightedValidatorTx {
   }
 
   clone(): this {
-    let newbase: AddDelegatorTx = new AddDelegatorTx()
+    let newbase: AddNominatorTx = new AddNominatorTx()
     newbase.fromBuffer(this.toBuffer())
     return newbase as this
   }
 
   create(...args: any[]): this {
-    return new AddDelegatorTx(...args) as this
+    return new AddNominatorTx(...args) as this
   }
 
   /**
-   * Class representing an unsigned AddDelegatorTx transaction.
+   * Class representing an unsigned AddNominatorTx transaction.
    *
    * @param networkID Optional. Networkid, [[DefaultNetworkID]]
    * @param blockchainID Optional. Blockchainid, default Buffer.alloc(32, 16)
@@ -412,7 +412,7 @@ export class AddDelegatorTx extends WeightedValidatorTx {
   }
 }
 
-export class AddValidatorTx extends AddDelegatorTx {
+export class AddValidatorTx extends AddNominatorTx {
   protected _typeName = "AddValidatorTx"
   protected _typeID = PlatformVMConstants.ADDVALIDATORTX
 
@@ -439,11 +439,11 @@ export class AddValidatorTx extends AddDelegatorTx {
       4
     )
     this.delegationFee =
-      dbuff.readUInt32BE(0) / AddValidatorTx.delegatorMultiplier
+      dbuff.readUInt32BE(0) / AddValidatorTx.nominatorMultiplier
   }
 
   protected delegationFee: number = 0
-  private static delegatorMultiplier: number = 10000
+  private static nominatorMultiplier: number = 10000
 
   /**
    * Returns the id of the [[AddValidatorTx]]
@@ -466,7 +466,7 @@ export class AddValidatorTx extends AddDelegatorTx {
     let dBuff: Buffer = Buffer.alloc(4)
     let buffnum: number =
       parseFloat(this.delegationFee.toFixed(4)) *
-      AddValidatorTx.delegatorMultiplier
+      AddValidatorTx.nominatorMultiplier
     dBuff.writeUInt32BE(buffnum, 0)
     return dBuff
   }
@@ -476,7 +476,7 @@ export class AddValidatorTx extends AddDelegatorTx {
     let dbuff: Buffer = bintools.copyFrom(bytes, offset, offset + 4)
     offset += 4
     this.delegationFee =
-      dbuff.readUInt32BE(0) / AddValidatorTx.delegatorMultiplier
+      dbuff.readUInt32BE(0) / AddValidatorTx.nominatorMultiplier
     return offset
   }
 
@@ -503,7 +503,7 @@ export class AddValidatorTx extends AddDelegatorTx {
    * @param delegationFee Optional. The percent fee this validator charges when others delegate stake to them.
    * Up to 4 decimal places allowed; additional decimal places are ignored. Must be between 0 and 100, inclusive.
    * For example, if delegationFeeRate is 1.2345 and someone delegates to this validator, then when the delegation
-   * period is over, 1.2345% of the reward goes to the validator and the rest goes to the delegator.
+   * period is over, 1.2345% of the reward goes to the validator and the rest goes to the nominator.
    */
   constructor(
     networkID: number = DefaultNetworkID,

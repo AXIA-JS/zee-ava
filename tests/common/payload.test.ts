@@ -9,8 +9,8 @@ import {
   B64STRPayload,
   BIGNUMPayload,
   XCHAINADDRPayload,
-  PCHAINADDRPayload,
-  CCHAINADDRPayload,
+  CORECHAINADDRPayload,
+  APPCHAINADDRPayload,
   TXIDPayload,
   JSONPayload,
   EMAILPayload
@@ -85,13 +85,13 @@ describe("Payload", (): void => {
     ["B64STR", utf8b64, utf8b58],
     ["BIGNUM", bnhex, bintools.bufferToB58(Buffer.from(bnhex, "hex"))],
     ["XCHAINADDR", "X-" + bech, cb58buf],
-    ["PCHAINADDR", "P-" + bech, cb58buf],
-    ["CCHAINADDR", "C-" + bech, cb58buf],
+    ["CORECHAINADDR", "P-" + bech, cb58buf],
+    ["APPCHAINADDR", "C-" + bech, cb58buf],
     ["TXID", cb58str, cb58buf],
     ["ASSETID", cb58str, cb58buf],
     ["UTXOID", cb58str, cb58buf],
     ["NFTID", cb58str, cb58buf],
-    ["SUBNETID", cb58str, cb58buf],
+    ["ALLYCHAINID", cb58str, cb58buf],
     ["CHAINID", cb58str, cb58buf],
     ["NODEID", cb58str, cb58buf],
     ["SECPSIG", cb58str, cb58str],
@@ -180,16 +180,16 @@ describe("Payload", (): void => {
     expect(pl.returnChainID()).toBe("X")
   })
 
-  test("PCHAINADDRPayload special cases", (): void => {
+  test("CORECHAINADDRPayload special cases", (): void => {
     const addr: string = `P-${bech}`
-    const pl: PCHAINADDRPayload = new PCHAINADDRPayload(addr, hrp)
+    const pl: CORECHAINADDRPayload = new CORECHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
     expect(pl.returnChainID()).toBe("P")
   })
 
-  test("CCHAINADDRPayload special cases", (): void => {
+  test("APPCHAINADDRPayload special cases", (): void => {
     const addr: string = `C-${bech}`
-    const pl: CCHAINADDRPayload = new CCHAINADDRPayload(addr, hrp)
+    const pl: APPCHAINADDRPayload = new APPCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
     expect(pl.returnChainID()).toBe("C")
   })

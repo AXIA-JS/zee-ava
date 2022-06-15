@@ -121,7 +121,7 @@ export class EVMAPI extends JRPCAPI {
       typeof blockchainID === "undefined" &&
       typeof Defaults.network[`${netID}`] !== "undefined"
     ) {
-      this.blockchainID = Defaults.network[`${netID}`].C.blockchainID //default to C-Chain
+      this.blockchainID = Defaults.network[`${netID}`].C.blockchainID //default to AppChain
       return true
     }
 
@@ -320,7 +320,7 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Axia Native Token) assets including AXC from the C-Chain to an account on the X-Chain.
+   * Send ANT (Axia Native Token) assets including AXC from the AppChain to an account on the X-Chain.
    *
    * After calling this method, you must call the X-Chain’s import method to complete the transfer.
    *
@@ -356,7 +356,7 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from the C-Chain to an account on the X-Chain.
+   * Send AXC from the AppChain to an account on the X-Chain.
    *
    * After calling this method, you must call the X-Chain’s importAXC method to complete the transfer.
    *
@@ -437,7 +437,7 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Axia Native Token) assets including AXC from an account on the X-Chain to an address on the C-Chain. This transaction
+   * Send ANT (Axia Native Token) assets including AXC from an account on the X-Chain to an address on the AppChain. This transaction
    * must be signed with the key of the account that the asset is sent from and which pays
    * the transaction fee.
    *
@@ -471,7 +471,7 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from an account on the X-Chain to an address on the C-Chain. This transaction
+   * Send AXC from an account on the X-Chain to an address on the AppChain. This transaction
    * must be signed with the key of the account that the AXC is sent from and which pays
    * the transaction fee.
    *
@@ -621,12 +621,12 @@ export class EVMAPI extends JRPCAPI {
       fromAddresses,
       "buildImportTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
-    let srcChain: string = undefined
+    let srappChain: string = undefined
 
     if (typeof sourceChain === "string") {
       // if there is a sourceChain passed in and it's a string then save the string value and cast the original
       // variable from a string to a Buffer
-      srcChain = sourceChain
+      srappChain = sourceChain
       sourceChain = bintools.cb58Decode(sourceChain)
     } else if (
       typeof sourceChain === "undefined" ||
@@ -639,7 +639,7 @@ export class EVMAPI extends JRPCAPI {
     }
     const utxoResponse: UTXOResponse = await this.getUTXOs(
       ownerAddresses,
-      srcChain,
+      srappChain,
       0,
       undefined
     )

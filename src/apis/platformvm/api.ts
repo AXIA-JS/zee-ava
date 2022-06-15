@@ -9,8 +9,8 @@ import { JRPCAPI } from "../../common/jrpcapi"
 import { RequestResponseData } from "../../common/apibase"
 import {
   ErrorResponseObject,
-  SubnetOwnerError,
-  SubnetThresholdError
+  AllyChainOwnerError,
+  AllyChainThresholdError
 } from "../../utils/errors"
 import BinTools from "../../utils/bintools"
 import { KeyChain } from "./keychain"
@@ -37,7 +37,7 @@ import {
   GetRewardUTXOsResponse,
   GetStakeParams,
   GetStakeResponse,
-  Subnet,
+  AllyChain,
   GetValidatorsAtParams,
   GetValidatorsAtResponse,
   CreateAddressParams,
@@ -47,8 +47,8 @@ import {
   ListAddressesParams,
   SampleValidatorsParams,
   AddValidatorParams,
-  AddDelegatorParams,
-  CreateSubnetParams,
+  AddNominatorParams,
+  CreateAllyChainParams,
   ExportAXCParams,
   ExportKeyParams,
   ImportKeyParams,
@@ -62,7 +62,7 @@ import {
 } from "./interfaces"
 import { TransferableOutput } from "./outputs"
 import { Serialization, SerializedType } from "../../utils"
-import { SubnetAuth } from "."
+import { AllyChainAuth } from "."
 import { GenesisData } from "../avm"
 
 /**
@@ -96,7 +96,7 @@ export class PlatformVMAPI extends JRPCAPI {
 
   protected minValidatorStake: BN = undefined
 
-  protected minDelegatorStake: BN = undefined
+  protected minNominatorStake: BN = undefined
 
   /**
    * Gets the alias for the blockchainID if it exists, otherwise returns `undefined`.
@@ -153,7 +153,7 @@ export class PlatformVMAPI extends JRPCAPI {
       typeof blockchainID === "undefined" &&
       typeof Defaults.network[`${netid}`] !== "undefined"
     ) {
-      this.blockchainID = PlatformChainID //default to P-Chain
+      this.blockchainID = PlatformChainID //default to CoreChain
       return true
     }
     if (typeof blockchainID === "string") {
@@ -245,14 +245,14 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Gets the CreateSubnetTx fee.
+   * Gets the CreateAllyChainTx fee.
    *
-   * @returns The CreateSubnetTx fee as a {@link https://github.com/indutny/bn.js/|BN}
+   * @returns The CreateAllyChainTx fee as a {@link https://github.com/indutny/bn.js/|BN}
    */
-  getCreateSubnetTxFee = (): BN => {
+  getCreateAllyChainTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
       ? new BN(
-          Defaults.network[this.core.getNetworkID()]["P"]["createSubnetTx"]
+          Defaults.network[this.core.getNetworkID()]["P"]["createAllyChainTx"]
         )
       : new BN(0)
   }
@@ -357,7 +357,7 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Retrieves an assetID for a subnet"s staking assset.
+   * Retrieves an assetID for a allyChain"s staking assset.
    *
    * @returns Returns a Promise string with cb58 encoded value of the assetID.
    */
@@ -373,18 +373,18 @@ export class PlatformVMAPI extends JRPCAPI {
    *
    * @param username The username of the Keystore user that controls the new account
    * @param password The password of the Keystore user that controls the new account
-   * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the SubnetID or its alias.
+   * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the AllyChainID or its alias.
    * @param vmID The ID of the Virtual Machine the blockchain runs. Can also be an alias of the Virtual Machine.
    * @param fxIDs The ids of the FXs the VM is running.
    * @param name A human-readable name for the new blockchain
    * @param genesis The base 58 (with checksum) representation of the genesis state of the new blockchain. Virtual Machines should have a static API method named buildGenesis that can be used to generate genesisData.
    *
-   * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Subnet’s control keys and by the account paying the transaction fee.
+   * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the AllyChain’s control keys and by the account paying the transaction fee.
    */
   createBlockchain = async (
     username: string,
     password: string,
-    subnetID: Buffer | string = undefined,
+    allyChainID: Buffer | string = undefined,
     vmID: string,
     fxIDs: number[],
     name: string,
@@ -398,10 +398,10 @@ export class PlatformVMAPI extends JRPCAPI {
       name,
       genesisData: genesis
     }
-    if (typeof subnetID === "string") {
-      params.subnetID = subnetID
-    } else if (typeof subnetID !== "undefined") {
-      params.subnetID = bintools.cb58Encode(subnetID)
+    if (typeof allyChainID === "string") {
+      params.allyChainID = allyChainID
+    } else if (typeof allyChainID !== "undefined") {
+      params.allyChainID = bintools.cb58Encode(allyChainID)
     }
     const response: RequestResponseData = await this.callMethod(
       "platform.createBlockchain",
@@ -429,22 +429,22 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Get the validators and their weights of a subnet or the Primary Network at a given P-Chain height.
+   * Get the validators and their weights of a allyChain or the Primary Network at a given CoreChain height.
    *
-   * @param height The P-Chain height to get the validator set at.
-   * @param subnetID Optional. A cb58 serialized string for the SubnetID or its alias.
+   * @param height The CoreChain height to get the validator set at.
+   * @param allyChainID Optional. A cb58 serialized string for the AllyChainID or its alias.
    *
    * @returns Promise GetValidatorsAtResponse
    */
   getValidatorsAt = async (
     height: number,
-    subnetID?: string
+    allyChainID?: string
   ): Promise<GetValidatorsAtResponse> => {
     const params: GetValidatorsAtParams = {
       height
     }
-    if (typeof subnetID !== "undefined") {
-      params.subnetID = subnetID
+    if (typeof allyChainID !== "undefined") {
+      params.allyChainID = allyChainID
     }
     const response: RequestResponseData = await this.callMethod(
       "platform.getValidatorsAt",
@@ -526,22 +526,22 @@ export class PlatformVMAPI extends JRPCAPI {
   /**
    * Lists the set of current validators.
    *
-   * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
-   * cb58 serialized string for the SubnetID or its alias.
+   * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
+   * cb58 serialized string for the AllyChainID or its alias.
    * @param nodeIDs Optional. An array of strings
    *
    * @returns Promise for an array of validators that are currently staking, see: {@link https://docs.axc.network/v1.0/en/api/platform/#platformgetcurrentvalidators|platform.getCurrentValidators documentation}.
    *
    */
   getCurrentValidators = async (
-    subnetID: Buffer | string = undefined,
+    allyChainID: Buffer | string = undefined,
     nodeIDs: string[] = undefined
   ): Promise<object> => {
     const params: GetCurrentValidatorsParams = {}
-    if (typeof subnetID === "string") {
-      params.subnetID = subnetID
-    } else if (typeof subnetID !== "undefined") {
-      params.subnetID = bintools.cb58Encode(subnetID)
+    if (typeof allyChainID === "string") {
+      params.allyChainID = allyChainID
+    } else if (typeof allyChainID !== "undefined") {
+      params.allyChainID = bintools.cb58Encode(allyChainID)
     }
     if (typeof nodeIDs != "undefined" && nodeIDs.length > 0) {
       params.nodeIDs = nodeIDs
@@ -556,22 +556,22 @@ export class PlatformVMAPI extends JRPCAPI {
   /**
    * Lists the set of pending validators.
    *
-   * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer}
-   * or a cb58 serialized string for the SubnetID or its alias.
+   * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer}
+   * or a cb58 serialized string for the AllyChainID or its alias.
    * @param nodeIDs Optional. An array of strings
    *
    * @returns Promise for an array of validators that are pending staking, see: {@link https://docs.axc.network/v1.0/en/api/platform/#platformgetpendingvalidators|platform.getPendingValidators documentation}.
    *
    */
   getPendingValidators = async (
-    subnetID: Buffer | string = undefined,
+    allyChainID: Buffer | string = undefined,
     nodeIDs: string[] = undefined
   ): Promise<object> => {
     const params: GetPendingValidatorsParams = {}
-    if (typeof subnetID === "string") {
-      params.subnetID = subnetID
-    } else if (typeof subnetID !== "undefined") {
-      params.subnetID = bintools.cb58Encode(subnetID)
+    if (typeof allyChainID === "string") {
+      params.allyChainID = allyChainID
+    } else if (typeof allyChainID !== "undefined") {
+      params.allyChainID = bintools.cb58Encode(allyChainID)
     }
     if (typeof nodeIDs != "undefined" && nodeIDs.length > 0) {
       params.nodeIDs = nodeIDs
@@ -588,22 +588,22 @@ export class PlatformVMAPI extends JRPCAPI {
    * Samples `Size` validators from the current validator set.
    *
    * @param sampleSize Of the total universe of validators, select this many at random
-   * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
-   * cb58 serialized string for the SubnetID or its alias.
+   * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
+   * cb58 serialized string for the AllyChainID or its alias.
    *
    * @returns Promise for an array of validator"s stakingIDs.
    */
   sampleValidators = async (
     sampleSize: number,
-    subnetID: Buffer | string = undefined
+    allyChainID: Buffer | string = undefined
   ): Promise<string[]> => {
     const params: SampleValidatorsParams = {
       size: sampleSize.toString()
     }
-    if (typeof subnetID === "string") {
-      params.subnetID = subnetID
-    } else if (typeof subnetID !== "undefined") {
-      params.subnetID = bintools.cb58Encode(subnetID)
+    if (typeof allyChainID === "string") {
+      params.allyChainID = allyChainID
+    } else if (typeof allyChainID !== "undefined") {
+      params.allyChainID = bintools.cb58Encode(allyChainID)
     }
     const response: RequestResponseData = await this.callMethod(
       "platform.sampleValidators",
@@ -627,7 +627,7 @@ export class PlatformVMAPI extends JRPCAPI {
    * charges when others delegate stake to them. Up to 4 decimal places allowed additional decimal places are ignored.
    * Must be between 0 and 100, inclusive. For example, if delegationFeeRate is 1.2345 and someone delegates to this
    * validator, then when the delegation period is over, 1.2345% of the reward goes to the validator and the rest goes
-   * to the delegator.
+   * to the nominator.
    *
    * @returns Promise for a base58 string of the unsigned transaction.
    */
@@ -661,23 +661,23 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Add a validator to a Subnet other than the Primary Network. The validator must validate the Primary Network for the entire duration they validate this Subnet.
+   * Add a validator to a AllyChain other than the Primary Network. The validator must validate the Primary Network for the entire duration they validate this AllyChain.
    *
    * @param username The username of the Keystore user
    * @param password The password of the Keystore user
    * @param nodeID The node ID of the validator
-   * @param subnetID Either a {@link https://github.com/feross/buffer|Buffer} or a cb58 serialized string for the SubnetID or its alias.
+   * @param allyChainID Either a {@link https://github.com/feross/buffer|Buffer} or a cb58 serialized string for the AllyChainID or its alias.
    * @param startTime Javascript Date object for the start time to validate
    * @param endTime Javascript Date object for the end time to validate
    * @param weight The validator’s weight used for sampling
    *
-   * @returns Promise for the unsigned transaction. It must be signed (using sign) by the proper number of the Subnet’s control keys and by the key of the account paying the transaction fee before it can be issued.
+   * @returns Promise for the unsigned transaction. It must be signed (using sign) by the proper number of the AllyChain’s control keys and by the key of the account paying the transaction fee before it can be issued.
    */
-  addSubnetValidator = async (
+  addAllyChainValidator = async (
     username: string,
     password: string,
     nodeID: string,
-    subnetID: Buffer | string,
+    allyChainID: Buffer | string,
     startTime: Date,
     endTime: Date,
     weight: number
@@ -690,34 +690,34 @@ export class PlatformVMAPI extends JRPCAPI {
       endTime: endTime.getTime() / 1000,
       weight
     }
-    if (typeof subnetID === "string") {
-      params.subnetID = subnetID
-    } else if (typeof subnetID !== "undefined") {
-      params.subnetID = bintools.cb58Encode(subnetID)
+    if (typeof allyChainID === "string") {
+      params.allyChainID = allyChainID
+    } else if (typeof allyChainID !== "undefined") {
+      params.allyChainID = bintools.cb58Encode(allyChainID)
     }
     const response: RequestResponseData = await this.callMethod(
-      "platform.addSubnetValidator",
+      "platform.addAllyChainValidator",
       params
     )
     return response.data.result.txID
   }
 
   /**
-   * Add a delegator to the Primary Network.
+   * Add a nominator to the Primary Network.
    *
    * @param username The username of the Keystore user
    * @param password The password of the Keystore user
    * @param nodeID The node ID of the delegatee
-   * @param startTime Javascript Date object for when the delegator starts delegating
-   * @param endTime Javascript Date object for when the delegator starts delegating
-   * @param stakeAmount The amount of nAXC the delegator is staking as
+   * @param startTime Javascript Date object for when the nominator starts delegating
+   * @param endTime Javascript Date object for when the nominator starts delegating
+   * @param stakeAmount The amount of nAXC the nominator is staking as
    * a {@link https://github.com/indutny/bn.js/|BN}
    * @param rewardAddress The address of the account the staked AXC and validation reward
    * (if applicable) are sent to at endTime
    *
    * @returns Promise for an array of validator"s stakingIDs.
    */
-  addDelegator = async (
+  addNominator = async (
     username: string,
     password: string,
     nodeID: string,
@@ -726,7 +726,7 @@ export class PlatformVMAPI extends JRPCAPI {
     stakeAmount: BN,
     rewardAddress: string
   ): Promise<string> => {
-    const params: AddDelegatorParams = {
+    const params: AddNominatorParams = {
       username,
       password,
       nodeID,
@@ -736,38 +736,38 @@ export class PlatformVMAPI extends JRPCAPI {
       rewardAddress
     }
     const response: RequestResponseData = await this.callMethod(
-      "platform.addDelegator",
+      "platform.addNominator",
       params
     )
     return response.data.result.txID
   }
 
   /**
-   * Create an unsigned transaction to create a new Subnet. The unsigned transaction must be
-   * signed with the key of the account paying the transaction fee. The Subnet’s ID is the ID of the transaction that creates it (ie the response from issueTx when issuing the signed transaction).
+   * Create an unsigned transaction to create a new AllyChain. The unsigned transaction must be
+   * signed with the key of the account paying the transaction fee. The AllyChain’s ID is the ID of the transaction that creates it (ie the response from issueTx when issuing the signed transaction).
    *
    * @param username The username of the Keystore user
    * @param password The password of the Keystore user
    * @param controlKeys Array of platform addresses as strings
-   * @param threshold To add a validator to this Subnet, a transaction must have threshold
+   * @param threshold To add a validator to this AllyChain, a transaction must have threshold
    * signatures, where each signature is from a key whose address is an element of `controlKeys`
    *
    * @returns Promise for a string with the unsigned transaction encoded as base58.
    */
-  createSubnet = async (
+  createAllyChain = async (
     username: string,
     password: string,
     controlKeys: string[],
     threshold: number
   ): Promise<string | ErrorResponseObject> => {
-    const params: CreateSubnetParams = {
+    const params: CreateAllyChainParams = {
       username,
       password,
       controlKeys,
       threshold
     }
     const response: RequestResponseData = await this.callMethod(
-      "platform.createSubnet",
+      "platform.createAllyChain",
       params
     )
     return response.data.result.txID
@@ -776,12 +776,12 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Get the Subnet that validates a given blockchain.
+   * Get the AllyChain that validates a given blockchain.
    *
    * @param blockchainID Either a {@link https://github.com/feross/buffer|Buffer} or a cb58
    * encoded string for the blockchainID or its alias.
    *
-   * @returns Promise for a string of the subnetID that validates the blockchain.
+   * @returns Promise for a string of the allyChainID that validates the blockchain.
    */
   validatedBy = async (blockchainID: string): Promise<string> => {
     const params: any = {
@@ -791,25 +791,25 @@ export class PlatformVMAPI extends JRPCAPI {
       "platform.validatedBy",
       params
     )
-    return response.data.result.subnetID
+    return response.data.result.allyChainID
   }
 
   /**
-   * Get the IDs of the blockchains a Subnet validates.
+   * Get the IDs of the blockchains a AllyChain validates.
    *
-   * @param subnetID Either a {@link https://github.com/feross/buffer|Buffer} or an AXC
-   * serialized string for the SubnetID or its alias.
+   * @param allyChainID Either a {@link https://github.com/feross/buffer|Buffer} or an AXC
+   * serialized string for the AllyChainID or its alias.
    *
-   * @returns Promise for an array of blockchainIDs the subnet validates.
+   * @returns Promise for an array of blockchainIDs the allyChain validates.
    */
-  validates = async (subnetID: Buffer | string): Promise<string[]> => {
+  validates = async (allyChainID: Buffer | string): Promise<string[]> => {
     const params: any = {
-      subnetID
+      allyChainID
     }
-    if (typeof subnetID === "string") {
-      params.subnetID = subnetID
-    } else if (typeof subnetID !== "undefined") {
-      params.subnetID = bintools.cb58Encode(subnetID)
+    if (typeof allyChainID === "string") {
+      params.allyChainID = allyChainID
+    } else if (typeof allyChainID !== "undefined") {
+      params.allyChainID = bintools.cb58Encode(allyChainID)
     }
     const response: RequestResponseData = await this.callMethod(
       "platform.validates",
@@ -819,9 +819,9 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Get all the blockchains that exist (excluding the P-Chain).
+   * Get all the blockchains that exist (excluding the CoreChain).
    *
-   * @returns Promise for an array of objects containing fields "id", "subnetID", and "vmID".
+   * @returns Promise for an array of objects containing fields "id", "allyChainID", and "vmID".
    */
   getBlockchains = async (): Promise<Blockchain[]> => {
     const response: RequestResponseData = await this.callMethod(
@@ -831,7 +831,7 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from an account on the P-Chain to an address on the X-Chain. This transaction
+   * Send AXC from an account on the CoreChain to an address on the X-Chain. This transaction
    * must be signed with the key of the account that the AXC is sent from and which pays the
    * transaction fee. After issuing this transaction, you must call the X-Chain’s importAXC
    * method to complete the transfer.
@@ -866,7 +866,7 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from an account on the P-Chain to an address on the X-Chain. This transaction
+   * Send AXC from an account on the CoreChain to an address on the X-Chain. This transaction
    * must be signed with the key of the account that the AXC is sent from and which pays
    * the transaction fee. After issuing this transaction, you must call the X-Chain’s
    * importAXC method to complete the transfer.
@@ -965,21 +965,21 @@ export class PlatformVMAPI extends JRPCAPI {
     if (
       refresh !== true &&
       typeof this.minValidatorStake !== "undefined" &&
-      typeof this.minDelegatorStake !== "undefined"
+      typeof this.minNominatorStake !== "undefined"
     ) {
       return {
         minValidatorStake: this.minValidatorStake,
-        minDelegatorStake: this.minDelegatorStake
+        minNominatorStake: this.minNominatorStake
       }
     }
     const response: RequestResponseData = await this.callMethod(
       "platform.getMinStake"
     )
     this.minValidatorStake = new BN(response.data.result.minValidatorStake, 10)
-    this.minDelegatorStake = new BN(response.data.result.minDelegatorStake, 10)
+    this.minNominatorStake = new BN(response.data.result.minNominatorStake, 10)
     return {
       minValidatorStake: this.minValidatorStake,
-      minDelegatorStake: this.minDelegatorStake
+      minNominatorStake: this.minNominatorStake
     }
   }
 
@@ -998,14 +998,14 @@ export class PlatformVMAPI extends JRPCAPI {
   /**
    * getMaxStakeAmount() returns the maximum amount of nAXC staking to the named node during the time period.
    *
-   * @param subnetID A Buffer or cb58 string representing subnet
+   * @param allyChainID A Buffer or cb58 string representing allyChain
    * @param nodeID A string representing ID of the node whose stake amount is required during the given duration
    * @param startTime A big number denoting start time of the duration during which stake amount of the node is required.
    * @param endTime A big number denoting end time of the duration during which stake amount of the node is required.
    * @returns A big number representing total staked by validators on the primary network
    */
   getMaxStakeAmount = async (
-    subnetID: string | Buffer,
+    allyChainID: string | Buffer,
     nodeID: string,
     startTime: BN,
     endTime: BN
@@ -1023,10 +1023,10 @@ export class PlatformVMAPI extends JRPCAPI {
       endTime
     }
 
-    if (typeof subnetID === "string") {
-      params.subnetID = subnetID
-    } else if (typeof subnetID !== "undefined") {
-      params.subnetID = bintools.cb58Encode(subnetID)
+    if (typeof allyChainID === "string") {
+      params.allyChainID = allyChainID
+    } else if (typeof allyChainID !== "undefined") {
+      params.allyChainID = bintools.cb58Encode(allyChainID)
     }
 
     const response: RequestResponseData = await this.callMethod(
@@ -1039,17 +1039,17 @@ export class PlatformVMAPI extends JRPCAPI {
   /**
    * Sets the minimum stake cached in this class.
    * @param minValidatorStake A {@link https://github.com/indutny/bn.js/|BN} to set the minimum stake amount cached in this class.
-   * @param minDelegatorStake A {@link https://github.com/indutny/bn.js/|BN} to set the minimum delegation amount cached in this class.
+   * @param minNominatorStake A {@link https://github.com/indutny/bn.js/|BN} to set the minimum delegation amount cached in this class.
    */
   setMinStake = (
     minValidatorStake: BN = undefined,
-    minDelegatorStake: BN = undefined
+    minNominatorStake: BN = undefined
   ): void => {
     if (typeof minValidatorStake !== "undefined") {
       this.minValidatorStake = minValidatorStake
     }
-    if (typeof minDelegatorStake !== "undefined") {
-      this.minDelegatorStake = minDelegatorStake
+    if (typeof minNominatorStake !== "undefined") {
+      this.minNominatorStake = minNominatorStake
     }
   }
 
@@ -1088,23 +1088,23 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Get all the subnets that exist.
+   * Get all the allyChains that exist.
    *
-   * @param ids IDs of the subnets to retrieve information about. If omitted, gets all subnets
+   * @param ids IDs of the allyChains to retrieve information about. If omitted, gets all allyChains
    *
    * @returns Promise for an array of objects containing fields "id",
    * "controlKeys", and "threshold".
    */
-  getSubnets = async (ids: string[] = undefined): Promise<Subnet[]> => {
+  getAllyChains = async (ids: string[] = undefined): Promise<AllyChain[]> => {
     const params: any = {}
     if (typeof ids !== undefined) {
       params.ids = ids
     }
     const response: RequestResponseData = await this.callMethod(
-      "platform.getSubnets",
+      "platform.getAllyChains",
       params
     )
-    return response.data.result.subnets
+    return response.data.result.allyChains
   }
 
   /**
@@ -1324,14 +1324,14 @@ export class PlatformVMAPI extends JRPCAPI {
       "buildBaseTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
 
-    let srcChain: string = undefined
+    let srappChain: string = undefined
 
     if (typeof sourceChain === "undefined") {
       throw new ChainIdError(
         "Error - PlatformVMAPI.buildImportTx: Source ChainID is undefined."
       )
     } else if (typeof sourceChain === "string") {
-      srcChain = sourceChain
+      srappChain = sourceChain
       sourceChain = bintools.cb58Decode(sourceChain)
     } else if (!(sourceChain instanceof Buffer)) {
       throw new ChainIdError(
@@ -1340,7 +1340,7 @@ export class PlatformVMAPI extends JRPCAPI {
       )
     }
     const atomicUTXOs: UTXOSet = await (
-      await this.getUTXOs(ownerAddresses, srcChain, 0, undefined)
+      await this.getUTXOs(ownerAddresses, srappChain, 0, undefined)
     ).utxos
     const axcAssetID: Buffer = await this.getAXCAssetID()
 
@@ -1480,8 +1480,8 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Helper function which creates an unsigned [[AddSubnetValidatorTx]]. For more granular control, you may create your own
-   * [[UnsignedTx]] manually and import the [[AddSubnetValidatorTx]] class directly.
+   * Helper function which creates an unsigned [[AddAllyChainValidatorTx]]. For more granular control, you may create your own
+   * [[UnsignedTx]] manually and import the [[AddAllyChainValidatorTx]] class directly.
    *
    * @param utxoset A set of UTXOs that the transaction is built on.
    * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees in AXC
@@ -1489,15 +1489,15 @@ export class PlatformVMAPI extends JRPCAPI {
    * @param nodeID The node ID of the validator being added.
    * @param startTime The Unix time when the validator starts validating the Primary Network.
    * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AXC is returned).
-   * @param weight The amount of weight for this subnet validator.
+   * @param weight The amount of weight for this allyChain validator.
    * @param memo Optional contains arbitrary bytes, up to 256 bytes
    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-   * @param subnetAuthCredentials Optional. An array of index and address to sign for each SubnetAuth.
+   * @param allyChainAuthCredentials Optional. An array of index and address to sign for each AllyChainAuth.
    *
    * @returns An unsigned transaction created from the passed in parameters.
    */
 
-  buildAddSubnetValidatorTx = async (
+  buildAddAllyChainValidatorTx = async (
     utxoset: UTXOSet,
     fromAddresses: string[],
     changeAddresses: string[],
@@ -1505,18 +1505,18 @@ export class PlatformVMAPI extends JRPCAPI {
     startTime: BN,
     endTime: BN,
     weight: BN,
-    subnetID: string,
+    allyChainID: string,
     memo: PayloadBase | Buffer = undefined,
     asOf: BN = UnixNow(),
-    subnetAuthCredentials: [number, Buffer][] = []
+    allyChainAuthCredentials: [number, Buffer][] = []
   ): Promise<UnsignedTx> => {
     const from: Buffer[] = this._cleanAddressArray(
       fromAddresses,
-      "buildAddSubnetValidatorTx"
+      "buildAddAllyChainValidatorTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
     const change: Buffer[] = this._cleanAddressArray(
       changeAddresses,
-      "buildAddSubnetValidatorTx"
+      "buildAddAllyChainValidatorTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
 
     if (memo instanceof PayloadBase) {
@@ -1528,11 +1528,11 @@ export class PlatformVMAPI extends JRPCAPI {
     const now: BN = UnixNow()
     if (startTime.lt(now) || endTime.lte(startTime)) {
       throw new Error(
-        "PlatformVMAPI.buildAddSubnetValidatorTx -- startTime must be in the future and endTime must come after startTime"
+        "PlatformVMAPI.buildAddAllyChainValidatorTx -- startTime must be in the future and endTime must come after startTime"
       )
     }
 
-    const builtUnsignedTx: UnsignedTx = utxoset.buildAddSubnetValidatorTx(
+    const builtUnsignedTx: UnsignedTx = utxoset.buildAddAllyChainValidatorTx(
       this.core.getNetworkID(),
       bintools.cb58Decode(this.blockchainID),
       from,
@@ -1541,12 +1541,12 @@ export class PlatformVMAPI extends JRPCAPI {
       startTime,
       endTime,
       weight,
-      subnetID,
+      allyChainID,
       this.getDefaultTxFee(),
       axcAssetID,
       memo,
       asOf,
-      subnetAuthCredentials
+      allyChainAuthCredentials
     )
 
     if (!(await this.checkGooseEgg(builtUnsignedTx))) {
@@ -1558,8 +1558,8 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Helper function which creates an unsigned [[AddDelegatorTx]]. For more granular control, you may create your own
-   * [[UnsignedTx]] manually and import the [[AddDelegatorTx]] class directly.
+   * Helper function which creates an unsigned [[AddNominatorTx]]. For more granular control, you may create your own
+   * [[UnsignedTx]] manually and import the [[AddNominatorTx]] class directly.
    *
    * @param utxoset A set of UTXOs that the transaction is built on
    * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who received the staked tokens at the end of the staking period
@@ -1577,7 +1577,7 @@ export class PlatformVMAPI extends JRPCAPI {
    *
    * @returns An unsigned transaction created from the passed in parameters.
    */
-  buildAddDelegatorTx = async (
+  buildAddNominatorTx = async (
     utxoset: UTXOSet,
     toAddresses: string[],
     fromAddresses: string[],
@@ -1594,15 +1594,15 @@ export class PlatformVMAPI extends JRPCAPI {
   ): Promise<UnsignedTx> => {
     const to: Buffer[] = this._cleanAddressArray(
       toAddresses,
-      "buildAddDelegatorTx"
+      "buildAddNominatorTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
     const from: Buffer[] = this._cleanAddressArray(
       fromAddresses,
-      "buildAddDelegatorTx"
+      "buildAddNominatorTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
     const change: Buffer[] = this._cleanAddressArray(
       changeAddresses,
-      "buildAddDelegatorTx"
+      "buildAddNominatorTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
     const rewards: Buffer[] = this._cleanAddressArray(
       rewardAddresses,
@@ -1613,10 +1613,10 @@ export class PlatformVMAPI extends JRPCAPI {
       memo = memo.getPayload()
     }
 
-    const minStake: BN = (await this.getMinStake())["minDelegatorStake"]
+    const minStake: BN = (await this.getMinStake())["minNominatorStake"]
     if (stakeAmount.lt(minStake)) {
       throw new StakeError(
-        "PlatformVMAPI.buildAddDelegatorTx -- stake amount must be at least " +
+        "PlatformVMAPI.buildAddNominatorTx -- stake amount must be at least " +
           minStake.toString(10)
       )
     }
@@ -1626,11 +1626,11 @@ export class PlatformVMAPI extends JRPCAPI {
     const now: BN = UnixNow()
     if (startTime.lt(now) || endTime.lte(startTime)) {
       throw new TimeError(
-        "PlatformVMAPI.buildAddDelegatorTx -- startTime must be in the future and endTime must come after startTime"
+        "PlatformVMAPI.buildAddNominatorTx -- startTime must be in the future and endTime must come after startTime"
       )
     }
 
-    const builtUnsignedTx: UnsignedTx = utxoset.buildAddDelegatorTx(
+    const builtUnsignedTx: UnsignedTx = utxoset.buildAddNominatorTx(
       this.core.getNetworkID(),
       bintools.cb58Decode(this.blockchainID),
       axcAssetID,
@@ -1773,38 +1773,38 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Class representing an unsigned [[CreateSubnetTx]] transaction.
+   * Class representing an unsigned [[CreateAllyChainTx]] transaction.
    *
    * @param utxoset A set of UTXOs that the transaction is built on
    * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
    * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
-   * @param subnetOwnerAddresses An array of addresses for owners of the new subnet
-   * @param subnetOwnerThreshold A number indicating the amount of signatures required to add validators to a subnet
+   * @param allyChainOwnerAddresses An array of addresses for owners of the new allyChain
+   * @param allyChainOwnerThreshold A number indicating the amount of signatures required to add validators to a allyChain
    * @param memo Optional contains arbitrary bytes, up to 256 bytes
    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
    *
    * @returns An unsigned transaction created from the passed in parameters.
    */
-  buildCreateSubnetTx = async (
+  buildCreateAllyChainTx = async (
     utxoset: UTXOSet,
     fromAddresses: string[],
     changeAddresses: string[],
-    subnetOwnerAddresses: string[],
-    subnetOwnerThreshold: number,
+    allyChainOwnerAddresses: string[],
+    allyChainOwnerThreshold: number,
     memo: PayloadBase | Buffer = undefined,
     asOf: BN = UnixNow()
   ): Promise<UnsignedTx> => {
     const from: Buffer[] = this._cleanAddressArray(
       fromAddresses,
-      "buildCreateSubnetTx"
+      "buildCreateAllyChainTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
     const change: Buffer[] = this._cleanAddressArray(
       changeAddresses,
-      "buildCreateSubnetTx"
+      "buildCreateAllyChainTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
     const owners: Buffer[] = this._cleanAddressArray(
-      subnetOwnerAddresses,
-      "buildCreateSubnetTx"
+      allyChainOwnerAddresses,
+      "buildCreateAllyChainTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
 
     if (memo instanceof PayloadBase) {
@@ -1814,14 +1814,14 @@ export class PlatformVMAPI extends JRPCAPI {
     const axcAssetID: Buffer = await this.getAXCAssetID()
     const networkID: number = this.core.getNetworkID()
     const blockchainID: Buffer = bintools.cb58Decode(this.blockchainID)
-    const fee: BN = this.getCreateSubnetTxFee()
-    const builtUnsignedTx: UnsignedTx = utxoset.buildCreateSubnetTx(
+    const fee: BN = this.getCreateAllyChainTxFee()
+    const builtUnsignedTx: UnsignedTx = utxoset.buildCreateAllyChainTx(
       networkID,
       blockchainID,
       from,
       change,
       owners,
-      subnetOwnerThreshold,
+      allyChainOwnerThreshold,
       fee,
       axcAssetID,
       memo,
@@ -1842,14 +1842,14 @@ export class PlatformVMAPI extends JRPCAPI {
    * @param utxoset A set of UTXOs that the transaction is built on
    * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
    * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
-   * @param subnetID Optional ID of the Subnet that validates this blockchain
+   * @param allyChainID Optional ID of the AllyChain that validates this blockchain
    * @param chainName Optional A human readable name for the chain; need not be unique
    * @param vmID Optional ID of the VM running on the new chain
    * @param fxIDs Optional IDs of the feature extensions running on the new chain
    * @param genesisData Optional Byte representation of genesis state of the new chain
    * @param memo Optional contains arbitrary bytes, up to 256 bytes
    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-   * @param subnetAuthCredentials Optional. An array of index and address to sign for each SubnetAuth.
+   * @param allyChainAuthCredentials Optional. An array of index and address to sign for each AllyChainAuth.
    *
    * @returns An unsigned transaction created from the passed in parameters.
    */
@@ -1857,14 +1857,14 @@ export class PlatformVMAPI extends JRPCAPI {
     utxoset: UTXOSet,
     fromAddresses: string[],
     changeAddresses: string[],
-    subnetID: string | Buffer = undefined,
+    allyChainID: string | Buffer = undefined,
     chainName: string = undefined,
     vmID: string = undefined,
     fxIDs: string[] = undefined,
     genesisData: string | GenesisData = undefined,
     memo: PayloadBase | Buffer = undefined,
     asOf: BN = UnixNow(),
-    subnetAuthCredentials: [number, Buffer][] = []
+    allyChainAuthCredentials: [number, Buffer][] = []
   ): Promise<UnsignedTx> => {
     const from: Buffer[] = this._cleanAddressArray(
       fromAddresses,
@@ -1890,7 +1890,7 @@ export class PlatformVMAPI extends JRPCAPI {
       blockchainID,
       from,
       change,
-      subnetID,
+      allyChainID,
       chainName,
       vmID,
       fxIDs,
@@ -1899,7 +1899,7 @@ export class PlatformVMAPI extends JRPCAPI {
       axcAssetID,
       memo,
       asOf,
-      subnetAuthCredentials
+      allyChainAuthCredentials
     )
 
     if (!(await this.checkGooseEgg(builtUnsignedTx, this.getCreationTxFee()))) {

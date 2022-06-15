@@ -40,7 +40,7 @@ class BaseTx extends tx_1.StandardBaseTx {
     constructor(networkid = constants_2.DefaultNetworkID, blockchainid = buffer_1.Buffer.alloc(32, 16), outs = undefined, ins = undefined, memo = undefined) {
         super(networkid, blockchainid, outs, ins, memo);
         this._typeName = "BaseTx";
-        this._typeID = constants_1.ContractVMConstants.CREATESUBNETTX;
+        this._typeID = constants_1.ContractVMConstants.CREATEALLYCHAINTX;
         /**
          * Returns the id of the [[BaseTx]]
          */

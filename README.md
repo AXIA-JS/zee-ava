@@ -9,12 +9,12 @@ The APIs currently supported by default are:
 * Admin API
 * Auth API
 * AVM API (X-Chain)
-* EVM API (C-Chain)
+* EVM API (AppChain)
 * Health API
 * Info API
 * Keystore API
 * Metrics API
-* PlatformVM API (P-Chain)
+* PlatformVM API (CoreChain)
 
 We built AxiaJS with ease of use in mind. With this library, any Javascript developer is able to interact with a node on the Axia Platform who has enabled their API endpoints for the developer's consumption. We keep the library up-to-date with the latest changes in the [Axia Platform Specification](https://docs.axc.network).
 
@@ -24,10 +24,10 @@ We built AxiaJS with ease of use in mind. With this library, any Javascript deve
 * Retrieve balances on addresses
 * Get UTXOs for addresses
 * Build and sign transactions
-* Issue signed transactions to the X-Chain, P-Chain, and C-Chain
-* Perform cross-chain swaps between the X-Chain<->P-Chain and between the X-Chain<->C-Chain
-* Add Validators and Delegators to the Primary Subnetwork by staking AXC
-* Create a Subnetwork
+* Issue signed transactions to the X-Chain, CoreChain, and AppChain
+* Perform cross-chain swaps between the X-Chain<->CoreChain and between the X-Chain<->AppChain
+* Add Validators and Nominators to the Primary AllyChainwork by staking AXC
+* Create a AllyChainwork
 * Administer a local node
 * Retrieve Axia network information from a node
 
@@ -398,7 +398,7 @@ yarn build && yarn test
 ```
 
 If the E2E check does not pass, go into the 'checks' section of the PR.
-`https://github.com/ava-labs/axiajs/pull/<PR number>/checks`
+`https://github.com/AxiaCoin/axiajs/pull/<PR number>/checks`
 
 * Click on the `> E2E` tab on the left
 * Click 'Re-run jobs' on the right

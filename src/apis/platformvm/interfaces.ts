@@ -31,7 +31,7 @@ export interface GetRewardUTXOsResponse {
 
 export interface GetValidatorsAtParams {
   height: number
-  subnetID?: string
+  allyChainID?: string
 }
 
 export interface GetValidatorsAtResponse {
@@ -39,18 +39,18 @@ export interface GetValidatorsAtResponse {
 }
 
 export interface GetCurrentValidatorsParams {
-  subnetID?: Buffer | string
+  allyChainID?: Buffer | string
   nodeIDs?: string[]
 }
 
 export interface SampleValidatorsParams {
   size: number | string
-  subnetID?: Buffer | string | undefined
+  allyChainID?: Buffer | string | undefined
 }
 
 export interface SampleValidatorsParams {
   size: number | string
-  subnetID?: Buffer | string | undefined
+  allyChainID?: Buffer | string | undefined
 }
 
 export interface AddValidatorParams {
@@ -64,7 +64,7 @@ export interface AddValidatorParams {
   delegationFeeRate?: string | undefined
 }
 
-export interface AddDelegatorParams {
+export interface AddNominatorParams {
   username: string
   password: string
   nodeID: string
@@ -75,7 +75,7 @@ export interface AddDelegatorParams {
 }
 
 export interface GetPendingValidatorsParams {
-  subnetID?: Buffer | string
+  allyChainID?: Buffer | string
   nodeIDs?: string[]
 }
 
@@ -151,14 +151,14 @@ export interface GetUTXOsResponse {
   endIndex: EndIndex
 }
 
-export interface CreateSubnetParams {
+export interface CreateAllyChainParams {
   username: string
   password: string
   controlKeys: string[]
   threshold: number
 }
 
-export interface Subnet {
+export interface AllyChain {
   ids: string
   controlKeys: string[]
   threshold: number
@@ -167,7 +167,7 @@ export interface Subnet {
 export interface CreateBlockchainParams {
   username: string
   password: string
-  subnetID?: Buffer | string | undefined
+  allyChainID?: Buffer | string | undefined
   vmID: string
   fxIDs: number[]
   name: string
@@ -177,7 +177,7 @@ export interface CreateBlockchainParams {
 export interface Blockchain {
   id: string
   name: string
-  subnetID: string
+  allyChainID: string
   vmID: string
 }
 
@@ -193,11 +193,11 @@ export interface GetTxStatusResponse {
 
 export interface GetMinStakeResponse {
   minValidatorStake: BN
-  minDelegatorStake: BN
+  minNominatorStake: BN
 }
 
 export interface GetMaxStakeAmountParams {
-  subnetID?: string
+  allyChainID?: string
   nodeID: string
   startTime: BN
   endTime: BN

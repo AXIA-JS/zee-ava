@@ -23,19 +23,19 @@ const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const xchain: AVMAPI = axia.XChain()
-const cchain: EVMAPI = axia.CChain()
+const appchain: EVMAPI = axia.AppChain()
 const bintools: BinTools = BinTools.getInstance()
 const xKeychain: AVMKeyChain = xchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-const cKeychain: EVMKeyChain = cchain.keyChain()
+const cKeychain: EVMKeyChain = appchain.keyChain()
 xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
-const cAddresses: Buffer[] = cchain.keyChain().getAddresses()
+const cAddresses: Buffer[] = appchain.keyChain().getAddresses()
 const xChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
 const xChainBlockchainIdBuf: Buffer = bintools.cb58Decode(xChainBlockchainIdStr)
-const cChainBlockchainIdStr: string = Defaults.network[networkID].C.blockchainID
-const cChainBlockchainIdBuf: Buffer = bintools.cb58Decode(cChainBlockchainIdStr)
+const appChainBlockchainIdStr: string = Defaults.network[networkID].C.blockchainID
+const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(appChainBlockchainIdStr)
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
@@ -50,7 +50,7 @@ const main = async (): Promise<any> => {
   const antAssetIDStr: string =
     "verma4Pa9biWKbjDGNsTXU47cYCyDSNGSU1iBkxucfVSFVXdv"
   const antAssetIDBuf: Buffer = bintools.cb58Decode(antAssetIDStr)
-  const antAssetBalanceResponse: RequestResponseData = await cchain.callMethod(
+  const antAssetBalanceResponse: RequestResponseData = await appchain.callMethod(
     "eth_getAssetBalance",
     [cHexAddress, "latest", antAssetIDStr],
     "ext/bc/C/rpc"
@@ -61,7 +61,7 @@ const main = async (): Promise<any> => {
   )
   let axcBalance: BN = await web3.eth.getBalance(cHexAddress)
   axcBalance = new BN(axcBalance.toString().substring(0, 17))
-  const fee: BN = cchain.getDefaultTxFee()
+  const fee: BN = appchain.getDefaultTxFee()
   const txcount = await web3.eth.getTransactionCount(cHexAddress)
   const nonce: number = txcount
   const locktime: BN = new BN(0)
@@ -103,7 +103,7 @@ const main = async (): Promise<any> => {
 
   const exportTx: ExportTx = new ExportTx(
     networkID,
-    cChainBlockchainIdBuf,
+    appChainBlockchainIdBuf,
     xChainBlockchainIdBuf,
     evmInputs,
     exportedOuts
@@ -111,7 +111,7 @@ const main = async (): Promise<any> => {
 
   const unsignedTx: UnsignedTx = new UnsignedTx(exportTx)
   const tx: Tx = unsignedTx.sign(cKeychain)
-  const txid: string = await cchain.issueTx(tx)
+  const txid: string = await appchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

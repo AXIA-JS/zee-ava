@@ -11,15 +11,15 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
-const pKeychain: KeyChain = pchain.keyChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
+const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 pKeychain.importKey(privKey)
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const encoding: string = "hex"
 
 const main = async (): Promise<any> => {
-  const getStakeResponse: GetStakeResponse = await pchain.getStake(
+  const getStakeResponse: GetStakeResponse = await corechain.getStake(
     pAddressStrings,
     encoding
   )

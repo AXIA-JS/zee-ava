@@ -2,7 +2,7 @@ import BinTools from "../../../src/utils/bintools"
 import { Buffer } from "buffer/"
 import { PlatformVMConstants } from "../../../src/apis/platformvm/constants"
 import { GenesisAsset, GenesisData } from "../../../src/index"
-import { CreateChainTx, SubnetAuth } from "src/apis/platformvm"
+import { CreateChainTx, AllyChainAuth } from "src/apis/platformvm"
 
 describe("CreateChainTx", (): void => {
   /**
@@ -34,10 +34,10 @@ describe("CreateChainTx", (): void => {
     expect(buf.toString("hex")).toBe(buf2.toString("hex"))
   })
 
-  test("getSubnetID", (): void => {
+  test("getAllyChainID", (): void => {
     const snID: string = "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
-    const subnetID: string = createChainTx.getSubnetID()
-    expect(subnetID).toBe(snID)
+    const allyChainID: string = createChainTx.getAllyChainID()
+    expect(allyChainID).toBe(snID)
   })
 
   test("getChainName", (): void => {
@@ -87,17 +87,17 @@ describe("CreateChainTx", (): void => {
     expect(denomination).toBe(d)
   })
 
-  describe("SubnetAuth", (): void => {
-    const sa: SubnetAuth = createChainTx.getSubnetAuth()
+  describe("AllyChainAuth", (): void => {
+    const sa: AllyChainAuth = createChainTx.getAllyChainAuth()
 
     test("getTypeName", async (): Promise<void> => {
-      const subnetAuthTypeName: string = sa.getTypeName()
-      expect(subnetAuthTypeName).toBe("SubnetAuth")
+      const allyChainAuthTypeName: string = sa.getTypeName()
+      expect(allyChainAuthTypeName).toBe("AllyChainAuth")
     })
 
     test("getTypeID", async (): Promise<void> => {
-      const subnetAuthTypeID: number = sa.getTypeID()
-      expect(subnetAuthTypeID).toBe(PlatformVMConstants.SUBNETAUTH)
+      const allyChainAuthTypeID: number = sa.getTypeID()
+      expect(allyChainAuthTypeID).toBe(PlatformVMConstants.ALLYCHAINAUTH)
     })
 
     test("getNumAddressIndices", async (): Promise<void> => {

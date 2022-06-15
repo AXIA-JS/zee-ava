@@ -194,16 +194,16 @@ export declare class XCHAINADDRPayload extends ChainAddressPayload {
     protected chainid: string;
 }
 /**
- * Class for payloads representing P-Chain addresses.
+ * Class for payloads representing CoreChain addresses.
  */
-export declare class PCHAINADDRPayload extends ChainAddressPayload {
+export declare class CORECHAINADDRPayload extends ChainAddressPayload {
     protected typeid: number;
     protected chainid: string;
 }
 /**
- * Class for payloads representing C-Chain addresses.
+ * Class for payloads representing AppChain addresses.
  */
-export declare class CCHAINADDRPayload extends ChainAddressPayload {
+export declare class APPCHAINADDRPayload extends ChainAddressPayload {
     protected typeid: number;
     protected chainid: string;
 }
@@ -245,9 +245,9 @@ export declare class NFTIDPayload extends UTXOIDPayload {
     protected typeid: number;
 }
 /**
- * Class for payloads representing SubnetIDs.
+ * Class for payloads representing AllyChainIDs.
  */
-export declare class SUBNETIDPayload extends cb58EncodedPayload {
+export declare class ALLYCHAINIDPayload extends cb58EncodedPayload {
     protected typeid: number;
 }
 /**

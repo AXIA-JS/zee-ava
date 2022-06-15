@@ -13,29 +13,29 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 12345
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
-const pKeychain: KeyChain = pchain.keyChain()
+const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string =
   "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
 pKeychain.importKey(privKey)
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const xChainBlockchainID: string = Defaults.network["12345"].X.blockchainID
-const pChainBlockchainID: string = Defaults.network["12345"].P.blockchainID
+const coreChainBlockchainID: string = Defaults.network["12345"].P.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildImportTx to import AXC to the P-Chain from the X-Chain"
+  "PlatformVM utility method buildImportTx to import AXC to the CoreChain from the X-Chain"
 )
 const asOf: BN = UnixNow()
 
 const main = async (): Promise<any> => {
-  const platformVMUTXOResponse: any = await pchain.getUTXOs(
+  const platformVMUTXOResponse: any = await corechain.getUTXOs(
     pAddressStrings,
-    pChainBlockchainID
+    coreChainBlockchainID
   )
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
-  const unsignedTx: UnsignedTx = await pchain.buildImportTx(
+  const unsignedTx: UnsignedTx = await corechain.buildImportTx(
     utxoSet,
     pAddressStrings,
     xChainBlockchainID,
@@ -48,7 +48,7 @@ const main = async (): Promise<any> => {
     threshold
   )
   const tx: Tx = unsignedTx.sign(pKeychain)
-  const txid: string = await pchain.issueTx(tx)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

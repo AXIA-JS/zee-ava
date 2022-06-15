@@ -81,7 +81,7 @@ export declare class TimeError extends AxiaError {
 export declare class DelegationFeeError extends AxiaError {
     constructor(m: string);
 }
-export declare class SubnetOwnerError extends AxiaError {
+export declare class AllyChainOwnerError extends AxiaError {
     constructor(m: string);
 }
 export declare class BufferSizeError extends AxiaError {
@@ -129,13 +129,13 @@ export declare class InvalidEntropy extends AxiaError {
 export declare class ProtocolError extends AxiaError {
     constructor(m: string);
 }
-export declare class SubnetIdError extends AxiaError {
+export declare class AllyChainIdError extends AxiaError {
     constructor(m: string);
 }
-export declare class SubnetThresholdError extends AxiaError {
+export declare class AllyChainThresholdError extends AxiaError {
     constructor(m: string);
 }
-export declare class SubnetAddressError extends AxiaError {
+export declare class AllyChainAddressError extends AxiaError {
     constructor(m: string);
 }
 export interface ErrorResponseObject {

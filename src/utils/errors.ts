@@ -24,7 +24,7 @@ const FEE_ASSET_ERROR_CODE: string = "1022"
 const STAKE_ERROR_CODE: string = "1023"
 const TIME_ERROR_CODE: string = "1024"
 const DELEGATION_FEE_ERROR_CODE: string = "1025"
-const SUBNET_OWNER_ERROR_CODE: string = "1026"
+const ALLYCHAIN_OWNER_ERROR_CODE: string = "1026"
 const BUFFER_SIZE_ERROR_CODE: string = "1027"
 const ADDRESS_INDEX_ERROR_CODE: string = "1028"
 const PUBLIC_KEY_ERROR_CODE: string = "1029"
@@ -39,10 +39,10 @@ const BECH32_ERROR_CODE: string = "1037"
 const EVM_FEE_ERROR_CODE: string = "1038"
 const INVALID_ENTROPY: string = "1039"
 const PROTOCOL_ERROR_CODE: string = "1040"
-const SUBNET_ID_ERROR_CODE: string = "1041"
+const ALLYCHAIN_ID_ERROR_CODE: string = "1041"
 const TYPE_NAME_ERROR_CODE: string = "1042"
-const SUBNET_THRESHOLD_ERROR_CODE: string = "1043"
-const SUBNET_ADDRESS_ERROR_CODE: string = "1044"
+const ALLYCHAIN_THRESHOLD_ERROR_CODE: string = "1043"
+const ALLYCHAIN_ADDRESS_ERROR_CODE: string = "1044"
 
 export class AxiaError extends Error {
   errorCode: string
@@ -239,10 +239,10 @@ export class DelegationFeeError extends AxiaError {
   }
 }
 
-export class SubnetOwnerError extends AxiaError {
+export class AllyChainOwnerError extends AxiaError {
   constructor(m: string) {
-    super(m, SUBNET_OWNER_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetOwnerError.prototype)
+    super(m, ALLYCHAIN_OWNER_ERROR_CODE)
+    Object.setPrototypeOf(this, AllyChainOwnerError.prototype)
   }
 }
 
@@ -351,24 +351,24 @@ export class ProtocolError extends AxiaError {
   }
 }
 
-export class SubnetIdError extends AxiaError {
+export class AllyChainIdError extends AxiaError {
   constructor(m: string) {
-    super(m, SUBNET_ID_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetIdError.prototype)
+    super(m, ALLYCHAIN_ID_ERROR_CODE)
+    Object.setPrototypeOf(this, AllyChainIdError.prototype)
   }
 }
 
-export class SubnetThresholdError extends AxiaError {
+export class AllyChainThresholdError extends AxiaError {
   constructor(m: string) {
-    super(m, SUBNET_THRESHOLD_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetThresholdError.prototype)
+    super(m, ALLYCHAIN_THRESHOLD_ERROR_CODE)
+    Object.setPrototypeOf(this, AllyChainThresholdError.prototype)
   }
 }
 
-export class SubnetAddressError extends AxiaError {
+export class AllyChainAddressError extends AxiaError {
   constructor(m: string) {
-    super(m, SUBNET_ADDRESS_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetAddressError.prototype)
+    super(m, ALLYCHAIN_ADDRESS_ERROR_CODE)
+    Object.setPrototypeOf(this, AllyChainAddressError.prototype)
   }
 }
 

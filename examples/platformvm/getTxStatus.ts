@@ -6,12 +6,12 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 
 const main = async (): Promise<any> => {
   const txID: string = "x1NLb9JaHkKTXvSRReVSsFwQ38mY7bfD1Ky1BPv721VhrpuSE"
   const includeReason: boolean = true
-  const tx: string | object = await pchain.getTxStatus(txID, includeReason)
+  const tx: string | object = await corechain.getTxStatus(txID, includeReason)
   console.log(tx)
 }
 

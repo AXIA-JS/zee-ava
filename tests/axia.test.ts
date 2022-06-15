@@ -36,12 +36,12 @@ describe("Axia", (): void => {
       skipinit
     )
     axia.addAPI("admin", AdminAPI)
-    axia.addAPI("xchain", AVMAPI, "/ext/subnet/avm", blockchainID)
+    axia.addAPI("xchain", AVMAPI, "/ext/allyChain/avm", blockchainID)
     axia.addAPI("health", HealthAPI)
     axia.addAPI("info", InfoAPI)
     axia.addAPI("keystore", KeystoreAPI)
     axia.addAPI("metrics", MetricsAPI)
-    axia.addAPI("pchain", PlatformVMAPI)
+    axia.addAPI("corechain", PlatformVMAPI)
   })
   test("Remove special characters", (): void => {
     host = "a&&&&p#i,.@a+v(a)x$.~n%e't:w*o?r<k>"
@@ -105,8 +105,8 @@ describe("Axia", (): void => {
     expect(axia.Info()).not.toBeInstanceOf(KeystoreAPI)
     expect(axia.Info()).toBeInstanceOf(InfoAPI)
 
-    expect(axia.PChain()).not.toBeInstanceOf(KeystoreAPI)
-    expect(axia.PChain()).toBeInstanceOf(PlatformVMAPI)
+    expect(axia.CoreChain()).not.toBeInstanceOf(KeystoreAPI)
+    expect(axia.CoreChain()).toBeInstanceOf(PlatformVMAPI)
 
     expect(axia.NodeKeys()).not.toBeInstanceOf(PlatformVMAPI)
     expect(axia.NodeKeys()).toBeInstanceOf(KeystoreAPI)
@@ -116,7 +116,7 @@ describe("Axia", (): void => {
 
     expect(axia.Admin().getRPCID()).toBe(1)
     expect(axia.XChain().getRPCID()).toBe(1)
-    expect(axia.PChain().getRPCID()).toBe(1)
+    expect(axia.CoreChain().getRPCID()).toBe(1)
     expect(axia.NodeKeys().getRPCID()).toBe(1)
   })
 

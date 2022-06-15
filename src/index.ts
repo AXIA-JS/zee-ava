@@ -47,9 +47,9 @@ export default class Axia extends AxiaCore {
   Auth = () => this.apis.auth as AuthAPI
 
   /**
-   * Returns a reference to the EVMAPI RPC pointed at the C-Chain.
+   * Returns a reference to the EVMAPI RPC pointed at the AppChain.
    */
-  CChain = () => this.apis.cchain as EVMAPI
+  AppChain = () => this.apis.appchain as EVMAPI
 
   /**
    * Returns a reference to the AVM RPC pointed at the X-Chain.
@@ -83,9 +83,9 @@ export default class Axia extends AxiaCore {
   NodeKeys = () => this.apis.keystore as KeystoreAPI
 
   /**
-   * Returns a reference to the PlatformVM RPC pointed at the P-Chain.
+   * Returns a reference to the PlatformVM RPC pointed at the CoreChain.
    */
-  PChain = () => this.apis.pchain as PlatformVMAPI
+  CoreChain = () => this.apis.corechain as PlatformVMAPI
 
   /**
    * Creates a new Axia instance. Sets the address and port of the main Axia Client.
@@ -97,7 +97,7 @@ export default class Axia extends AxiaCore {
    * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
    * @param XChainID Sets the blockchainID for the AVM. Will try to auto-detect,
    * otherwise default "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
-   * @param CChainID Sets the blockchainID for the EVM. Will try to auto-detect,
+   * @param AppChainID Sets the blockchainID for the EVM. Will try to auto-detect,
    * otherwise default "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
    * @param hrp The human-readable part of the bech32 addresses
    * @param skipinit Skips creating the APIs. Defaults to false
@@ -108,13 +108,13 @@ export default class Axia extends AxiaCore {
     protocol: string = "http",
     networkID: number = DefaultNetworkID,
     XChainID: string = undefined,
-    CChainID: string = undefined,
+    AppChainID: string = undefined,
     hrp: string = undefined,
     skipinit: boolean = false
   ) {
     super(host, port, protocol)
     let xchainid: string = XChainID
-    let cchainid: string = CChainID
+    let appchainid: string = AppChainID
 
     if (
       typeof XChainID === "undefined" ||
@@ -128,14 +128,14 @@ export default class Axia extends AxiaCore {
       }
     }
     if (
-      typeof CChainID === "undefined" ||
-      !CChainID ||
-      CChainID.toLowerCase() === "c"
+      typeof AppChainID === "undefined" ||
+      !AppChainID ||
+      AppChainID.toLowerCase() === "c"
     ) {
       if (networkID.toString() in Defaults.network) {
-        cchainid = Defaults.network[`${networkID}`].C.blockchainID
+        appchainid = Defaults.network[`${networkID}`].C.blockchainID
       } else {
-        cchainid = Defaults.network[12345].C.blockchainID
+        appchainid = Defaults.network[12345].C.blockchainID
       }
     }
     if (typeof networkID === "number" && networkID >= 0) {
@@ -153,13 +153,13 @@ export default class Axia extends AxiaCore {
       this.addAPI("admin", AdminAPI)
       this.addAPI("auth", AuthAPI)
       this.addAPI("xchain", AVMAPI, "/ext/bc/X", xchainid)
-      this.addAPI("cchain", EVMAPI, "/ext/bc/C/axc", cchainid)
+      this.addAPI("appchain", EVMAPI, "/ext/bc/C/axc", appchainid)
       this.addAPI("health", HealthAPI)
       this.addAPI("info", InfoAPI)
       this.addAPI("index", IndexAPI)
       this.addAPI("keystore", KeystoreAPI)
       this.addAPI("metrics", MetricsAPI)
-      this.addAPI("pchain", PlatformVMAPI)
+      this.addAPI("corechain", PlatformVMAPI)
     }
   }
 }

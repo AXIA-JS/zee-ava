@@ -2,7 +2,7 @@
 
 ## Overview
 
-We use [typedoc](https://typedoc.org) to turn comments in our typescript into markdown pages which can be copied into [the Axia Docs repo](https://github.com/ava-labs/axia-docs). Each time a new version of AxiaJS gets deployed to [npm](https://www.npmjs.com/package/axia) then typedocs should be regenerated and pasted into the docs repo.
+We use [typedoc](https://typedoc.org) to turn comments in our typescript into markdown pages which can be copied into [the Axia Docs repo](https://github.com/AxiaCoin/axia-docs). Each time a new version of AxiaJS gets deployed to [npm](https://www.npmjs.com/package/axia) then typedocs should be regenerated and pasted into the docs repo.
 
 ## Steps
 

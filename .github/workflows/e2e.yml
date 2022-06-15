@@ -3,7 +3,7 @@ on: push
 
 env:
   GOPATH: /home/runner/go
-  AVAPATH: src/github.com/ava-labs
+  AVAPATH: src/github.com/AxiaCoin
   ACTIONS_RUNTIME_URL: 
   ACTIONS_RUNTIME_TOKEN: 
   ACTIONS_CACHE_URL: 
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout AxiaJS
         uses: actions/checkout@v2
         with: 
-          repository: 'ava-labs/axiajs'
+          repository: 'AxiaCoin/axiajs'
       - name: Install dependencies
         run: sudo apt update && sudo apt install zstd git build-essential nodejs -y
       - name: Install NodeJS dependencies
@@ -34,14 +34,14 @@ jobs:
         run : |
           cd $GOPATH
           cd $AVAPATH
-          git clone https://github.com/ava-labs/axiago
+          git clone https://github.com/AxiaCoin/axiago
           cd axiago
           ./scripts/build.sh
       - name: Checkout ANR
         run : |
           cd $GOPATH
           cd $AVAPATH
-          git clone https://github.com/ava-labs/axia-network-runner
+          git clone https://github.com/AxiaCoin/axia-network-runner
       - name: Starting ANR
         run: |
           cd $GOPATH

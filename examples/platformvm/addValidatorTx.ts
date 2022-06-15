@@ -29,22 +29,22 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
-const pKeychain: KeyChain = pchain.keyChain()
+const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 pKeychain.importKey(privKey)
-const pAddresses: Buffer[] = pchain.keyChain().getAddresses()
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
-const pChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
+const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
+const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const stakeOuts: TransferableOutput[] = []
-const fee: BN = pchain.getDefaultTxFee()
+const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Manually add a validator to the primary subnet"
+  "Manually add a validator to the primary allyChain"
 )
 const nodeID: string = "NodeID-DueWyGi3B9jtKfa9mPoecd4YSDJ1ftF69"
 const startTime: BN = UnixNow().add(new BN(60 * 1))
@@ -52,9 +52,9 @@ const endTime: BN = startTime.add(new BN(26300000))
 const delegationFee: number = 10
 
 const main = async (): Promise<any> => {
-  const stakeAmount: any = await pchain.getMinStake()
-  const axcAssetID: Buffer = await pchain.getAXCAssetID()
-  const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
+  const stakeAmount: any = await corechain.getMinStake()
+  const axcAssetID: Buffer = await corechain.getAXCAssetID()
+  const getBalanceResponse: any = await corechain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     unlocked.sub(fee).sub(stakeAmount.minValidatorStake),
@@ -87,7 +87,7 @@ const main = async (): Promise<any> => {
   )
   const rewardOwners: ParseableOutput = new ParseableOutput(rewardOutputOwners)
 
-  const platformVMUTXOResponse: any = await pchain.getUTXOs(pAddressStrings)
+  const platformVMUTXOResponse: any = await corechain.getUTXOs(pAddressStrings)
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO) => {
@@ -113,7 +113,7 @@ const main = async (): Promise<any> => {
 
   const addValidatorTx: AddValidatorTx = new AddValidatorTx(
     networkID,
-    bintools.cb58Decode(pChainBlockchainID),
+    bintools.cb58Decode(coreChainBlockchainID),
     outputs,
     inputs,
     memo,
@@ -127,7 +127,7 @@ const main = async (): Promise<any> => {
   )
   const unsignedTx: UnsignedTx = new UnsignedTx(addValidatorTx)
   const tx: Tx = unsignedTx.sign(pKeychain)
-  const txid: string = await pchain.issueTx(tx)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

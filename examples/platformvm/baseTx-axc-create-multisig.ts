@@ -30,8 +30,8 @@ const xBlockchainIDBuf: Buffer = bintools.cb58Decode(xBlockchainID)
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
-const pKeychain: KeyChain = pchain.keyChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
+const pKeychain: KeyChain = corechain.keyChain()
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 // X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
 pKeychain.importKey(privKey)
@@ -43,11 +43,11 @@ pKeychain.importKey(privKey)
 privKey = "PrivateKey-24b2s6EqkBp9bFG5S3Xxi4bjdxFqeRk56ck7QdQArVbwKkAvxz"
 // X-custom1aekly2mwnsz6lswd6u0jqvd9u6yddt5884pyuc
 pKeychain.importKey(privKey)
-const xAddresses: Buffer[] = pchain.keyChain().getAddresses()
-const xAddressStrings: string[] = pchain.keyChain().getAddressStrings()
+const xAddresses: Buffer[] = corechain.keyChain().getAddresses()
+const xAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
-const fee: BN = pchain.getDefaultTxFee()
+const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 3
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
@@ -57,7 +57,7 @@ const memo: Buffer = Buffer.from(
 // const codecID: number = 1
 
 const main = async (): Promise<any> => {
-  const getBalanceResponse: GetBalanceResponse = await pchain.getBalance(
+  const getBalanceResponse: GetBalanceResponse = await corechain.getBalance(
     xAddressStrings[0]
   )
   const balance: BN = new BN(getBalanceResponse.balance)
@@ -75,7 +75,7 @@ const main = async (): Promise<any> => {
   )
   outputs.push(transferableOutput)
 
-  const avmUTXOResponse: any = await pchain.getUTXOs(xAddressStrings)
+  const avmUTXOResponse: any = await corechain.getUTXOs(xAddressStrings)
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO): void => {
@@ -109,7 +109,7 @@ const main = async (): Promise<any> => {
   // baseTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(baseTx)
   const tx: Tx = unsignedTx.sign(pKeychain)
-  const txid: string = await pchain.issueTx(tx)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 main()

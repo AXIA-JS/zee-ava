@@ -6,10 +6,10 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 
 const main = async (): Promise<any> => {
-  const keychain: KeyChain = pchain.keyChain()
+  const keychain: KeyChain = corechain.keyChain()
   const keypair: KeyPair = keychain.makeKey()
   const response: {
     address: string

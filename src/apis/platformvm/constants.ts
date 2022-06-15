@@ -10,7 +10,7 @@ export class PlatformVMConstants {
 
   static SECPXFEROUTPUTID: number = 7
 
-  static SUBNETAUTHID: number = 10
+  static ALLYCHAINAUTHID: number = 10
 
   static SECPOWNEROUTPUTID: number = 11
 
@@ -27,17 +27,17 @@ export class PlatformVMConstants {
 
   static BASETX: number = 0
 
-  static SUBNETAUTH: number = 10
+  static ALLYCHAINAUTH: number = 10
 
   static ADDVALIDATORTX: number = 12
 
-  static ADDSUBNETVALIDATORTX: number = 13
+  static ADDALLYCHAINVALIDATORTX: number = 13
 
-  static ADDDELEGATORTX: number = 14
+  static ADDNOMINATORTX: number = 14
 
   static CREATECHAINTX: number = 15
 
-  static CREATESUBNETTX: number = 16
+  static CREATEALLYCHAINTX: number = 16
 
   static IMPORTTX: number = 17
 

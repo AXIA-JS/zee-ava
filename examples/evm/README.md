@@ -1,6 +1,6 @@
 # EVM
 
-Example scripts for the Axia [EVM](https://docs.axc.network/build/axiago-apis/contract-chain-c-chain-api)
+Example scripts for the Axia [EVM](https://docs.axc.network/build/axiago-apis/contract-chain-appchain-api)
 
 * [buildExportTx-xchain-ant.ts](./buildExportTx-xchain-ant.ts)
 * [buildExportTx-xchain-axc.ts](./buildExportTx-xchain-axc.ts)

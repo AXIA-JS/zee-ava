@@ -54,7 +54,7 @@ export default class BinTools {
      */
     isDecimal(str: string): boolean;
     /**
-     * Returns true if meets requirements to parse as an address as Bech32 on X-Chain or P-Chain, otherwise false
+     * Returns true if meets requirements to parse as an address as Bech32 on X-Chain or CoreChain, otherwise false
      * @param address the string to verify is address
      */
     isPrimaryBechAddress: (address: string) => boolean;

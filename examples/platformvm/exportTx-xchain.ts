@@ -28,28 +28,28 @@ const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const xchain: AVMAPI = axia.XChain()
-const pchain: PlatformVMAPI = axia.PChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
 const xKeychain: AVMKeyChain = xchain.keyChain()
-const pKeychain: KeyChain = pchain.keyChain()
+const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
 pKeychain.importKey(privKey)
 const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
-const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const xChainBlockchainID: string = Defaults.network[networkID].X.blockchainID
-const pChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
+const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const fee: BN = MILLIAXC
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("Manually Export AXC from P-Chain to X-Chain")
+const memo: Buffer = Buffer.from("Manually Export AXC from CoreChain to X-Chain")
 
 const main = async (): Promise<any> => {
-  const axcAssetID: Buffer = await pchain.getAXCAssetID()
-  const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
+  const axcAssetID: Buffer = await corechain.getAXCAssetID()
+  const getBalanceResponse: any = await corechain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   console.log(unlocked.sub(fee).toString())
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
@@ -64,7 +64,7 @@ const main = async (): Promise<any> => {
   )
   exportedOuts.push(transferableOutput)
 
-  const platformVMUTXOResponse: any = await pchain.getUTXOs(pAddressStrings)
+  const platformVMUTXOResponse: any = await corechain.getUTXOs(pAddressStrings)
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO) => {
@@ -90,7 +90,7 @@ const main = async (): Promise<any> => {
 
   const exportTx: ExportTx = new ExportTx(
     networkID,
-    bintools.cb58Decode(pChainBlockchainID),
+    bintools.cb58Decode(coreChainBlockchainID),
     outputs,
     inputs,
     memo,
@@ -100,7 +100,7 @@ const main = async (): Promise<any> => {
 
   const unsignedTx: UnsignedTx = new UnsignedTx(exportTx)
   const tx: Tx = unsignedTx.sign(pKeychain)
-  const txid: string = await pchain.issueTx(tx)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 
