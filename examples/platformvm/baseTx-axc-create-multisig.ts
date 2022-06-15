@@ -13,7 +13,7 @@ import {
   Tx,
   BaseTx
 } from "../../src/apis/platformvm"
-import { GetBalanceResponse } from "../../src/apis/axvm/interfaces"
+import { GetBalanceResponse } from "../../src/apis/avm/interfaces"
 import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,
@@ -51,7 +51,7 @@ const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 3
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "AXVM manual create multisig BaseTx to send AXC"
+  "AVM manual create multisig BaseTx to send AXC"
 )
 // Uncomment for codecID 00 01
 // const codecID: number = 1
@@ -75,8 +75,8 @@ const main = async (): Promise<any> => {
   )
   outputs.push(transferableOutput)
 
-  const axvmUTXOResponse: any = await corechain.getUTXOs(xAddressStrings)
-  const utxoSet: UTXOSet = axvmUTXOResponse.utxos
+  const avmUTXOResponse: any = await corechain.getUTXOs(xAddressStrings)
+  const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO): void => {
     const amountOutput: AmountOutput = utxo.getOutput() as AmountOutput

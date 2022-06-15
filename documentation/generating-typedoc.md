@@ -37,7 +37,7 @@ First rename the newly generated `README.md` to `api.md`. Next open `api.md` and
 
 * Remove the generated headers and replace them w/ API and AxiaJS w/ a link to the current build
 * Nest the list items per their parent category
-* Clean up the body copy. Ex: `API-AXVM` -> `AXVM` and `API-AXVM-Credentials` -> `Credentials`
+* Clean up the body copy. Ex: `API-AVM` -> `AVM` and `API-AVM-Credentials` -> `Credentials`
 
 ## Copy to Docs Repo
 

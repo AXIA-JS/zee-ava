@@ -5,7 +5,7 @@
 import { Buffer } from "buffer/";
 import { SECP256k1KeyChain, SECP256k1KeyPair } from "../../common/secp256k1";
 /**
- * Class for representing a private and public keypair on an AXVM Chain.
+ * Class for representing a private and public keypair on an AVM Chain.
  */
 export declare class KeyPair extends SECP256k1KeyPair {
     clone(): this;

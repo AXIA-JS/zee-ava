@@ -59,15 +59,15 @@ const main = async (): Promise<any> => {
     "Utility function to create a CreateChainTx transaction"
   )
   const subnetID: Buffer = bintools.cb58Decode(subnetIDStr)
-  const chainName: string = "EPIC AXVM"
-  const vmID: string = "axvm"
+  const chainName: string = "EPIC AVM"
+  const vmID: string = "avm"
   const fxIDs: string[] = ["secp256k1fx", "nftfx", "propertyfx"]
 
-  // Only for AXVM serialization. For other VMs comment these 2 lines
+  // Only for AVM serialization. For other VMs comment these 2 lines
   const genesisData: GenesisData = new GenesisData()
   genesisData.fromBuffer(bintools.cb58Decode(genesisDataStr))
 
-  // For VMs other than AXVM. For AXVM comment this line
+  // For VMs other than AVM. For AVM comment this line
   // const genesisData = genesisDataStr
   const subnetAuthCredentials: [number, Buffer][] = [
     [0, pAddresses[3]],

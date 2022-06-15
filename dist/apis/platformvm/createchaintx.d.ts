@@ -8,7 +8,7 @@ import { TransferableInput } from "./inputs";
 import { Credential, SigIdx } from "../../common/credentials";
 import { BaseTx } from "./basetx";
 import { SerializedEncoding } from "../../utils/serialization";
-import { GenesisData } from "../axvm";
+import { GenesisData } from "../avm";
 import { SubnetAuth } from ".";
 import { KeyChain } from "./keychain";
 /**

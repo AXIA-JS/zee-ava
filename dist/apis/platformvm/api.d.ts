@@ -13,7 +13,7 @@ import { PayloadBase } from "../../utils/payload";
 import { UTXOSet } from "../platformvm/utxos";
 import { PersistanceOptions } from "../../utils/persistenceoptions";
 import { GetRewardUTXOsResponse, GetStakeResponse, Subnet, GetValidatorsAtResponse, GetBalanceResponse, GetUTXOsResponse, Blockchain, GetTxStatusResponse, GetMinStakeResponse } from "./interfaces";
-import { GenesisData } from "../axvm";
+import { GenesisData } from "../avm";
 /**
  * Class for interacting with a node's PlatformVMAPI
  *

@@ -8,7 +8,7 @@ The APIs currently supported by default are:
 
 * Admin API
 * Auth API
-* AXVM API (AssetChain)
+* AVM API (AssetChain)
 * EVM API (AppChain)
 * Health API
 * Info API
@@ -76,7 +76,7 @@ The above lines import the libraries used in the tutorials. The libraries includ
 
 ## Example 1 &mdash; Managing AssetChain Keys
 
-AxiaJS comes with its own AXVM Keychain. This KeyChain is used in the functions of the API, enabling them to sign using keys it's registered. The first step in this process is to create an instance of AxiaJS connected to our Axia Platform endpoint of choice.
+AxiaJS comes with its own AVM Keychain. This KeyChain is used in the functions of the API, enabling them to sign using keys it's registered. The first step in this process is to create an instance of AxiaJS connected to our Axia Platform endpoint of choice.
 
 ```js
 import { Axia, BinTools, Buffer, BN } from "axia"
@@ -96,7 +96,7 @@ The KeyChain is accessed through the AssetChain and can be referenced directly o
 const myKeychain = assetchain.keyChain()
 ```
 
-This exposes the instance of the class AXVMKeyChain which is created when the AssetChain API is created. At present, this supports secp256k1 curve for ECDSA key pairs.
+This exposes the instance of the class AVMKeyChain which is created when the AssetChain API is created. At present, this supports secp256k1 curve for ECDSA key pairs.
 
 ### Creating AssetChain key pairs
 
@@ -167,7 +167,7 @@ This example creates an asset in the AssetChain and publishes it to the Axia Pla
 
 ```js
 import { Axia, BinTools, Buffer, BN } from "axia"
-import { InitialStates, SECPTransferOutput } from "axia/dist/apis/axvm"
+import { InitialStates, SECPTransferOutput } from "axia/dist/apis/avm"
 
 const myNetworkID = 12345 // default is 1, we want to override that for our local network
 const axia = new Axia("localhost", 9650, "http", myNetworkID)
@@ -221,7 +221,7 @@ initialState.addOutput(secpOutput3)
 
 ### Creating the signed transaction
 
-Now that we know what we want an asset to look like, we create an output to send to the network. There is an AXVM helper function `buildCreateAssetTx()` which does just that.
+Now that we know what we want an asset to look like, we create an output to send to the network. There is an AVM helper function `buildCreateAssetTx()` which does just that.
 
 ```js
 // Fetch the UTXOSet for our addresses
@@ -266,7 +266,7 @@ We assume ONE of those methods are used to issue the transaction.
 
 ### Get the status of the transaction
 
-Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the AXVM API.
+Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the AVM API.
 
 ```js
 // returns one of: "Accepted", "Processing", "Unknown", and "Rejected"

@@ -46,7 +46,7 @@ import {
   TimeError
 } from "../../utils/errors"
 import { CreateChainTx } from "."
-import { GenesisData } from "../axvm"
+import { GenesisData } from "../avm"
 import { AddSubnetValidatorTx } from "../platformvm/addsubnetvalidatortx"
 
 /**

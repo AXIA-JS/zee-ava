@@ -11,7 +11,7 @@ import { Credential, SigIdx, Signature } from "../../common/credentials"
 import { BaseTx } from "./basetx"
 import { DefaultNetworkID } from "../../utils/constants"
 import { Serialization, SerializedEncoding } from "../../utils/serialization"
-import { GenesisData } from "../axvm"
+import { GenesisData } from "../avm"
 import { SelectCredentialClass, SubnetAuth } from "."
 import { KeyChain, KeyPair } from "./keychain"
 

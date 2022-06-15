@@ -1,5 +1,5 @@
 import { Axia, BN, Buffer } from "../../src"
-import { AXVMAPI, KeyChain as AXVMKeyChain } from "../../src/apis/axvm"
+import { AVMAPI, KeyChain as AVMKeyChain } from "../../src/apis/avm"
 import {
   PlatformVMAPI,
   KeyChain,
@@ -19,9 +19,9 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AXVMAPI = axia.AssetChain()
+const assetchain: AVMAPI = axia.AssetChain()
 const corechain: PlatformVMAPI = axia.CoreChain()
-const xKeychain: AXVMKeyChain = assetchain.keyChain()
+const xKeychain: AVMKeyChain = assetchain.keyChain()
 const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)

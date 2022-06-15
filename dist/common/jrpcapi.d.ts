@@ -16,7 +16,7 @@ export declare class JRPCAPI extends APIBase {
     /**
      *
      * @param core Reference to the Axia instance using this endpoint
-     * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/axvm"
+     * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/avm"
      * @param jrpcVersion The jrpc version to use, default "2.0".
      */
     constructor(core: AxiaCore, baseURL: string, jrpcVersion?: string);

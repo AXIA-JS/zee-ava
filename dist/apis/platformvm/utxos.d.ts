@@ -11,7 +11,7 @@ import { UnsignedTx } from "./tx";
 import { StandardAssetAmountDestination } from "../../common/assetamount";
 import { Output } from "../../common/output";
 import { SerializedEncoding } from "../../utils/serialization";
-import { GenesisData } from "../axvm";
+import { GenesisData } from "../avm";
 /**
  * Class for representing a single UTXO.
  */

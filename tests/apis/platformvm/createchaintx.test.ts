@@ -41,7 +41,7 @@ describe("CreateChainTx", (): void => {
   })
 
   test("getChainName", (): void => {
-    const cn: string = "EPIC AXVM"
+    const cn: string = "EPIC AVM"
     const chainName: string = createChainTx.getChainName()
     expect(chainName).toBe(cn)
   })

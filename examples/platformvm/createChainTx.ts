@@ -6,7 +6,7 @@ import {
   GenesisAsset,
   GenesisData
 } from "../../src"
-import { InitialStates } from "../../src/apis/axvm"
+import { InitialStates } from "../../src/apis/avm"
 import {
   PlatformVMAPI,
   KeyChain,
@@ -142,8 +142,8 @@ const main = async (): Promise<any> => {
   const subnetID: Buffer = bintools.cb58Decode(
     "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
   )
-  const chainName: string = "EPIC AXVM"
-  const vmID: string = "axvm"
+  const chainName: string = "EPIC AVM"
+  const vmID: string = "avm"
   const fxIDs: string[] = ["secp256k1fx", "nftfx", "propertyfx"]
   fxIDs.sort()
   const blockchainID: Buffer = bintools.cb58Decode(coreChainBlockchainID)

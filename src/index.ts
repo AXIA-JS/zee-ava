@@ -5,10 +5,10 @@
 import AxiaCore from "./axia"
 import { AdminAPI } from "./apis/admin/api"
 import { AuthAPI } from "./apis/auth/api"
-import { AXVMAPI } from "./apis/axvm/api"
+import { AVMAPI } from "./apis/avm/api"
 import { EVMAPI } from "./apis/evm/api"
-import { GenesisAsset } from "./apis/axvm/genesisasset"
-import { GenesisData } from "./apis/axvm/genesisdata"
+import { GenesisAsset } from "./apis/avm/genesisasset"
+import { GenesisData } from "./apis/avm/genesisdata"
 import { HealthAPI } from "./apis/health/api"
 import { IndexAPI } from "./apis/index/api"
 import { InfoAPI } from "./apis/info/api"
@@ -52,9 +52,9 @@ export default class Axia extends AxiaCore {
   AppChain = () => this.apis.appchain as EVMAPI
 
   /**
-   * Returns a reference to the AXVM RPC pointed at the AssetChain.
+   * Returns a reference to the AVM RPC pointed at the AssetChain.
    */
-  AssetChain = () => this.apis.assetchain as AXVMAPI
+  AssetChain = () => this.apis.assetchain as AVMAPI
 
   /**
    * Returns a reference to the Health RPC for a node.
@@ -95,7 +95,7 @@ export default class Axia extends AxiaCore {
    * @param protocol The protocol string to use before a "://" in a request,
    * ex: "http", "https", "git", "ws", etc. Defaults to http
    * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
-   * @param AssetChainID Sets the blockchainID for the AXVM. Will try to auto-detect,
+   * @param AssetChainID Sets the blockchainID for the AVM. Will try to auto-detect,
    * otherwise default "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
    * @param AppChainID Sets the blockchainID for the EVM. Will try to auto-detect,
    * otherwise default "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
@@ -152,7 +152,7 @@ export default class Axia extends AxiaCore {
     if (!skipinit) {
       this.addAPI("admin", AdminAPI)
       this.addAPI("auth", AuthAPI)
-      this.addAPI("assetchain", AXVMAPI, "/ext/bc/X", assetchainid)
+      this.addAPI("assetchain", AVMAPI, "/ext/bc/X", assetchainid)
       this.addAPI("appchain", EVMAPI, "/ext/bc/C/axc", appchainid)
       this.addAPI("health", HealthAPI)
       this.addAPI("info", InfoAPI)
@@ -179,7 +179,7 @@ export { Socket }
 
 export * as admin from "./apis/admin"
 export * as auth from "./apis/auth"
-export * as axvm from "./apis/axvm"
+export * as avm from "./apis/avm"
 export * as common from "./common"
 export * as evm from "./apis/evm"
 export * as health from "./apis/health"
