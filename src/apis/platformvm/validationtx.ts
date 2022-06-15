@@ -199,7 +199,7 @@ export abstract class WeightedValidatorTx extends ValidatorTx {
   }
 
   /**
-   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddAllyChainValidatorTx]].
+   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddSubnetValidatorTx]].
    */
   toBuffer(): Buffer {
     const superbuff: Buffer = super.toBuffer()
@@ -207,7 +207,7 @@ export abstract class WeightedValidatorTx extends ValidatorTx {
   }
 
   /**
-   * Class representing an unsigned AddAllyChainValidatorTx transaction.
+   * Class representing an unsigned AddSubnetValidatorTx transaction.
    *
    * @param networkID Optional. Networkid, [[DefaultNetworkID]]
    * @param blockchainID Optional. Blockchainid, default Buffer.alloc(32, 16)

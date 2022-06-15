@@ -189,7 +189,7 @@ export declare abstract class ChainAddressPayload extends PayloadBase {
 /**
  * Class for payloads representing X-Chin addresses.
  */
-export declare class XCHAINADDRPayload extends ChainAddressPayload {
+export declare class ASSETCHAINADDRPayload extends ChainAddressPayload {
     protected typeid: number;
     protected chainid: string;
 }
@@ -245,9 +245,9 @@ export declare class NFTIDPayload extends UTXOIDPayload {
     protected typeid: number;
 }
 /**
- * Class for payloads representing AllyChainIDs.
+ * Class for payloads representing SubnetIDs.
  */
-export declare class ALLYCHAINIDPayload extends cb58EncodedPayload {
+export declare class SUBNETIDPayload extends cb58EncodedPayload {
     protected typeid: number;
 }
 /**

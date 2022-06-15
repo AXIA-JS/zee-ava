@@ -10,7 +10,7 @@ const admin: AdminAPI = axia.Admin()
 
 const main = async (): Promise<any> => {
   const endpoint: string = "/ext/bc/X"
-  const alias: string = "xchain"
+  const alias: string = "assetchain"
   const successful: boolean = await admin.alias(endpoint, alias)
   console.log(successful)
 }

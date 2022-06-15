@@ -31,7 +31,7 @@ export interface GetRewardUTXOsResponse {
 
 export interface GetValidatorsAtParams {
   height: number
-  allyChainID?: string
+  subnetID?: string
 }
 
 export interface GetValidatorsAtResponse {
@@ -39,18 +39,18 @@ export interface GetValidatorsAtResponse {
 }
 
 export interface GetCurrentValidatorsParams {
-  allyChainID?: Buffer | string
+  subnetID?: Buffer | string
   nodeIDs?: string[]
 }
 
 export interface SampleValidatorsParams {
   size: number | string
-  allyChainID?: Buffer | string | undefined
+  subnetID?: Buffer | string | undefined
 }
 
 export interface SampleValidatorsParams {
   size: number | string
-  allyChainID?: Buffer | string | undefined
+  subnetID?: Buffer | string | undefined
 }
 
 export interface AddValidatorParams {
@@ -75,7 +75,7 @@ export interface AddNominatorParams {
 }
 
 export interface GetPendingValidatorsParams {
-  allyChainID?: Buffer | string
+  subnetID?: Buffer | string
   nodeIDs?: string[]
 }
 
@@ -151,14 +151,14 @@ export interface GetUTXOsResponse {
   endIndex: EndIndex
 }
 
-export interface CreateAllyChainParams {
+export interface CreateSubnetParams {
   username: string
   password: string
   controlKeys: string[]
   threshold: number
 }
 
-export interface AllyChain {
+export interface Subnet {
   ids: string
   controlKeys: string[]
   threshold: number
@@ -167,7 +167,7 @@ export interface AllyChain {
 export interface CreateBlockchainParams {
   username: string
   password: string
-  allyChainID?: Buffer | string | undefined
+  subnetID?: Buffer | string | undefined
   vmID: string
   fxIDs: number[]
   name: string
@@ -177,7 +177,7 @@ export interface CreateBlockchainParams {
 export interface Blockchain {
   id: string
   name: string
-  allyChainID: string
+  subnetID: string
   vmID: string
 }
 
@@ -197,7 +197,7 @@ export interface GetMinStakeResponse {
 }
 
 export interface GetMaxStakeAmountParams {
-  allyChainID?: string
+  subnetID?: string
   nodeID: string
   startTime: BN
   endTime: BN

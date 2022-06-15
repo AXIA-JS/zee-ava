@@ -81,7 +81,7 @@ export class PayloadTypes {
       case 5:
         return new BIGNUMPayload(...args)
       case 6:
-        return new XCHAINADDRPayload(...args)
+        return new ASSETCHAINADDRPayload(...args)
       case 7:
         return new CORECHAINADDRPayload(...args)
       case 8:
@@ -95,7 +95,7 @@ export class PayloadTypes {
       case 12:
         return new NFTIDPayload(...args)
       case 13:
-        return new ALLYCHAINIDPayload(...args)
+        return new SUBNETIDPayload(...args)
       case 14:
         return new CHAINIDPayload(...args)
       case 15:
@@ -162,14 +162,14 @@ export class PayloadTypes {
       "B58STR",
       "B64STR",
       "BIGNUM",
-      "XCHAINADDR",
+      "ASSETCHAINADDR",
       "CORECHAINADDR",
       "APPCHAINADDR",
       "TXID",
       "ASSETID",
       "UTXOID",
       "NFTID",
-      "ALLYCHAINID",
+      "SUBNETID",
       "CHAINID",
       "NODEID",
       "SECPSIG",
@@ -466,7 +466,7 @@ export abstract class ChainAddressPayload extends PayloadBase {
 /**
  * Class for payloads representing X-Chin addresses.
  */
-export class XCHAINADDRPayload extends ChainAddressPayload {
+export class ASSETCHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 6
   protected chainid = "X"
 }
@@ -539,9 +539,9 @@ export class NFTIDPayload extends UTXOIDPayload {
 }
 
 /**
- * Class for payloads representing AllyChainIDs.
+ * Class for payloads representing SubnetIDs.
  */
-export class ALLYCHAINIDPayload extends cb58EncodedPayload {
+export class SUBNETIDPayload extends cb58EncodedPayload {
   protected typeid = 13
 }
 

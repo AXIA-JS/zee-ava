@@ -118,7 +118,7 @@ export default class BinTools {
   }
 
   /**
-   * Returns true if meets requirements to parse as an address as Bech32 on X-Chain or CoreChain, otherwise false
+   * Returns true if meets requirements to parse as an address as Bech32 on AssetChain or CoreChain, otherwise false
    * @param address the string to verify is address
    */
   isPrimaryBechAddress = (address: string): boolean => {

@@ -25,7 +25,7 @@ const bintools: BinTools = BinTools.getInstance()
  */
 export class BaseTx extends StandardBaseTx<KeyPair, KeyChain> {
   protected _typeName = "BaseTx"
-  protected _typeID = PlatformVMConstants.CREATEALLYCHAINTX
+  protected _typeID = PlatformVMConstants.CREATESUBNETTX
 
   deserialize(fields: object, encoding: SerializedEncoding = "hex") {
     super.deserialize(fields, encoding)

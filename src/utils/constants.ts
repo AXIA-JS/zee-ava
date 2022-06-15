@@ -9,7 +9,7 @@ export const PrivateKeyPrefix: string = "PrivateKey-"
 export const NodeIDPrefix: string = "NodeID-"
 export const PrimaryAssetAlias: string = "AVAX"
 export const MainnetAPI: string = "api.avax.network"
-export const FujiAPI: string = "18.222.205.99:9650"
+export const FujiAPI: string = "api.avax-test.network"
 
 export interface C {
   blockchainID: string
@@ -40,7 +40,7 @@ export interface P {
   alias: string
   vm: string
   creationTxFee: BN | number
-  createAllyChainTx: BN | number
+  createSubnetTx: BN | number
   createChainTx: BN | number
   minConsumption: number
   maxConsumption: number
@@ -122,10 +122,10 @@ export const DefaultNetworkID: number = 1
 
 export const PlatformChainID: string = "11111111111111111111111111111111LpoYY"
 export const PrimaryNetworkID: string = "11111111111111111111111111111111LpoYY"
-export const XChainAlias: string = "X"
+export const AssetChainAlias: string = "X"
 export const AppChainAlias: string = "C"
 export const CoreChainAlias: string = "P"
-export const XChainVMName: string = "avm"
+export const AssetChainVMName: string = "axvm"
 export const AppChainVMName: string = "evm"
 export const CoreChainVMName: string = "platformvm"
 
@@ -163,8 +163,8 @@ export const AXCSTAKECAP: BN = ONEAXC.mul(new BN(3000000))
 // Start Manhattan
 const n0X: X = {
   blockchainID: "2vrXWHgGxh5n3YsLHMV16YVVJTpT4z45Fmb4y3bL6si8kLCyg9",
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AssetChainAlias,
+  vm: AssetChainVMName,
   fee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -176,7 +176,7 @@ const n0P: P = {
   vm: CoreChainVMName,
   fee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createAllyChainTx: ONEAXC,
+  createSubnetTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -204,8 +204,8 @@ let axcAssetID: string = "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z"
 const n1X: X = {
   blockchainID: "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
   axcAssetID: axcAssetID,
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AssetChainAlias,
+  vm: AssetChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -217,7 +217,7 @@ const n1P: P = {
   alias: CoreChainAlias,
   vm: CoreChainVMName,
   txFee: MILLIAXC,
-  createAllyChainTx: ONEAXC,
+  createSubnetTx: ONEAXC,
   createChainTx: ONEAXC,
   creationTxFee: CENTIAXC,
   minConsumption: 0.1,
@@ -252,8 +252,8 @@ const n1C: C = {
 // Start Cascade
 const n2X: X = {
   blockchainID: "4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM",
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AssetChainAlias,
+  vm: AssetChainVMName,
   txFee: 0,
   creationTxFee: 0,
   mintTxFee: new BN(0)
@@ -265,7 +265,7 @@ const n2P: P = {
   vm: CoreChainVMName,
   txFee: 0,
   creationTxFee: 0,
-  createAllyChainTx: ONEAXC,
+  createSubnetTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -289,8 +289,8 @@ const n2C: C = {
 // Start Denali
 const n3X: X = {
   blockchainID: "rrEWX7gc7D9mwcdrdBxBTdqh1a7WDVsMuadhTZgyXfFcRz45L",
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AssetChainAlias,
+  vm: AssetChainVMName,
   txFee: 0,
   creationTxFee: 0,
   mintTxFee: new BN(0)
@@ -302,7 +302,7 @@ const n3P: P = {
   vm: CoreChainVMName,
   txFee: 0,
   creationTxFee: 0,
-  createAllyChainTx: ONEAXC,
+  createSubnetTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -326,8 +326,8 @@ const n3C: C = {
 // Start Everest
 const n4X: X = {
   blockchainID: "jnUjZSRt16TcRnZzmh5aMhavwVHz3zBrSN8GfFMTQkzUnoBxC",
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AssetChainAlias,
+  vm: AssetChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -339,7 +339,7 @@ const n4P: P = {
   vm: CoreChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createAllyChainTx: ONEAXC,
+  createSubnetTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -366,8 +366,8 @@ axcAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
 const n5X: X = {
   blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
   axcAssetID: axcAssetID,
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AssetChainAlias,
+  vm: AssetChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -380,7 +380,7 @@ const n5P: P = {
   vm: CoreChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createAllyChainTx: ONEAXC,
+  createSubnetTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,

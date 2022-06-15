@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios"
 import { Axia, AxiaCore } from "../src"
-import { AVMAPI } from "../src/apis/avm/api"
+import { AXVMAPI } from "../src/apis/axvm/api"
 import { AdminAPI } from "../src/apis/admin/api"
 import { HealthAPI } from "../src/apis/health/api"
 import { InfoAPI } from "../src/apis/info/api"
@@ -36,7 +36,7 @@ describe("Axia", (): void => {
       skipinit
     )
     axia.addAPI("admin", AdminAPI)
-    axia.addAPI("xchain", AVMAPI, "/ext/allyChain/avm", blockchainID)
+    axia.addAPI("assetchain", AXVMAPI, "/ext/subnet/axvm", blockchainID)
     axia.addAPI("health", HealthAPI)
     axia.addAPI("info", InfoAPI)
     axia.addAPI("keystore", KeystoreAPI)
@@ -93,11 +93,11 @@ describe("Axia", (): void => {
   })
 
   test("Endpoints correct", (): void => {
-    expect(axia.Admin()).not.toBeInstanceOf(AVMAPI)
+    expect(axia.Admin()).not.toBeInstanceOf(AXVMAPI)
     expect(axia.Admin()).toBeInstanceOf(AdminAPI)
 
-    expect(axia.XChain()).not.toBeInstanceOf(AdminAPI)
-    expect(axia.XChain()).toBeInstanceOf(AVMAPI)
+    expect(axia.AssetChain()).not.toBeInstanceOf(AdminAPI)
+    expect(axia.AssetChain()).toBeInstanceOf(AXVMAPI)
 
     expect(axia.Health()).not.toBeInstanceOf(KeystoreAPI)
     expect(axia.Health()).toBeInstanceOf(HealthAPI)
@@ -115,14 +115,14 @@ describe("Axia", (): void => {
     expect(axia.Metrics()).toBeInstanceOf(MetricsAPI)
 
     expect(axia.Admin().getRPCID()).toBe(1)
-    expect(axia.XChain().getRPCID()).toBe(1)
+    expect(axia.AssetChain().getRPCID()).toBe(1)
     expect(axia.CoreChain().getRPCID()).toBe(1)
     expect(axia.NodeKeys().getRPCID()).toBe(1)
   })
 
   test("Create new API", (): void => {
-    axia.addAPI("avm2", AVMAPI)
-    expect(axia.api("avm2")).toBeInstanceOf(AVMAPI)
+    axia.addAPI("axvm2", AXVMAPI)
+    expect(axia.api("axvm2")).toBeInstanceOf(AXVMAPI)
 
     axia.addAPI("keystore2", KeystoreAPI, "/ext/keystore2")
     expect(axia.api("keystore2")).toBeInstanceOf(KeystoreAPI)

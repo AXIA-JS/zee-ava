@@ -136,7 +136,7 @@ export declare class ContractVMAPI extends JRPCAPI {
      */
     checkGooseEgg: (utx: UnsignedTx, outTotal?: BN) => Promise<boolean>;
     /**
-     * Retrieves an assetID for a allyChain's staking assset.
+     * Retrieves an assetID for a subnet's staking assset.
      *
      * @returns Returns a Promise<string> with cb58 encoded value of the assetID.
      */
@@ -146,15 +146,15 @@ export declare class ContractVMAPI extends JRPCAPI {
      *
      * @param username The username of the Keystore user that controls the new account
      * @param password The password of the Keystore user that controls the new account
-     * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the AllyChainID or its alias.
+     * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the SubnetID or its alias.
      * @param vmID The ID of the Virtual Machine the blockchain runs. Can also be an alias of the Virtual Machine.
      * @param FXIDs The ids of the FXs the VM is running.
      * @param name A human-readable name for the new blockchain
      * @param genesis The base 58 (with checksum) representation of the genesis state of the new blockchain. Virtual Machines should have a static API method named buildGenesis that can be used to generate genesisData.
      *
-     * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the AllyChain’s control keys and by the account paying the transaction fee.
+     * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Subnet’s control keys and by the account paying the transaction fee.
      */
-    createBlockchain: (username: string, password: string, allyChainID: Buffer | string, vmID: string, fxIDs: Array<number>, name: string, genesis: string) => Promise<string>;
+    createBlockchain: (username: string, password: string, subnetID: Buffer | string, vmID: string, fxIDs: Array<number>, name: string, genesis: string) => Promise<string>;
     /**
      * Gets the status of a blockchain.
      *
@@ -190,15 +190,15 @@ export declare class ContractVMAPI extends JRPCAPI {
      */
     listAddresses: (username: string, password: string) => Promise<Array<string>>;
     /**
-     * Send AXC from an account on the CoreChain to an address on the X-Chain. This transaction
+     * Send AXC from an account on the CoreChain to an address on the AssetChain. This transaction
      * must be signed with the key of the account that the AXC is sent from and which pays
-     * the transaction fee. After issuing this transaction, you must call the X-Chain’s
+     * the transaction fee. After issuing this transaction, you must call the AssetChain’s
      * importAXC method to complete the transfer.
      *
      * @param username The Keystore user that controls the account specified in `to`
      * @param password The password of the Keystore user
      * @param to The ID of the account the AXC is sent to. This must be the same as the to
-     * argument in the corresponding call to the X-Chain’s exportAXC
+     * argument in the corresponding call to the AssetChain’s exportAXC
      * @param sourceChain The chainID where the funds are coming from.
      *
      * @returns Promise for a string for the transaction, which should be sent to the network

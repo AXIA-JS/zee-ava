@@ -11,8 +11,8 @@ import { Credential, SigIdx, Signature } from "../../common/credentials"
 import { BaseTx } from "./basetx"
 import { DefaultNetworkID } from "../../utils/constants"
 import { Serialization, SerializedEncoding } from "../../utils/serialization"
-import { GenesisData } from "../avm"
-import { SelectCredentialClass, AllyChainAuth } from "."
+import { GenesisData } from "../axvm"
+import { SelectCredentialClass, SubnetAuth } from "."
 import { KeyChain, KeyPair } from "./keychain"
 
 /**
@@ -32,8 +32,8 @@ export class CreateChainTx extends BaseTx {
     let fields: object = super.serialize(encoding)
     return {
       ...fields,
-      allyChainID: serialization.encoder(
-        this.allyChainID,
+      subnetID: serialization.encoder(
+        this.subnetID,
         encoding,
         "Buffer",
         "cb58"
@@ -43,8 +43,8 @@ export class CreateChainTx extends BaseTx {
   }
   deserialize(fields: object, encoding: SerializedEncoding = "hex") {
     super.deserialize(fields, encoding)
-    this.allyChainID = serialization.decoder(
-      fields["allyChainID"],
+    this.subnetID = serialization.decoder(
+      fields["subnetID"],
       encoding,
       "cb58",
       "Buffer",
@@ -57,15 +57,15 @@ export class CreateChainTx extends BaseTx {
     // })
   }
 
-  protected allyChainID: Buffer = Buffer.alloc(32)
+  protected subnetID: Buffer = Buffer.alloc(32)
   protected chainName: string = ""
   protected vmID: Buffer = Buffer.alloc(32)
   protected numFXIDs: Buffer = Buffer.alloc(4)
   protected fxIDs: Buffer[] = []
   protected genesisData: Buffer = Buffer.alloc(32)
-  protected allyChainAuth: AllyChainAuth
+  protected subnetAuth: SubnetAuth
   protected sigCount: Buffer = Buffer.alloc(4)
-  protected sigIdxs: SigIdx[] = [] // idxs of allyChain auth signers
+  protected sigIdxs: SigIdx[] = [] // idxs of subnet auth signers
 
   /**
    * Returns the id of the [[CreateChainTx]]
@@ -75,17 +75,17 @@ export class CreateChainTx extends BaseTx {
   }
 
   /**
-   * Returns the allyChainAuth
+   * Returns the subnetAuth
    */
-  getAllyChainAuth(): AllyChainAuth {
-    return this.allyChainAuth
+  getSubnetAuth(): SubnetAuth {
+    return this.subnetAuth
   }
 
   /**
-   * Returns the allyChainID as a string
+   * Returns the subnetID as a string
    */
-  getAllyChainID(): string {
-    return bintools.cb58Encode(this.allyChainID)
+  getSubnetID(): string {
+    return bintools.cb58Encode(this.subnetID)
   }
 
   /**
@@ -127,7 +127,7 @@ export class CreateChainTx extends BaseTx {
    */
   fromBuffer(bytes: Buffer, offset: number = 0): number {
     offset = super.fromBuffer(bytes, offset)
-    this.allyChainID = bintools.copyFrom(bytes, offset, offset + 32)
+    this.subnetID = bintools.copyFrom(bytes, offset, offset + 32)
     offset += 32
 
     const chainNameSize: number = bintools
@@ -165,10 +165,10 @@ export class CreateChainTx extends BaseTx {
     )
     offset += genesisDataSize
 
-    const sa: AllyChainAuth = new AllyChainAuth()
+    const sa: SubnetAuth = new SubnetAuth()
     offset += sa.fromBuffer(bintools.copyFrom(bytes, offset))
 
-    this.allyChainAuth = sa
+    this.subnetAuth = sa
 
     return offset
   }
@@ -186,7 +186,7 @@ export class CreateChainTx extends BaseTx {
 
     let bsize: number =
       superbuff.length +
-      this.allyChainID.length +
+      this.subnetID.length +
       chainNameSize.length +
       chainNameBuff.length +
       this.vmID.length +
@@ -194,7 +194,7 @@ export class CreateChainTx extends BaseTx {
 
     const barr: Buffer[] = [
       superbuff,
-      this.allyChainID,
+      this.subnetID,
       chainNameSize,
       chainNameBuff,
       this.vmID,
@@ -213,8 +213,8 @@ export class CreateChainTx extends BaseTx {
     barr.push(gdLength)
     barr.push(this.genesisData)
 
-    bsize += this.allyChainAuth.toBuffer().length
-    barr.push(this.allyChainAuth.toBuffer())
+    bsize += this.subnetAuth.toBuffer().length
+    barr.push(this.subnetAuth.toBuffer())
 
     return Buffer.concat(barr, bsize)
   }
@@ -230,7 +230,7 @@ export class CreateChainTx extends BaseTx {
   }
 
   /**
-   * Creates and adds a [[SigIdx]] to the [[AddAllyChainValidatorTx]].
+   * Creates and adds a [[SigIdx]] to the [[AddSubnetValidatorTx]].
    *
    * @param addressIdx The index of the address to reference in the signatures
    * @param address The address of the source of the signature
@@ -238,7 +238,7 @@ export class CreateChainTx extends BaseTx {
   addSignatureIdx(addressIdx: number, address: Buffer): void {
     const addressIndex: Buffer = Buffer.alloc(4)
     addressIndex.writeUIntBE(addressIdx, 0, 4)
-    this.allyChainAuth.addAddressIndex(addressIndex)
+    this.subnetAuth.addAddressIndex(addressIndex)
 
     const sigidx: SigIdx = new SigIdx()
     const b: Buffer = Buffer.alloc(4)
@@ -291,7 +291,7 @@ export class CreateChainTx extends BaseTx {
    * @param outs Optional array of the [[TransferableOutput]]s
    * @param ins Optional array of the [[TransferableInput]]s
    * @param memo Optional {@link https://github.com/feross/buffer|Buffer} for the memo field
-   * @param allyChainID Optional ID of the AllyChain that validates this blockchain.
+   * @param subnetID Optional ID of the Subnet that validates this blockchain.
    * @param chainName Optional A human readable name for the chain; need not be unique
    * @param vmID Optional ID of the VM running on the new chain
    * @param fxIDs Optional IDs of the feature extensions running on the new chain
@@ -303,18 +303,18 @@ export class CreateChainTx extends BaseTx {
     outs: TransferableOutput[] = undefined,
     ins: TransferableInput[] = undefined,
     memo: Buffer = undefined,
-    allyChainID: string | Buffer = undefined,
+    subnetID: string | Buffer = undefined,
     chainName: string = undefined,
     vmID: string = undefined,
     fxIDs: string[] = undefined,
     genesisData: string | GenesisData = undefined
   ) {
     super(networkID, blockchainID, outs, ins, memo)
-    if (typeof allyChainID != "undefined") {
-      if (typeof allyChainID === "string") {
-        this.allyChainID = bintools.cb58Decode(allyChainID)
+    if (typeof subnetID != "undefined") {
+      if (typeof subnetID === "string") {
+        this.subnetID = bintools.cb58Decode(subnetID)
       } else {
-        this.allyChainID = allyChainID
+        this.subnetID = subnetID
       }
     }
     if (typeof chainName != "undefined") {
@@ -341,7 +341,7 @@ export class CreateChainTx extends BaseTx {
       this.genesisData = Buffer.from(genesisData)
     }
 
-    const allyChainAuth: AllyChainAuth = new AllyChainAuth()
-    this.allyChainAuth = allyChainAuth
+    const subnetAuth: SubnetAuth = new SubnetAuth()
+    this.subnetAuth = subnetAuth
   }
 }

@@ -1,6 +1,6 @@
 import Axia, { HDNode, Mnemonic } from "src"
 import { Buffer } from "buffer/"
-import { AVMAPI, KeyChain } from "src/apis/avm"
+import { AXVMAPI, KeyChain } from "src/apis/axvm"
 
 const ip: string = "localhost"
 const port: number = 9650
@@ -8,8 +8,8 @@ const protocol: string = "http"
 const networkID: number = 1
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const mnemonic: Mnemonic = Mnemonic.getInstance()
-const xchain: AVMAPI = axia.XChain()
-const xKeychain: KeyChain = xchain.keyChain()
+const assetchain: AXVMAPI = axia.AssetChain()
+const xKeychain: KeyChain = assetchain.keyChain()
 
 describe("HDNode", (): void => {
   const xPriv: string =
@@ -89,7 +89,7 @@ describe("HDNode", (): void => {
       const child: HDNode = hdnode.derive(`m/44'/9000'/0'/0/${i}`)
       xKeychain.importKey(child.privateKeyCB58)
     }
-    const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
+    const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
     expect(xAddressStrings).toStrictEqual(addrs)
   })
 })

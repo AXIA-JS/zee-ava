@@ -9,10 +9,10 @@ const axia: Axia = new Axia(ip, port, protocol, networkID)
 const corechain: PlatformVMAPI = axia.CoreChain()
 
 const main = async (): Promise<any> => {
-  const allyChainID: string = "11111111111111111111111111111111LpoYY"
+  const subnetID: string = "11111111111111111111111111111111LpoYY"
   const nodeIDs: string[] = []
   const pendingValidators: object = await corechain.getPendingValidators(
-    allyChainID
+    subnetID
   )
   console.log(pendingValidators)
 }

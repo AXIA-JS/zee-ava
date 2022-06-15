@@ -8,7 +8,7 @@ The APIs currently supported by default are:
 
 * Admin API
 * Auth API
-* AVM API (X-Chain)
+* AXVM API (AssetChain)
 * EVM API (AppChain)
 * Health API
 * Info API
@@ -24,10 +24,10 @@ We built AxiaJS with ease of use in mind. With this library, any Javascript deve
 * Retrieve balances on addresses
 * Get UTXOs for addresses
 * Build and sign transactions
-* Issue signed transactions to the X-Chain, CoreChain, and AppChain
-* Perform cross-chain swaps between the X-Chain<->CoreChain and between the X-Chain<->AppChain
-* Add Validators and Nominators to the Primary AllyChainwork by staking AXC
-* Create a AllyChainwork
+* Issue signed transactions to the AssetChain, CoreChain, and AppChain
+* Perform cross-chain swaps between the AssetChain<->CoreChain and between the AssetChain<->AppChain
+* Add Validators and Nominators to the Primary Subnetwork by staking AXC
+* Create a Subnetwork
 * Administer a local node
 * Retrieve Axia network information from a node
 
@@ -74,9 +74,9 @@ The above lines import the libraries used in the tutorials. The libraries includ
 * [BN](https://www.npmjs.com/package/bn.js): A bignumber module use by AxiaJS.
 * [Buffer](https://www.npmjs.com/package/buffer): A Buffer library.
 
-## Example 1 &mdash; Managing X-Chain Keys
+## Example 1 &mdash; Managing AssetChain Keys
 
-AxiaJS comes with its own AVM Keychain. This KeyChain is used in the functions of the API, enabling them to sign using keys it's registered. The first step in this process is to create an instance of AxiaJS connected to our Axia Platform endpoint of choice.
+AxiaJS comes with its own AXVM Keychain. This KeyChain is used in the functions of the API, enabling them to sign using keys it's registered. The first step in this process is to create an instance of AxiaJS connected to our Axia Platform endpoint of choice.
 
 ```js
 import { Axia, BinTools, Buffer, BN } from "axia"
@@ -85,20 +85,20 @@ const bintools = BinTools.getInstance()
 
 const myNetworkID = 12345 //default is 1, we want to override that for our local network
 const axia = new Axia("localhost", 9650, "http", myNetworkID)
-const xchain = axia.XChain() //returns a reference to the X-Chain used by AxiaJS
+const assetchain = axia.AssetChain() //returns a reference to the AssetChain used by AxiaJS
 ```
 
 ### Accessing the KeyChain
 
-The KeyChain is accessed through the X-Chain and can be referenced directly or through a reference variable.
+The KeyChain is accessed through the AssetChain and can be referenced directly or through a reference variable.
 
 ```js
-const myKeychain = xchain.keyChain()
+const myKeychain = assetchain.keyChain()
 ```
 
-This exposes the instance of the class AVMKeyChain which is created when the X-Chain API is created. At present, this supports secp256k1 curve for ECDSA key pairs.
+This exposes the instance of the class AXVMKeyChain which is created when the AssetChain API is created. At present, this supports secp256k1 curve for ECDSA key pairs.
 
-### Creating X-Chain key pairs
+### Creating AssetChain key pairs
 
 The KeyChain has the ability to create new KeyPairs for you and return the address associated with the key pair.
 
@@ -124,7 +124,7 @@ const newAddress2 = myKeychain.importKey(mypk) // returns an instance of the Key
 
 ### Working with KeyChains
 
-The X-Chains's KeyChain has standardized key management capabilities. The following functions are available on any KeyChain that implements this interface.
+The AssetChains's KeyChain has standardized key management capabilities. The following functions are available on any KeyChain that implements this interface.
 
 ```js
 const addresses = myKeychain.getAddresses() // returns an array of Buffers for the addresses
@@ -135,7 +135,7 @@ const keypair = myKeychain.getKey(addresses[0]) // returns the KeyPair class
 
 ### Working with KeyPairs
 
-The X-Chain's KeyPair has standardized KeyPair functionality. The following operations are available on any KeyPair that implements this interface.
+The AssetChain's KeyPair has standardized KeyPair functionality. The following operations are available on any KeyPair that implements this interface.
 
 ```js
 const address = keypair.getAddress() // returns Buffer
@@ -163,15 +163,15 @@ const isValid = keypair.verify(message, signature) // returns a boolean
 
 ## Example 2 &mdash; Creating An Asset
 
-This example creates an asset in the X-Chain and publishes it to the Axia Platform. The first step in this process is to create an instance of AxiaJS connected to our Axia Platform endpoint of choice.
+This example creates an asset in the AssetChain and publishes it to the Axia Platform. The first step in this process is to create an instance of AxiaJS connected to our Axia Platform endpoint of choice.
 
 ```js
 import { Axia, BinTools, Buffer, BN } from "axia"
-import { InitialStates, SECPTransferOutput } from "axia/dist/apis/avm"
+import { InitialStates, SECPTransferOutput } from "axia/dist/apis/axvm"
 
 const myNetworkID = 12345 // default is 1, we want to override that for our local network
 const axia = new Axia("localhost", 9650, "http", myNetworkID)
-const xchain = axia.XChain() // returns a reference to the X-Chain used by AxiaJS
+const assetchain = axia.AssetChain() // returns a reference to the AssetChain used by AxiaJS
 ```
 
 ### Describe the new asset
@@ -192,10 +192,10 @@ const denomination = 9
 
 We want to mint an asset with 400 coins to all of our managed keys, 500 to the second address we know of, and 600 to the second and third address. This sets up the state that will result from the Create Asset transaction.
 
-_Note: This example assumes we have the keys already managed in our X-Chain's Keychain._
+_Note: This example assumes we have the keys already managed in our AssetChain's Keychain._
 
 ```js
-const addresses = xchain.keyChain().getAddresses()
+const addresses = assetchain.keyChain().getAddresses()
 
 // Create outputs for the asset's initial state
 const secpOutput1 = new SECPTransferOutput(
@@ -221,14 +221,14 @@ initialState.addOutput(secpOutput3)
 
 ### Creating the signed transaction
 
-Now that we know what we want an asset to look like, we create an output to send to the network. There is an AVM helper function `buildCreateAssetTx()` which does just that.
+Now that we know what we want an asset to look like, we create an output to send to the network. There is an AXVM helper function `buildCreateAssetTx()` which does just that.
 
 ```js
 // Fetch the UTXOSet for our addresses
-const utxos = await xchain.getUTXOs(addresses)
+const utxos = await assetchain.getUTXOs(addresses)
 
 // Make an unsigned Create Asset transaction from the data compiled earlier
-const unsigned = await xchain.buildCreateAssetTx(
+const unsigned = await assetchain.buildCreateAssetTx(
   utxos, // the UTXOSet containing the UTXOs we're going to spend
   addresses, // the addresses which will pay the fees
   addresses, // the addresses which recieve the change from the spent UTXOs
@@ -238,39 +238,39 @@ const unsigned = await xchain.buildCreateAssetTx(
   denomination // the asse's denomination
 )
 
-const signed = unsigned.sign(xchain) // returns a Tx class
+const signed = unsigned.sign(assetchain) // returns a Tx class
 ```
 
 ### Issue the signed transaction
 
 Now that we have a signed transaction ready to send to the network, let's issue it!
 
-Using the AxiaJS X-Chain API, we going to call the `issueTx` function. This function can take either the Tx class returned in the previous step, a CB58 representation of the transaction, or a raw Buffer class with the data for the transaction. Examples of each are below:
+Using the AxiaJS AssetChain API, we going to call the `issueTx` function. This function can take either the Tx class returned in the previous step, a CB58 representation of the transaction, or a raw Buffer class with the data for the transaction. Examples of each are below:
 
 ```js
 // using the Tx class
-const txid = await xchain.issueTx(signed) // returns a CB58 serialized string for the TxID
+const txid = await assetchain.issueTx(signed) // returns a CB58 serialized string for the TxID
 ```
 
 ```js
 // using the base-58 representation
-const txid = await xchain.issueTx(signed.toString()) // returns a CB58 serialized string for the TxID
+const txid = await assetchain.issueTx(signed.toString()) // returns a CB58 serialized string for the TxID
 ```
 
 ```js
 // using the transaction Buffer
-const txid = await xchain.issueTx(signed.toBuffer()) // returns a CB58 serialized string for the TxID
+const txid = await assetchain.issueTx(signed.toBuffer()) // returns a CB58 serialized string for the TxID
 ```
 
 We assume ONE of those methods are used to issue the transaction.
 
 ### Get the status of the transaction
 
-Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the AVM API.
+Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the AXVM API.
 
 ```js
 // returns one of: "Accepted", "Processing", "Unknown", and "Rejected"
-const status = await xchain.getTxStatus(txid)
+const status = await assetchain.getTxStatus(txid)
 ```
 
 The statuses can be one of "Accepted", "Processing", "Unknown", and "Rejected":
@@ -282,11 +282,11 @@ The statuses can be one of "Accepted", "Processing", "Unknown", and "Rejected":
 
 ### Identifying the newly created asset
 
-The X-Chain uses the TxID of the transaction which created the asset as the unique identifier for the asset. This unique identifier is henceforth known as the "AssetID" of the asset. When assets are traded around the X-Chain, they always reference the AssetID that they represent.
+The AssetChain uses the TxID of the transaction which created the asset as the unique identifier for the asset. This unique identifier is henceforth known as the "AssetID" of the asset. When assets are traded around the AssetChain, they always reference the AssetID that they represent.
 
 ## Example 3 &mdash; Sending An Asset
 
-This example sends an asset in the X-Chain to a single recipient. The first step in this process is to create an instance of Axia connected to our Axia Platform endpoint of choice.
+This example sends an asset in the AssetChain to a single recipient. The first step in this process is to create an instance of Axia connected to our Axia Platform endpoint of choice.
 
 ```js
 import { Axia, BinTools, Buffer, BN } from "axia"
@@ -298,23 +298,23 @@ const axia = new axia.Axia(
   "http",
   myNetworkID
 )
-const xchain = axia.XChain() // returns a reference to the X-Chain used by AxiaJS
+const assetchain = axia.AssetChain() // returns a reference to the AssetChain used by AxiaJS
 ```
 
 We're also assuming that the keystore contains a list of addresses used in this transaction.
 
 ### Getting the UTXO Set
 
-The X-Chain stores all available balances in a datastore called Unspent Transaction Outputs (UTXOs). A UTXO Set is the unique list of outputs produced by transactions, addresses that can spend those outputs, and other variables such as lockout times (a timestamp after which the output can be spent) and thresholds (how many signers are required to spend the output).
+The AssetChain stores all available balances in a datastore called Unspent Transaction Outputs (UTXOs). A UTXO Set is the unique list of outputs produced by transactions, addresses that can spend those outputs, and other variables such as lockout times (a timestamp after which the output can be spent) and thresholds (how many signers are required to spend the output).
 
 For the case of this example, we're going to create a simple transaction that spends an amount of available coins and sends it to a single address without any restrictions. The management of the UTXOs will mostly be abstracted away.
 
 However, we do need to get the UTXO Set for the addresses we're managing.
 
 ```js
-const myAddresses = xchain.keyChain().getAddresses() // returns an array of addresses the KeyChain manages as buffers
-const addressStrings = xchain.keyChain().getAddressStrings() // returns an array of addresses the KeyChain manages as strings
-const u = await xchain.getUTXOs(myAddresses)
+const myAddresses = assetchain.keyChain().getAddresses() // returns an array of addresses the KeyChain manages as buffers
+const addressStrings = assetchain.keyChain().getAddressStrings() // returns an array of addresses the KeyChain manages as strings
+const u = await assetchain.getUTXOs(myAddresses)
 const utxos = u.utxos
 ```
 
@@ -341,7 +341,7 @@ const friendsAddress = "X-axc1k26jvfdzyukms95puxcceyzsa3lzwf5ftt0fjk" // address
 //   * An array of addresses sending the funds
 //   * An array of addresses any leftover funds are sent
 //   * The AssetID of the funds being sent
-const unsignedTx = await xchain.buildBaseTx(
+const unsignedTx = await assetchain.buildBaseTx(
   utxos,
   sendAmount,
   [friendsAddress],
@@ -349,19 +349,19 @@ const unsignedTx = await xchain.buildBaseTx(
   addressStrings,
   assetID
 )
-const signedTx = xchain.signTx(unsignedTx)
-const txid = await xchain.issueTx(signedTx)
+const signedTx = assetchain.signTx(unsignedTx)
+const txid = await assetchain.issueTx(signedTx)
 ```
 
 And the transaction is sent!
 
 ### Get the status of the transaction
 
-Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the X-Chain.
+Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the AssetChain.
 
 ```js
 // returns one of: "Accepted", "Processing", "Unknown", and "Rejected"
-const status = await xchain.getTxStatus(txid)
+const status = await assetchain.getTxStatus(txid)
 ```
 
 The statuses can be one of "Accepted", "Processing", "Unknown", and "Rejected":
@@ -378,7 +378,7 @@ The transaction finally came back as "Accepted", now let's update the UTXOSet an
 *Note: In a real network the balance isn't guaranteed to match this scenario. Transaction fees or additional spends may vary the balance. For the purpose of this example, we assume neither of those cases.*
 
 ```js
-const updatedU = await xchain.getUTXOs()
+const updatedU = await assetchain.getUTXOs()
 const updatedUTXOs = updatedU.utxos
 const newBalance = updatedUTXOs.getBalance(myAddresses, assetID)
 if (newBalance.toNumber() != mybalance.sub(sendAmount).toNumber()) {

@@ -6,7 +6,7 @@ import {
   GenesisAsset,
   GenesisData
 } from "../../src"
-import { InitialStates } from "../../src/apis/avm"
+import { InitialStates } from "../../src/apis/axvm"
 import {
   PlatformVMAPI,
   KeyChain,
@@ -85,7 +85,7 @@ const main = async (): Promise<any> => {
   const initialStates: InitialStates = new InitialStates()
   initialStates.addOutput(vcapSecpOutput)
   const memo: Buffer = Buffer.from(
-    "Manually create a CreateChainTx which creates a 1-of-2 AXC utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 AllyChainAuth"
+    "Manually create a CreateChainTx which creates a 1-of-2 AXC utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 SubnetAuth"
   )
   const genesisAsset = new GenesisAsset(
     assetAlias,
@@ -139,11 +139,11 @@ const main = async (): Promise<any> => {
     }
   })
 
-  const allyChainID: Buffer = bintools.cb58Decode(
+  const subnetID: Buffer = bintools.cb58Decode(
     "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
   )
-  const chainName: string = "EPIC AVM"
-  const vmID: string = "avm"
+  const chainName: string = "EPIC AXVM"
+  const vmID: string = "axvm"
   const fxIDs: string[] = ["secp256k1fx", "nftfx", "propertyfx"]
   fxIDs.sort()
   const blockchainID: Buffer = bintools.cb58Decode(coreChainBlockchainID)
@@ -153,7 +153,7 @@ const main = async (): Promise<any> => {
     outputs,
     inputs,
     memo,
-    allyChainID,
+    subnetID,
     chainName,
     vmID,
     fxIDs,

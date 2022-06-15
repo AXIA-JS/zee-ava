@@ -9,47 +9,47 @@
 
 ### Method Signature Changes
 
-* `avm.makeUnsignedTx`
-  * Renamed to `avm.makeBaseTx`
+* `axvm.makeUnsignedTx`
+  * Renamed to `axvm.makeBaseTx`
   * Now returns `UnsignedTx` instead of `TxUnsigned`
-* `avm.makeCreateAssetTx`
+* `axvm.makeCreateAssetTx`
   * 4th parameter has been renamed `initialStates` from `initialState`
   * Now returns `UnsignedTx` instead of `TxCreateAsset`
-* `avm.signTx` 
+* `axvm.signTx` 
   * Now accepts `UnsignedTx` instead of `TxUnsigned`
 * `SelectInputClass`
   * Now accepts a `number` instead of a `Buffer`
-* `avm.getInputID`
-  * Has been renamed to `avm.getInput` and now returns an `Input` instead of a `number`
+* `axvm.getInputID`
+  * Has been renamed to `axvm.getInput` and now returns an `Input` instead of a `number`
 
 ### New Methods
 
-* `avm.makeNFTTransferTx`
+* `axvm.makeNFTTransferTx`
 
 ### New Classes
 
-* avm credentials
+* axvm credentials
   * Credential
   * SecpCredential is a superset of Credential
   * NFTCredential is a superset of Credential
-* avm inputs
+* axvm inputs
   * TransferableInput
   * AmountInput
-* avm ops
+* axvm ops
   * Operation
   * TransferableOperation
   * NFTTransferOperation
-* avm outputs
+* axvm outputs
   * TransferableOutput
   * AmountOutput
   * SecpOutput
   * NFTOutBase
-* avm tx
+* axvm tx
   * BaseTx
   * CreateAssetTx
   * OperationTx
   * UnsignedTx
-* avm types
+* axvm types
   * UTXOID
 
 ### New Types
@@ -62,26 +62,26 @@
 
 ### Deleted Classes
 
-* avm utxos
+* axvm utxos
   * SecpUTXO
-* avm outputs
+* axvm outputs
   * SecpOutBase
-* avm tx
+* axvm tx
   * TxUnsigned
   * TxCreateAsset
 
 ### New consts
 
-* avm credentials
+* axvm credentials
   * SelectCredentialClass
 
 ### Deleted consts
 
-* avm utxos
+* axvm utxos
   * SelectUTXOClass
 
 ### New RPC Calls
 
-* `platform.getAllyChains`
-* `avm.buildGenesis`
+* `platform.getSubnets`
+* `axvm.buildGenesis`
 * `keystore.deleteUser`

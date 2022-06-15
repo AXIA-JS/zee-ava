@@ -2,7 +2,7 @@ import BinTools from "../../../src/utils/bintools"
 import { Buffer } from "buffer/"
 import { PlatformVMConstants } from "../../../src/apis/platformvm/constants"
 import { GenesisAsset, GenesisData } from "../../../src/index"
-import { CreateChainTx, AllyChainAuth } from "src/apis/platformvm"
+import { CreateChainTx, SubnetAuth } from "src/apis/platformvm"
 
 describe("CreateChainTx", (): void => {
   /**
@@ -34,14 +34,14 @@ describe("CreateChainTx", (): void => {
     expect(buf.toString("hex")).toBe(buf2.toString("hex"))
   })
 
-  test("getAllyChainID", (): void => {
+  test("getSubnetID", (): void => {
     const snID: string = "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
-    const allyChainID: string = createChainTx.getAllyChainID()
-    expect(allyChainID).toBe(snID)
+    const subnetID: string = createChainTx.getSubnetID()
+    expect(subnetID).toBe(snID)
   })
 
   test("getChainName", (): void => {
-    const cn: string = "EPIC AVM"
+    const cn: string = "EPIC AXVM"
     const chainName: string = createChainTx.getChainName()
     expect(chainName).toBe(cn)
   })
@@ -87,17 +87,17 @@ describe("CreateChainTx", (): void => {
     expect(denomination).toBe(d)
   })
 
-  describe("AllyChainAuth", (): void => {
-    const sa: AllyChainAuth = createChainTx.getAllyChainAuth()
+  describe("SubnetAuth", (): void => {
+    const sa: SubnetAuth = createChainTx.getSubnetAuth()
 
     test("getTypeName", async (): Promise<void> => {
-      const allyChainAuthTypeName: string = sa.getTypeName()
-      expect(allyChainAuthTypeName).toBe("AllyChainAuth")
+      const subnetAuthTypeName: string = sa.getTypeName()
+      expect(subnetAuthTypeName).toBe("SubnetAuth")
     })
 
     test("getTypeID", async (): Promise<void> => {
-      const allyChainAuthTypeID: number = sa.getTypeID()
-      expect(allyChainAuthTypeID).toBe(PlatformVMConstants.ALLYCHAINAUTH)
+      const subnetAuthTypeID: number = sa.getTypeID()
+      expect(subnetAuthTypeID).toBe(PlatformVMConstants.SUBNETAUTH)
     })
 
     test("getNumAddressIndices", async (): Promise<void> => {

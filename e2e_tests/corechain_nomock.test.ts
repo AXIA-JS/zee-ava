@@ -6,7 +6,7 @@ describe("CoreChain", (): void => {
   let tx = { value: "" }
   let addrB = { value: "" }
   let addrC = { value: "" }
-  let createdAllyChainID = { value: "" }
+  let createdSubnetID = { value: "" }
 
   const axia = getAxia()
   const corechain = axia.CoreChain()
@@ -26,8 +26,8 @@ describe("CoreChain", (): void => {
   const key: string =
     "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
   const nodeID: string = "NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg"
-  const allyChainID: string = "2bGsYJorY6X7RhjPBFs3kYjiNEHo4zGrD2eeyZbb43T2KKi7fM"
-  const xChainAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
+  const subnetID: string = "2bGsYJorY6X7RhjPBFs3kYjiNEHo4zGrD2eeyZbb43T2KKi7fM"
+  const assetChainAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
   const axiaBlockChainID: string =
     "2VvmkRw4yrz8tPrVnCCbvEK1JxNyujpqhmU6SGonxMpkWBx9UD"
 
@@ -149,13 +149,13 @@ describe("CoreChain", (): void => {
     ],
 
     [
-      "createAllyChain",
-      () => corechain.createAllyChain(user, passwd, [whaleAddr], 1),
+      "createSubnet",
+      () => corechain.createSubnet(user, passwd, [whaleAddr], 1),
       (x) => {
         return x
       },
       Matcher.Get,
-      () => createdAllyChainID
+      () => createdSubnetID
     ],
     [
       "getCurrentValidators",
@@ -234,7 +234,7 @@ describe("CoreChain", (): void => {
     ],
     // [
     //   "exportAXC",
-    //   () => corechain.exportAXC(user, passwd, new BN(10), xChainAddr),
+    //   () => corechain.exportAXC(user, passwd, new BN(10), assetChainAddr),
     //   (x) => x,
     //   Matcher.toThrow,
     //   () =>

@@ -11,10 +11,10 @@ const corechain: PlatformVMAPI = axia.CoreChain()
 
 const main = async (): Promise<any> => {
   const height: number = 0
-  const allyChainID: string = "11111111111111111111111111111111LpoYY"
+  const subnetID: string = "11111111111111111111111111111111LpoYY"
   const validators: GetValidatorsAtResponse = await corechain.getValidatorsAt(
     height,
-    allyChainID
+    subnetID
   )
   console.log(validators)
 }

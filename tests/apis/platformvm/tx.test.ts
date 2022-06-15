@@ -281,7 +281,7 @@ describe("Transactions", (): void => {
   })
 
   test("Create small BaseTx that isn't Goose Egg Tx", async (): Promise<void> => {
-    // local network X Chain ID
+    // local network AssetChain ID
     const outs: TransferableOutput[] = []
     const ins: TransferableInput[] = []
     const outputAmt: BN = new BN("267")

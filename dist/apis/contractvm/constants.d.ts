@@ -6,7 +6,7 @@ export declare class ContractVMConstants {
     static LATESTCODEC: number;
     static SECPFXID: number;
     static SECPXFEROUTPUTID: number;
-    static ALLYCHAINAUTHID: number;
+    static SUBNETAUTHID: number;
     static SECPOWNEROUTPUTID: number;
     static STAKEABLELOCKOUTID: number;
     static SECPINPUTID: number;
@@ -14,10 +14,10 @@ export declare class ContractVMConstants {
     static LOCKEDSTAKEABLES: Array<number>;
     static BASETX: number;
     static ADDVALIDATORTX: number;
-    static ADDALLYCHAINVALIDATORTX: number;
+    static ADDSUBNETVALIDATORTX: number;
     static ADDNOMINATORTX: number;
     static CREATECHAINTX: number;
-    static CREATEALLYCHAINTX: number;
+    static CREATESUBNETTX: number;
     static IMPORTTX: number;
     static EXPORTTX: number;
     static ADVANCETIMETX: number;

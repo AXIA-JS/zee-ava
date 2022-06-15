@@ -53,23 +53,23 @@ const main = async (): Promise<any> => {
 
   const genesisDataStr: string =
     "11111DdZMhYXUZiFV9FNpfpTSQroysjHyMuT5zapYkPYrmap7t7S3sDNNwFzngxR9x1XmoRj5JK1XomX8RHvXYY5h3qYeEsMQRF8Ypia7p1CFHDo6KGSjMdiQkrmpvL8AvoezSxVWKXt2ubmBCnSkpPjnQbBSF7gNg4sPu1PXdh1eKgthaSFREqqG5FKMrWNiS6U87kxCmbKjkmBvwnAd6TpNx75YEiS9YKMyHaBZjkRDNf6Nj1"
-  const allyChainIDStr: string =
+  const subnetIDStr: string =
     "2cXEvbdDaP6q6srB6x1T14raebpJaM4s2t9NE5kiXzLqLXQDWm"
   const memo: Buffer = Buffer.from(
     "Utility function to create a CreateChainTx transaction"
   )
-  const allyChainID: Buffer = bintools.cb58Decode(allyChainIDStr)
-  const chainName: string = "EPIC AVM"
-  const vmID: string = "avm"
+  const subnetID: Buffer = bintools.cb58Decode(subnetIDStr)
+  const chainName: string = "EPIC AXVM"
+  const vmID: string = "axvm"
   const fxIDs: string[] = ["secp256k1fx", "nftfx", "propertyfx"]
 
-  // Only for AVM serialization. For other VMs comment these 2 lines
+  // Only for AXVM serialization. For other VMs comment these 2 lines
   const genesisData: GenesisData = new GenesisData()
   genesisData.fromBuffer(bintools.cb58Decode(genesisDataStr))
 
-  // For VMs other than AVM. For AVM comment this line
+  // For VMs other than AXVM. For AXVM comment this line
   // const genesisData = genesisDataStr
-  const allyChainAuthCredentials: [number, Buffer][] = [
+  const subnetAuthCredentials: [number, Buffer][] = [
     [0, pAddresses[3]],
     [1, pAddresses[1]]
   ]
@@ -78,14 +78,14 @@ const main = async (): Promise<any> => {
     utxoSet,
     pAddressStrings,
     pAddressStrings,
-    allyChainID,
+    subnetID,
     chainName,
     vmID,
     fxIDs,
     genesisData,
     memo,
     asOf,
-    allyChainAuthCredentials
+    subnetAuthCredentials
   )
 
   const tx: Tx = unsignedTx.sign(pKeychain)

@@ -44,7 +44,7 @@ const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Manually add a validator to the primary allyChain"
+  "Manually add a validator to the primary subnet"
 )
 const nodeID: string = "NodeID-DueWyGi3B9jtKfa9mPoecd4YSDJ1ftF69"
 const startTime: BN = UnixNow().add(new BN(60 * 1))

@@ -124,13 +124,13 @@ export declare class EVMAPI extends JRPCAPI {
      */
     getTxFee: () => BN;
     /**
-     * Send ANT (Axia Native Token) assets including AXC from the AppChain to an account on the X-Chain.
+     * Send ANT (Axia Native Token) assets including AXC from the AppChain to an account on the AssetChain.
      *
-     * After calling this method, you must call the X-Chain’s import method to complete the transfer.
+     * After calling this method, you must call the AssetChain’s import method to complete the transfer.
      *
-     * @param username The Keystore user that controls the X-Chain account specified in `to`
+     * @param username The Keystore user that controls the AssetChain account specified in `to`
      * @param password The password of the Keystore user
-     * @param to The account on the X-Chain to send the AXC to.
+     * @param to The account on the AssetChain to send the AXC to.
      * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
      * @param assetID The asset id which is being sent
      *
@@ -138,13 +138,13 @@ export declare class EVMAPI extends JRPCAPI {
      */
     export: (username: string, password: string, to: string, amount: BN, assetID: string) => Promise<string>;
     /**
-     * Send AXC from the AppChain to an account on the X-Chain.
+     * Send AXC from the AppChain to an account on the AssetChain.
      *
-     * After calling this method, you must call the X-Chain’s importAXC method to complete the transfer.
+     * After calling this method, you must call the AssetChain’s importAXC method to complete the transfer.
      *
-     * @param username The Keystore user that controls the X-Chain account specified in `to`
+     * @param username The Keystore user that controls the AssetChain account specified in `to`
      * @param password The password of the Keystore user
-     * @param to The account on the X-Chain to send the AXC to.
+     * @param to The account on the AssetChain to send the AXC to.
      * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
      *
      * @returns String representing the transaction id
@@ -167,7 +167,7 @@ export declare class EVMAPI extends JRPCAPI {
         endIndex: Index;
     }>;
     /**
-     * Send ANT (Axia Native Token) assets including AXC from an account on the X-Chain to an address on the AppChain. This transaction
+     * Send ANT (Axia Native Token) assets including AXC from an account on the AssetChain to an address on the AppChain. This transaction
      * must be signed with the key of the account that the asset is sent from and which pays
      * the transaction fee.
      *
@@ -181,14 +181,14 @@ export declare class EVMAPI extends JRPCAPI {
      */
     import: (username: string, password: string, to: string, sourceChain: string) => Promise<string>;
     /**
-     * Send AXC from an account on the X-Chain to an address on the AppChain. This transaction
+     * Send AXC from an account on the AssetChain to an address on the AppChain. This transaction
      * must be signed with the key of the account that the AXC is sent from and which pays
      * the transaction fee.
      *
      * @param username The Keystore user that controls the account specified in `to`
      * @param password The password of the Keystore user
      * @param to The address of the account the AXC is sent to. This must be the same as the to
-     * argument in the corresponding call to the X-Chain’s exportAXC
+     * argument in the corresponding call to the AssetChain’s exportAXC
      * @param sourceChain The chainID where the funds are coming from.
      *
      * @returns Promise for a string for the transaction, which should be sent to the network

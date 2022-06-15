@@ -5,10 +5,10 @@
 import AxiaCore from "./axia";
 import { AdminAPI } from "./apis/admin/api";
 import { AuthAPI } from "./apis/auth/api";
-import { AVMAPI } from "./apis/avm/api";
+import { AXVMAPI } from "./apis/axvm/api";
 import { EVMAPI } from "./apis/evm/api";
-import { GenesisAsset } from "./apis/avm/genesisasset";
-import { GenesisData } from "./apis/avm/genesisdata";
+import { GenesisAsset } from "./apis/axvm/genesisasset";
+import { GenesisData } from "./apis/axvm/genesisdata";
 import { HealthAPI } from "./apis/health/api";
 import { IndexAPI } from "./apis/index/api";
 import { InfoAPI } from "./apis/info/api";
@@ -46,9 +46,9 @@ export default class Axia extends AxiaCore {
      */
     AppChain: () => EVMAPI;
     /**
-     * Returns a reference to the AVM RPC pointed at the X-Chain.
+     * Returns a reference to the AXVM RPC pointed at the AssetChain.
      */
-    XChain: () => AVMAPI;
+    AssetChain: () => AXVMAPI;
     /**
      * Returns a reference to the Health RPC for a node.
      */
@@ -82,14 +82,14 @@ export default class Axia extends AxiaCore {
      * @param protocol The protocol string to use before a "://" in a request,
      * ex: "http", "https", "git", "ws", etc. Defaults to http
      * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
-     * @param XChainID Sets the blockchainID for the AVM. Will try to auto-detect,
+     * @param AssetChainID Sets the blockchainID for the AXVM. Will try to auto-detect,
      * otherwise default "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
      * @param AppChainID Sets the blockchainID for the EVM. Will try to auto-detect,
      * otherwise default "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
      * @param hrp The human-readable part of the bech32 addresses
      * @param skipinit Skips creating the APIs. Defaults to false
      */
-    constructor(host?: string, port?: number, protocol?: string, networkID?: number, XChainID?: string, AppChainID?: string, hrp?: string, skipinit?: boolean);
+    constructor(host?: string, port?: number, protocol?: string, networkID?: number, AssetChainID?: string, AppChainID?: string, hrp?: string, skipinit?: boolean);
 }
 export { Axia };
 export { AxiaCore };
@@ -105,7 +105,7 @@ export { PubSub };
 export { Socket };
 export * as admin from "./apis/admin";
 export * as auth from "./apis/auth";
-export * as avm from "./apis/avm";
+export * as axvm from "./apis/axvm";
 export * as common from "./common";
 export * as evm from "./apis/evm";
 export * as health from "./apis/health";

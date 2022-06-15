@@ -12,8 +12,8 @@ import { UnsignedTx, Tx } from "./tx";
 import { PayloadBase } from "../../utils/payload";
 import { UTXOSet } from "../platformvm/utxos";
 import { PersistanceOptions } from "../../utils/persistenceoptions";
-import { GetRewardUTXOsResponse, GetStakeResponse, AllyChain, GetValidatorsAtResponse, GetBalanceResponse, GetUTXOsResponse, Blockchain, GetTxStatusResponse, GetMinStakeResponse } from "./interfaces";
-import { GenesisData } from "../avm";
+import { GetRewardUTXOsResponse, GetStakeResponse, Subnet, GetValidatorsAtResponse, GetBalanceResponse, GetUTXOsResponse, Blockchain, GetTxStatusResponse, GetMinStakeResponse } from "./interfaces";
+import { GenesisData } from "../axvm";
 /**
  * Class for interacting with a node's PlatformVMAPI
  *
@@ -96,11 +96,11 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     getTxFee: () => BN;
     /**
-     * Gets the CreateAllyChainTx fee.
+     * Gets the CreateSubnetTx fee.
      *
-     * @returns The CreateAllyChainTx fee as a {@link https://github.com/indutny/bn.js/|BN}
+     * @returns The CreateSubnetTx fee as a {@link https://github.com/indutny/bn.js/|BN}
      */
-    getCreateAllyChainTxFee: () => BN;
+    getCreateSubnetTxFee: () => BN;
     /**
      * Gets the CreateChainTx fee.
      *
@@ -153,7 +153,7 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     checkGooseEgg: (utx: UnsignedTx, outTotal?: BN) => Promise<boolean>;
     /**
-     * Retrieves an assetID for a allyChain"s staking assset.
+     * Retrieves an assetID for a subnet"s staking assset.
      *
      * @returns Returns a Promise string with cb58 encoded value of the assetID.
      */
@@ -163,15 +163,15 @@ export declare class PlatformVMAPI extends JRPCAPI {
      *
      * @param username The username of the Keystore user that controls the new account
      * @param password The password of the Keystore user that controls the new account
-     * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the AllyChainID or its alias.
+     * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the SubnetID or its alias.
      * @param vmID The ID of the Virtual Machine the blockchain runs. Can also be an alias of the Virtual Machine.
      * @param fxIDs The ids of the FXs the VM is running.
      * @param name A human-readable name for the new blockchain
      * @param genesis The base 58 (with checksum) representation of the genesis state of the new blockchain. Virtual Machines should have a static API method named buildGenesis that can be used to generate genesisData.
      *
-     * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the AllyChain’s control keys and by the account paying the transaction fee.
+     * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Subnet’s control keys and by the account paying the transaction fee.
      */
-    createBlockchain: (username: string, password: string, allyChainID: Buffer | string, vmID: string, fxIDs: number[], name: string, genesis: string) => Promise<string>;
+    createBlockchain: (username: string, password: string, subnetID: Buffer | string, vmID: string, fxIDs: number[], name: string, genesis: string) => Promise<string>;
     /**
      * Gets the status of a blockchain.
      *
@@ -181,14 +181,14 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     getBlockchainStatus: (blockchainID: string) => Promise<string>;
     /**
-     * Get the validators and their weights of a allyChain or the Primary Network at a given CoreChain height.
+     * Get the validators and their weights of a subnet or the Primary Network at a given CoreChain height.
      *
      * @param height The CoreChain height to get the validator set at.
-     * @param allyChainID Optional. A cb58 serialized string for the AllyChainID or its alias.
+     * @param subnetID Optional. A cb58 serialized string for the SubnetID or its alias.
      *
      * @returns Promise GetValidatorsAtResponse
      */
-    getValidatorsAt: (height: number, allyChainID?: string) => Promise<GetValidatorsAtResponse>;
+    getValidatorsAt: (height: number, subnetID?: string) => Promise<GetValidatorsAtResponse>;
     /**
      * Create an address in the node's keystore.
      *
@@ -218,35 +218,35 @@ export declare class PlatformVMAPI extends JRPCAPI {
     /**
      * Lists the set of current validators.
      *
-     * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
-     * cb58 serialized string for the AllyChainID or its alias.
+     * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
+     * cb58 serialized string for the SubnetID or its alias.
      * @param nodeIDs Optional. An array of strings
      *
      * @returns Promise for an array of validators that are currently staking, see: {@link https://docs.axc.network/v1.0/en/api/platform/#platformgetcurrentvalidators|platform.getCurrentValidators documentation}.
      *
      */
-    getCurrentValidators: (allyChainID?: Buffer | string, nodeIDs?: string[]) => Promise<object>;
+    getCurrentValidators: (subnetID?: Buffer | string, nodeIDs?: string[]) => Promise<object>;
     /**
      * Lists the set of pending validators.
      *
-     * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer}
-     * or a cb58 serialized string for the AllyChainID or its alias.
+     * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer}
+     * or a cb58 serialized string for the SubnetID or its alias.
      * @param nodeIDs Optional. An array of strings
      *
      * @returns Promise for an array of validators that are pending staking, see: {@link https://docs.axc.network/v1.0/en/api/platform/#platformgetpendingvalidators|platform.getPendingValidators documentation}.
      *
      */
-    getPendingValidators: (allyChainID?: Buffer | string, nodeIDs?: string[]) => Promise<object>;
+    getPendingValidators: (subnetID?: Buffer | string, nodeIDs?: string[]) => Promise<object>;
     /**
      * Samples `Size` validators from the current validator set.
      *
      * @param sampleSize Of the total universe of validators, select this many at random
-     * @param allyChainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
-     * cb58 serialized string for the AllyChainID or its alias.
+     * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an
+     * cb58 serialized string for the SubnetID or its alias.
      *
      * @returns Promise for an array of validator"s stakingIDs.
      */
-    sampleValidators: (sampleSize: number, allyChainID?: Buffer | string) => Promise<string[]>;
+    sampleValidators: (sampleSize: number, subnetID?: Buffer | string) => Promise<string[]>;
     /**
      * Add a validator to the Primary Network.
      *
@@ -268,19 +268,19 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     addValidator: (username: string, password: string, nodeID: string, startTime: Date, endTime: Date, stakeAmount: BN, rewardAddress: string, delegationFeeRate?: BN) => Promise<string>;
     /**
-     * Add a validator to a AllyChain other than the Primary Network. The validator must validate the Primary Network for the entire duration they validate this AllyChain.
+     * Add a validator to a Subnet other than the Primary Network. The validator must validate the Primary Network for the entire duration they validate this Subnet.
      *
      * @param username The username of the Keystore user
      * @param password The password of the Keystore user
      * @param nodeID The node ID of the validator
-     * @param allyChainID Either a {@link https://github.com/feross/buffer|Buffer} or a cb58 serialized string for the AllyChainID or its alias.
+     * @param subnetID Either a {@link https://github.com/feross/buffer|Buffer} or a cb58 serialized string for the SubnetID or its alias.
      * @param startTime Javascript Date object for the start time to validate
      * @param endTime Javascript Date object for the end time to validate
      * @param weight The validator’s weight used for sampling
      *
-     * @returns Promise for the unsigned transaction. It must be signed (using sign) by the proper number of the AllyChain’s control keys and by the key of the account paying the transaction fee before it can be issued.
+     * @returns Promise for the unsigned transaction. It must be signed (using sign) by the proper number of the Subnet’s control keys and by the key of the account paying the transaction fee before it can be issued.
      */
-    addAllyChainValidator: (username: string, password: string, nodeID: string, allyChainID: Buffer | string, startTime: Date, endTime: Date, weight: number) => Promise<string>;
+    addSubnetValidator: (username: string, password: string, nodeID: string, subnetID: Buffer | string, startTime: Date, endTime: Date, weight: number) => Promise<string>;
     /**
      * Add a nominator to the Primary Network.
      *
@@ -298,51 +298,51 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     addNominator: (username: string, password: string, nodeID: string, startTime: Date, endTime: Date, stakeAmount: BN, rewardAddress: string) => Promise<string>;
     /**
-     * Create an unsigned transaction to create a new AllyChain. The unsigned transaction must be
-     * signed with the key of the account paying the transaction fee. The AllyChain’s ID is the ID of the transaction that creates it (ie the response from issueTx when issuing the signed transaction).
+     * Create an unsigned transaction to create a new Subnet. The unsigned transaction must be
+     * signed with the key of the account paying the transaction fee. The Subnet’s ID is the ID of the transaction that creates it (ie the response from issueTx when issuing the signed transaction).
      *
      * @param username The username of the Keystore user
      * @param password The password of the Keystore user
      * @param controlKeys Array of platform addresses as strings
-     * @param threshold To add a validator to this AllyChain, a transaction must have threshold
+     * @param threshold To add a validator to this Subnet, a transaction must have threshold
      * signatures, where each signature is from a key whose address is an element of `controlKeys`
      *
      * @returns Promise for a string with the unsigned transaction encoded as base58.
      */
-    createAllyChain: (username: string, password: string, controlKeys: string[], threshold: number) => Promise<string | ErrorResponseObject>;
+    createSubnet: (username: string, password: string, controlKeys: string[], threshold: number) => Promise<string | ErrorResponseObject>;
     /**
-     * Get the AllyChain that validates a given blockchain.
+     * Get the Subnet that validates a given blockchain.
      *
      * @param blockchainID Either a {@link https://github.com/feross/buffer|Buffer} or a cb58
      * encoded string for the blockchainID or its alias.
      *
-     * @returns Promise for a string of the allyChainID that validates the blockchain.
+     * @returns Promise for a string of the subnetID that validates the blockchain.
      */
     validatedBy: (blockchainID: string) => Promise<string>;
     /**
-     * Get the IDs of the blockchains a AllyChain validates.
+     * Get the IDs of the blockchains a Subnet validates.
      *
-     * @param allyChainID Either a {@link https://github.com/feross/buffer|Buffer} or an AXC
-     * serialized string for the AllyChainID or its alias.
+     * @param subnetID Either a {@link https://github.com/feross/buffer|Buffer} or an AXC
+     * serialized string for the SubnetID or its alias.
      *
-     * @returns Promise for an array of blockchainIDs the allyChain validates.
+     * @returns Promise for an array of blockchainIDs the subnet validates.
      */
-    validates: (allyChainID: Buffer | string) => Promise<string[]>;
+    validates: (subnetID: Buffer | string) => Promise<string[]>;
     /**
      * Get all the blockchains that exist (excluding the CoreChain).
      *
-     * @returns Promise for an array of objects containing fields "id", "allyChainID", and "vmID".
+     * @returns Promise for an array of objects containing fields "id", "subnetID", and "vmID".
      */
     getBlockchains: () => Promise<Blockchain[]>;
     /**
-     * Send AXC from an account on the CoreChain to an address on the X-Chain. This transaction
+     * Send AXC from an account on the CoreChain to an address on the AssetChain. This transaction
      * must be signed with the key of the account that the AXC is sent from and which pays the
-     * transaction fee. After issuing this transaction, you must call the X-Chain’s importAXC
+     * transaction fee. After issuing this transaction, you must call the AssetChain’s importAXC
      * method to complete the transfer.
      *
      * @param username The Keystore user that controls the account specified in `to`
      * @param password The password of the Keystore user
-     * @param to The address on the X-Chain to send the AXC to. Do not include X- in the address
+     * @param to The address on the AssetChain to send the AXC to. Do not include X- in the address
      * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
      *
      * @returns Promise for an unsigned transaction to be signed by the account the the AXC is
@@ -350,15 +350,15 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     exportAXC: (username: string, password: string, amount: BN, to: string) => Promise<string | ErrorResponseObject>;
     /**
-     * Send AXC from an account on the CoreChain to an address on the X-Chain. This transaction
+     * Send AXC from an account on the CoreChain to an address on the AssetChain. This transaction
      * must be signed with the key of the account that the AXC is sent from and which pays
-     * the transaction fee. After issuing this transaction, you must call the X-Chain’s
+     * the transaction fee. After issuing this transaction, you must call the AssetChain’s
      * importAXC method to complete the transfer.
      *
      * @param username The Keystore user that controls the account specified in `to`
      * @param password The password of the Keystore user
      * @param to The ID of the account the AXC is sent to. This must be the same as the to
-     * argument in the corresponding call to the X-Chain’s exportAXC
+     * argument in the corresponding call to the AssetChain’s exportAXC
      * @param sourceChain The chainID where the funds are coming from.
      *
      * @returns Promise for a string for the transaction, which should be sent to the network
@@ -396,13 +396,13 @@ export declare class PlatformVMAPI extends JRPCAPI {
     /**
      * getMaxStakeAmount() returns the maximum amount of nAXC staking to the named node during the time period.
      *
-     * @param allyChainID A Buffer or cb58 string representing allyChain
+     * @param subnetID A Buffer or cb58 string representing subnet
      * @param nodeID A string representing ID of the node whose stake amount is required during the given duration
      * @param startTime A big number denoting start time of the duration during which stake amount of the node is required.
      * @param endTime A big number denoting end time of the duration during which stake amount of the node is required.
      * @returns A big number representing total staked by validators on the primary network
      */
-    getMaxStakeAmount: (allyChainID: string | Buffer, nodeID: string, startTime: BN, endTime: BN) => Promise<BN>;
+    getMaxStakeAmount: (subnetID: string | Buffer, nodeID: string, startTime: BN, endTime: BN) => Promise<BN>;
     /**
      * Sets the minimum stake cached in this class.
      * @param minValidatorStake A {@link https://github.com/indutny/bn.js/|BN} to set the minimum stake amount cached in this class.
@@ -414,14 +414,14 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     getStake: (addresses: string[], encoding?: string) => Promise<GetStakeResponse>;
     /**
-     * Get all the allyChains that exist.
+     * Get all the subnets that exist.
      *
-     * @param ids IDs of the allyChains to retrieve information about. If omitted, gets all allyChains
+     * @param ids IDs of the subnets to retrieve information about. If omitted, gets all subnets
      *
      * @returns Promise for an array of objects containing fields "id",
      * "controlKeys", and "threshold".
      */
-    getAllyChains: (ids?: string[]) => Promise<AllyChain[]>;
+    getSubnets: (ids?: string[]) => Promise<Subnet[]>;
     /**
      * Exports the private key for an address.
      *
@@ -520,8 +520,8 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     buildExportTx: (utxoset: UTXOSet, amount: BN, destinationChain: Buffer | string, toAddresses: string[], fromAddresses: string[], changeAddresses?: string[], memo?: PayloadBase | Buffer, asOf?: BN, locktime?: BN, threshold?: number) => Promise<UnsignedTx>;
     /**
-     * Helper function which creates an unsigned [[AddAllyChainValidatorTx]]. For more granular control, you may create your own
-     * [[UnsignedTx]] manually and import the [[AddAllyChainValidatorTx]] class directly.
+     * Helper function which creates an unsigned [[AddSubnetValidatorTx]]. For more granular control, you may create your own
+     * [[UnsignedTx]] manually and import the [[AddSubnetValidatorTx]] class directly.
      *
      * @param utxoset A set of UTXOs that the transaction is built on.
      * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees in AXC
@@ -529,14 +529,14 @@ export declare class PlatformVMAPI extends JRPCAPI {
      * @param nodeID The node ID of the validator being added.
      * @param startTime The Unix time when the validator starts validating the Primary Network.
      * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AXC is returned).
-     * @param weight The amount of weight for this allyChain validator.
+     * @param weight The amount of weight for this subnet validator.
      * @param memo Optional contains arbitrary bytes, up to 256 bytes
      * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-     * @param allyChainAuthCredentials Optional. An array of index and address to sign for each AllyChainAuth.
+     * @param subnetAuthCredentials Optional. An array of index and address to sign for each SubnetAuth.
      *
      * @returns An unsigned transaction created from the passed in parameters.
      */
-    buildAddAllyChainValidatorTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], nodeID: string, startTime: BN, endTime: BN, weight: BN, allyChainID: string, memo?: PayloadBase | Buffer, asOf?: BN, allyChainAuthCredentials?: [number, Buffer][]) => Promise<UnsignedTx>;
+    buildAddSubnetValidatorTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], nodeID: string, startTime: BN, endTime: BN, weight: BN, subnetID: string, memo?: PayloadBase | Buffer, asOf?: BN, subnetAuthCredentials?: [number, Buffer][]) => Promise<UnsignedTx>;
     /**
      * Helper function which creates an unsigned [[AddNominatorTx]]. For more granular control, you may create your own
      * [[UnsignedTx]] manually and import the [[AddNominatorTx]] class directly.
@@ -581,37 +581,37 @@ export declare class PlatformVMAPI extends JRPCAPI {
      */
     buildAddValidatorTx: (utxoset: UTXOSet, toAddresses: string[], fromAddresses: string[], changeAddresses: string[], nodeID: string, startTime: BN, endTime: BN, stakeAmount: BN, rewardAddresses: string[], delegationFee: number, rewardLocktime?: BN, rewardThreshold?: number, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<UnsignedTx>;
     /**
-     * Class representing an unsigned [[CreateAllyChainTx]] transaction.
+     * Class representing an unsigned [[CreateSubnetTx]] transaction.
      *
      * @param utxoset A set of UTXOs that the transaction is built on
      * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
      * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
-     * @param allyChainOwnerAddresses An array of addresses for owners of the new allyChain
-     * @param allyChainOwnerThreshold A number indicating the amount of signatures required to add validators to a allyChain
+     * @param subnetOwnerAddresses An array of addresses for owners of the new subnet
+     * @param subnetOwnerThreshold A number indicating the amount of signatures required to add validators to a subnet
      * @param memo Optional contains arbitrary bytes, up to 256 bytes
      * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
      *
      * @returns An unsigned transaction created from the passed in parameters.
      */
-    buildCreateAllyChainTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], allyChainOwnerAddresses: string[], allyChainOwnerThreshold: number, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<UnsignedTx>;
+    buildCreateSubnetTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], subnetOwnerAddresses: string[], subnetOwnerThreshold: number, memo?: PayloadBase | Buffer, asOf?: BN) => Promise<UnsignedTx>;
     /**
      * Build an unsigned [[CreateChainTx]].
      *
      * @param utxoset A set of UTXOs that the transaction is built on
      * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
      * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs
-     * @param allyChainID Optional ID of the AllyChain that validates this blockchain
+     * @param subnetID Optional ID of the Subnet that validates this blockchain
      * @param chainName Optional A human readable name for the chain; need not be unique
      * @param vmID Optional ID of the VM running on the new chain
      * @param fxIDs Optional IDs of the feature extensions running on the new chain
      * @param genesisData Optional Byte representation of genesis state of the new chain
      * @param memo Optional contains arbitrary bytes, up to 256 bytes
      * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-     * @param allyChainAuthCredentials Optional. An array of index and address to sign for each AllyChainAuth.
+     * @param subnetAuthCredentials Optional. An array of index and address to sign for each SubnetAuth.
      *
      * @returns An unsigned transaction created from the passed in parameters.
      */
-    buildCreateChainTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], allyChainID?: string | Buffer, chainName?: string, vmID?: string, fxIDs?: string[], genesisData?: string | GenesisData, memo?: PayloadBase | Buffer, asOf?: BN, allyChainAuthCredentials?: [number, Buffer][]) => Promise<UnsignedTx>;
+    buildCreateChainTx: (utxoset: UTXOSet, fromAddresses: string[], changeAddresses: string[], subnetID?: string | Buffer, chainName?: string, vmID?: string, fxIDs?: string[], genesisData?: string | GenesisData, memo?: PayloadBase | Buffer, asOf?: BN, subnetAuthCredentials?: [number, Buffer][]) => Promise<UnsignedTx>;
     /**
      * @ignore
      */

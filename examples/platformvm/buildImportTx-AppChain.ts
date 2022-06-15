@@ -28,7 +28,7 @@ const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildImportTx to import AXC to the CoreChain from the X-Chain"
+  "PlatformVM utility method buildImportTx to import AXC to the CoreChain from the AssetChain"
 )
 const asOf: BN = UnixNow()
 
