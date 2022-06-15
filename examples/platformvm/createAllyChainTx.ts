@@ -51,7 +51,9 @@ pKeychain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
-const coreChainBlockchainIDBuf: Buffer = bintools.cb58Decode(coreChainBlockchainID)
+const coreChainBlockchainIDBuf: Buffer = bintools.cb58Decode(
+  coreChainBlockchainID
+)
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const fee: BN = corechain.getCreateAllyChainTxFee()

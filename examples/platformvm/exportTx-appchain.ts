@@ -51,7 +51,9 @@ const inputs: TransferableInput[] = []
 const fee: BN = MILLIAXC
 const threshold: number = 2
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("Manually Export AXC from CoreChain to AppChain")
+const memo: Buffer = Buffer.from(
+  "Manually Export AXC from CoreChain to AppChain"
+)
 
 const main = async (): Promise<any> => {
   const axcAssetID: Buffer = await corechain.getAXCAssetID()

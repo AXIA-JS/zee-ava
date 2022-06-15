@@ -31,8 +31,11 @@ const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 cKeychain.importKey(privKey)
 const cAddresses: Buffer[] = appchain.keyChain().getAddresses()
 const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
-const appChainBlockchainIdStr: string = Defaults.network[networkID].C.blockchainID
-const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(appChainBlockchainIdStr)
+const appChainBlockchainIdStr: string =
+  Defaults.network[networkID].C.blockchainID
+const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
+  appChainBlockchainIdStr
+)
 const xChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
 const xChainBlockchainIdBuf: Buffer = bintools.cb58Decode(xChainBlockchainIdStr)
 const importedIns: TransferableInput[] = []

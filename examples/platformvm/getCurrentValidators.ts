@@ -11,7 +11,9 @@ const corechain: PlatformVMAPI = axia.CoreChain()
 const main = async (): Promise<any> => {
   const allyChainID: string = "11111111111111111111111111111111LpoYY"
   const nodeIDs: string[] = []
-  const currentValidators: object = await corechain.getCurrentValidators(allyChainID)
+  const currentValidators: object = await corechain.getCurrentValidators(
+    allyChainID
+  )
   console.log(currentValidators)
 }
 

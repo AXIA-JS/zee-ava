@@ -14,7 +14,8 @@ describe("AddAllyChainValidatorTx", (): void => {
     addAllyChainValidatorTxHex,
     "hex"
   )
-  const addAllyChainValidatorTx: AddAllyChainValidatorTx = new AddAllyChainValidatorTx()
+  const addAllyChainValidatorTx: AddAllyChainValidatorTx =
+    new AddAllyChainValidatorTx()
   addAllyChainValidatorTx.fromBuffer(addAllyChainValidatorTxBuf)
 
   test("getTypeName", async (): Promise<void> => {
@@ -24,7 +25,8 @@ describe("AddAllyChainValidatorTx", (): void => {
   })
 
   test("getTypeID", async (): Promise<void> => {
-    const addAllyChainValidatorTxTypeID: number = addAllyChainValidatorTx.getTypeID()
+    const addAllyChainValidatorTxTypeID: number =
+      addAllyChainValidatorTx.getTypeID()
     expect(addAllyChainValidatorTxTypeID).toBe(
       PlatformVMConstants.ADDALLYCHAINVALIDATORTX
     )
@@ -64,7 +66,8 @@ describe("AddAllyChainValidatorTx", (): void => {
   })
 
   test("getAllyChainID", async (): Promise<void> => {
-    const allyChainID: string = "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
+    const allyChainID: string =
+      "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
     const sID: string = addAllyChainValidatorTx.getAllyChainID()
     expect(allyChainID).toBe(sID)
   })

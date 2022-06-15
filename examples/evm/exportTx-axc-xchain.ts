@@ -33,8 +33,11 @@ const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
 const cAddresses: Buffer[] = appchain.keyChain().getAddresses()
 const xChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
 const xChainBlockchainIdBuf: Buffer = bintools.cb58Decode(xChainBlockchainIdStr)
-const appChainBlockchainIdStr: string = Defaults.network[networkID].C.blockchainID
-const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(appChainBlockchainIdStr)
+const appChainBlockchainIdStr: string =
+  Defaults.network[networkID].C.blockchainID
+const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
+  appChainBlockchainIdStr
+)
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"

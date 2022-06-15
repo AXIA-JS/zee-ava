@@ -51,7 +51,9 @@ pKeychain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
-const coreChainBlockchainIDBuf: Buffer = bintools.cb58Decode(coreChainBlockchainID)
+const coreChainBlockchainIDBuf: Buffer = bintools.cb58Decode(
+  coreChainBlockchainID
+)
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const fee: BN = corechain.getDefaultTxFee()
@@ -107,18 +109,19 @@ const main = async (): Promise<any> => {
     "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
   )
   const nodeIDBuf: Buffer = NodeIDStringToBuffer(nodeID)
-  const addAllyChainValidatorTx: AddAllyChainValidatorTx = new AddAllyChainValidatorTx(
-    networkID,
-    coreChainBlockchainIDBuf,
-    outputs,
-    inputs,
-    memo,
-    nodeIDBuf,
-    startTime,
-    endTime,
-    weight,
-    allyChainID
-  )
+  const addAllyChainValidatorTx: AddAllyChainValidatorTx =
+    new AddAllyChainValidatorTx(
+      networkID,
+      coreChainBlockchainIDBuf,
+      outputs,
+      inputs,
+      memo,
+      nodeIDBuf,
+      startTime,
+      endTime,
+      weight,
+      allyChainID
+    )
   addAllyChainValidatorTx.addSignatureIdx(0, pAddresses[3])
   addAllyChainValidatorTx.addSignatureIdx(1, pAddresses[1])
   const unsignedTx: UnsignedTx = new UnsignedTx(addAllyChainValidatorTx)

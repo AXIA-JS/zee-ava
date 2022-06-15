@@ -30,7 +30,8 @@ pKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
-const coreChainBlockchainIdStr: string = Defaults.network[networkID].P.blockchainID
+const coreChainBlockchainIdStr: string =
+  Defaults.network[networkID].P.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const Web3 = require("web3")

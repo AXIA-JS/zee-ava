@@ -33,7 +33,12 @@ export class AddAllyChainValidatorTx extends BaseTx {
     let fields: object = super.serialize(encoding)
     return {
       ...fields,
-      allyChainID: serialization.encoder(this.allyChainID, encoding, "Buffer", "cb58")
+      allyChainID: serialization.encoder(
+        this.allyChainID,
+        encoding,
+        "Buffer",
+        "cb58"
+      )
       // exportOuts: this.exportOuts.map((e) => e.serialize(encoding))
     }
   }

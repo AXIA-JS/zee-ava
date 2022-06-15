@@ -945,24 +945,27 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
       }
     }
 
-    const addAllyChainValidatorTx: AddAllyChainValidatorTx = new AddAllyChainValidatorTx(
-      networkID,
-      blockchainID,
-      outs,
-      ins,
-      memo,
-      nodeID,
-      startTime,
-      endTime,
-      weight,
-      allyChainID
-    )
-    allyChainAuthCredentials.forEach((allyChainAuthCredential: [number, Buffer]) => {
-      addAllyChainValidatorTx.addSignatureIdx(
-        allyChainAuthCredential[0],
-        allyChainAuthCredential[1]
+    const addAllyChainValidatorTx: AddAllyChainValidatorTx =
+      new AddAllyChainValidatorTx(
+        networkID,
+        blockchainID,
+        outs,
+        ins,
+        memo,
+        nodeID,
+        startTime,
+        endTime,
+        weight,
+        allyChainID
       )
-    })
+    allyChainAuthCredentials.forEach(
+      (allyChainAuthCredential: [number, Buffer]) => {
+        addAllyChainValidatorTx.addSignatureIdx(
+          allyChainAuthCredential[0],
+          allyChainAuthCredential[1]
+        )
+      }
+    )
     return new UnsignedTx(addAllyChainValidatorTx)
   }
 
@@ -1246,7 +1249,11 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
       outs,
       ins,
       memo,
-      new SECPOwnerOutput(allyChainOwnerAddresses, locktime, allyChainOwnerThreshold)
+      new SECPOwnerOutput(
+        allyChainOwnerAddresses,
+        locktime,
+        allyChainOwnerThreshold
+      )
     )
     return new UnsignedTx(UTx)
   }
@@ -1324,12 +1331,14 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
       fxIDs,
       genesisData
     )
-    allyChainAuthCredentials.forEach((allyChainAuthCredential: [number, Buffer]) => {
-      createChainTx.addSignatureIdx(
-        allyChainAuthCredential[0],
-        allyChainAuthCredential[1]
-      )
-    })
+    allyChainAuthCredentials.forEach(
+      (allyChainAuthCredential: [number, Buffer]) => {
+        createChainTx.addSignatureIdx(
+          allyChainAuthCredential[0],
+          allyChainAuthCredential[1]
+        )
+      }
+    )
     return new UnsignedTx(createChainTx)
   }
 }

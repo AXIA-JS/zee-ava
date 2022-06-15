@@ -409,7 +409,8 @@ describe("PlatformVMAPI", (): void => {
 
   test("addAllyChainValidator 1", async (): Promise<void> => {
     const nodeID: string = "abcdef"
-    const allyChainID: string = "4R5p2RXDGLqaifZE4hHWH9owe34pfoBULn1DrQTWivjg8o4aH"
+    const allyChainID: string =
+      "4R5p2RXDGLqaifZE4hHWH9owe34pfoBULn1DrQTWivjg8o4aH"
     const startTime: Date = new Date(1985, 5, 9, 12, 59, 43, 9)
     const endTime: Date = new Date(1982, 3, 1, 12, 58, 33, 7)
     const weight: number = 13

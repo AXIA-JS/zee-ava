@@ -34,8 +34,11 @@ const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
 const cAddresses: Buffer[] = appchain.keyChain().getAddresses()
 const xChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
 const xChainBlockchainIdBuf: Buffer = bintools.cb58Decode(xChainBlockchainIdStr)
-const appChainBlockchainIdStr: string = Defaults.network[networkID].C.blockchainID
-const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(appChainBlockchainIdStr)
+const appChainBlockchainIdStr: string =
+  Defaults.network[networkID].C.blockchainID
+const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
+  appChainBlockchainIdStr
+)
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
@@ -50,11 +53,12 @@ const main = async (): Promise<any> => {
   const antAssetIDStr: string =
     "verma4Pa9biWKbjDGNsTXU47cYCyDSNGSU1iBkxucfVSFVXdv"
   const antAssetIDBuf: Buffer = bintools.cb58Decode(antAssetIDStr)
-  const antAssetBalanceResponse: RequestResponseData = await appchain.callMethod(
-    "eth_getAssetBalance",
-    [cHexAddress, "latest", antAssetIDStr],
-    "ext/bc/C/rpc"
-  )
+  const antAssetBalanceResponse: RequestResponseData =
+    await appchain.callMethod(
+      "eth_getAssetBalance",
+      [cHexAddress, "latest", antAssetIDStr],
+      "ext/bc/C/rpc"
+    )
   const antAssetBalance: number = parseInt(
     antAssetBalanceResponse.data.result,
     16
