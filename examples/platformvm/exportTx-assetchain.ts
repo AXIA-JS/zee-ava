@@ -37,7 +37,8 @@ xKeychain.importKey(privKey)
 pKeychain.importKey(privKey)
 const xAddresses: Buffer[] = assetchain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const assetChainBlockchainID: string = Defaults.network[networkID].X.blockchainID
+const assetChainBlockchainID: string =
+  Defaults.network[networkID].X.blockchainID
 const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []

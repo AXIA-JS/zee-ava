@@ -54,8 +54,7 @@ const main = async (): Promise<any> => {
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
 
   const weight: BN = new BN(1)
-  const subnetID: string =
-    "2tFRAeosSsgd1XV9Bn2y9VEHKPkeuk41RdnAZh9PuZJDWWkR5"
+  const subnetID: string = "2tFRAeosSsgd1XV9Bn2y9VEHKPkeuk41RdnAZh9PuZJDWWkR5"
   const memo: Buffer = Buffer.from(
     "Utility function to create a AddSubnetValidatorTx transaction"
   )

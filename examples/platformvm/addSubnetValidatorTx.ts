@@ -109,19 +109,18 @@ const main = async (): Promise<any> => {
     "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
   )
   const nodeIDBuf: Buffer = NodeIDStringToBuffer(nodeID)
-  const addSubnetValidatorTx: AddSubnetValidatorTx =
-    new AddSubnetValidatorTx(
-      networkID,
-      coreChainBlockchainIDBuf,
-      outputs,
-      inputs,
-      memo,
-      nodeIDBuf,
-      startTime,
-      endTime,
-      weight,
-      subnetID
-    )
+  const addSubnetValidatorTx: AddSubnetValidatorTx = new AddSubnetValidatorTx(
+    networkID,
+    coreChainBlockchainIDBuf,
+    outputs,
+    inputs,
+    memo,
+    nodeIDBuf,
+    startTime,
+    endTime,
+    weight,
+    subnetID
+  )
   addSubnetValidatorTx.addSignatureIdx(0, pAddresses[3])
   addSubnetValidatorTx.addSignatureIdx(1, pAddresses[1])
   const unsignedTx: UnsignedTx = new UnsignedTx(addSubnetValidatorTx)

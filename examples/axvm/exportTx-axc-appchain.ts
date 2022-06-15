@@ -41,7 +41,9 @@ const inputs: TransferableInput[] = []
 const fee: BN = assetchain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("Manually Export AXC from AssetChain to AppChain")
+const memo: Buffer = Buffer.from(
+  "Manually Export AXC from AssetChain to AppChain"
+)
 // Uncomment for codecID 00 01
 // const codecID: number = 1
 

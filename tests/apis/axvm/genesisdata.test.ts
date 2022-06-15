@@ -2,7 +2,11 @@ import BN from "bn.js"
 import { Buffer } from "buffer/"
 import { SECPTransferOutput } from "../../../src/apis/axvm/outputs"
 import { InitialStates } from "../../../src/apis/axvm/initialstates"
-import { GenesisData, GenesisAsset, AXVMConstants } from "../../../src/apis/axvm"
+import {
+  GenesisData,
+  GenesisAsset,
+  AXVMConstants
+} from "../../../src/apis/axvm"
 import { Serialization, SerializedType } from "../../../src/utils"
 
 /**

@@ -32,8 +32,11 @@ xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const xAddresses: Buffer[] = assetchain.keyChain().getAddresses()
 const cAddresses: Buffer[] = appchain.keyChain().getAddresses()
-const assetChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
-const assetChainBlockchainIdBuf: Buffer = bintools.cb58Decode(assetChainBlockchainIdStr)
+const assetChainBlockchainIdStr: string =
+  Defaults.network[networkID].X.blockchainID
+const assetChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
+  assetChainBlockchainIdStr
+)
 const appChainBlockchainIdStr: string =
   Defaults.network[networkID].C.blockchainID
 const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(

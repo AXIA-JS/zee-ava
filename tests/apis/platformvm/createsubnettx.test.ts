@@ -30,8 +30,7 @@ describe("CreateSubnetTx", (): void => {
   })
 
   describe("SubnetOwners", (): void => {
-    const subnetOwners: SECPOwnerOutput =
-      createSubnetTx.getSubnetOwners()
+    const subnetOwners: SECPOwnerOutput = createSubnetTx.getSubnetOwners()
 
     test("getTypeName", async (): Promise<void> => {
       const subnetOwnersTypeName: string = subnetOwners.getTypeName()

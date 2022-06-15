@@ -27,7 +27,8 @@ xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
 const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
-const assetChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
+const assetChainBlockchainIdStr: string =
+  Defaults.network[networkID].X.blockchainID
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const Web3 = require("web3")
 const path: string = "/ext/bc/C/rpc"

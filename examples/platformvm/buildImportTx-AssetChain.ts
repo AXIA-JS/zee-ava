@@ -23,7 +23,8 @@ const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 pKeychain.importKey(privKey)
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const assetChainBlockchainID: string = Defaults.network[networkID].X.blockchainID
+const assetChainBlockchainID: string =
+  Defaults.network[networkID].X.blockchainID
 const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)

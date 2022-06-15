@@ -28,7 +28,8 @@ xKeychain.importKey(privKey)
 pKeychain.importKey(privKey)
 const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const assetChainBlockchainID: string = Defaults.network[networkID].X.blockchainID
+const assetChainBlockchainID: string =
+  Defaults.network[networkID].X.blockchainID
 const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)

@@ -36,8 +36,11 @@ const appChainBlockchainIdStr: string =
 const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
   appChainBlockchainIdStr
 )
-const assetChainBlockchainIdStr: string = Defaults.network[networkID].X.blockchainID
-const assetChainBlockchainIdBuf: Buffer = bintools.cb58Decode(assetChainBlockchainIdStr)
+const assetChainBlockchainIdStr: string =
+  Defaults.network[networkID].X.blockchainID
+const assetChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
+  assetChainBlockchainIdStr
+)
 const importedIns: TransferableInput[] = []
 const evmOutputs: EVMOutput[] = []
 const fee: BN = appchain.getDefaultTxFee()

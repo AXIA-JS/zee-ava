@@ -14,8 +14,7 @@ describe("AddSubnetValidatorTx", (): void => {
     addSubnetValidatorTxHex,
     "hex"
   )
-  const addSubnetValidatorTx: AddSubnetValidatorTx =
-    new AddSubnetValidatorTx()
+  const addSubnetValidatorTx: AddSubnetValidatorTx = new AddSubnetValidatorTx()
   addSubnetValidatorTx.fromBuffer(addSubnetValidatorTxBuf)
 
   test("getTypeName", async (): Promise<void> => {
@@ -25,8 +24,7 @@ describe("AddSubnetValidatorTx", (): void => {
   })
 
   test("getTypeID", async (): Promise<void> => {
-    const addSubnetValidatorTxTypeID: number =
-      addSubnetValidatorTx.getTypeID()
+    const addSubnetValidatorTxTypeID: number = addSubnetValidatorTx.getTypeID()
     expect(addSubnetValidatorTxTypeID).toBe(
       PlatformVMConstants.ADDSUBNETVALIDATORTX
     )
@@ -66,8 +64,7 @@ describe("AddSubnetValidatorTx", (): void => {
   })
 
   test("getSubnetID", async (): Promise<void> => {
-    const subnetID: string =
-      "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
+    const subnetID: string = "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
     const sID: string = addSubnetValidatorTx.getSubnetID()
     expect(subnetID).toBe(sID)
   })
