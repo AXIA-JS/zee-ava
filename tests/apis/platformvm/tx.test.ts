@@ -235,7 +235,7 @@ describe("Transactions", (): void => {
 
   test("confirm inputTotal, outputTotal and fee are correct", async (): Promise<void> => {
     const bintools: BinTools = BinTools.getInstance()
-    // local network P Chain ID
+    // local network CoreChain ID
     // AXC assetID
     const assetID: Buffer = bintools.cb58Decode(
       "n8XH5JY1EX5VYqDeAhB4Zd4GKxi9UNQy6oPpMsCAj1Q6xkiiL"
@@ -318,7 +318,7 @@ describe("Transactions", (): void => {
   })
 
   test("Create large BaseTx that is Goose Egg Tx", async (): Promise<void> => {
-    // local network P Chain ID
+    // local network CoreChain ID
     const outs: TransferableOutput[] = []
     const ins: TransferableInput[] = []
     const outputAmt: BN = new BN("609555500000")
@@ -355,7 +355,7 @@ describe("Transactions", (): void => {
   })
 
   test("Create large BaseTx that isn't Goose Egg Tx", async (): Promise<void> => {
-    // local network P Chain ID
+    // local network CoreChain ID
     const outs: TransferableOutput[] = []
     const ins: TransferableInput[] = []
     const outputAmt: BN = new BN("44995609555500000")
