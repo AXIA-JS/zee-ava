@@ -38,9 +38,7 @@ export class ImportTx extends BaseTx {
   protected _typeName = "ImportTx"
   protected _codecID = AVMConstants.LATESTCODEC
   protected _typeID =
-    this._codecID === 0
-      ? AVMConstants.IMPORTTX
-      : AVMConstants.IMPORTTX_CODECONE
+    this._codecID === 0 ? AVMConstants.IMPORTTX : AVMConstants.IMPORTTX_CODECONE
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     const fields: object = super.serialize(encoding)

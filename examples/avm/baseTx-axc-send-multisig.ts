@@ -47,9 +47,7 @@ const inputs: TransferableInput[] = []
 const fee: BN = assetchain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from(
-  "AVM manual spend multisig BaseTx to send AXC"
-)
+const memo: Buffer = Buffer.from("AVM manual spend multisig BaseTx to send AXC")
 // Uncomment for codecID 00 01
 // const codecID: number = 1
 

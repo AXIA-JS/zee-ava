@@ -666,9 +666,7 @@ export class AVMAPI extends JRPCAPI {
     if (typeof changeAddr !== "undefined") {
       if (typeof this.parseAddress(changeAddr) === "undefined") {
         /* istanbul ignore next */
-        throw new AddressError(
-          "Error - AVMAPI.mintNFT: Invalid address format"
-        )
+        throw new AddressError("Error - AVMAPI.mintNFT: Invalid address format")
       }
       params["changeAddr"] = changeAddr
     }
@@ -732,9 +730,7 @@ export class AVMAPI extends JRPCAPI {
     if (typeof changeAddr !== "undefined") {
       if (typeof this.parseAddress(changeAddr) === "undefined") {
         /* istanbul ignore next */
-        throw new AddressError(
-          "Error - AVMAPI.sendNFT: Invalid address format"
-        )
+        throw new AddressError("Error - AVMAPI.sendNFT: Invalid address format")
       }
       params["changeAddr"] = changeAddr
     }
@@ -762,9 +758,7 @@ export class AVMAPI extends JRPCAPI {
   ): Promise<string> => {
     if (typeof this.parseAddress(address) === "undefined") {
       /* istanbul ignore next */
-      throw new AddressError(
-        "Error - AVMAPI.exportKey: Invalid address format"
-      )
+      throw new AddressError("Error - AVMAPI.exportKey: Invalid address format")
     }
     const params: ExportKeyParams = {
       username,
