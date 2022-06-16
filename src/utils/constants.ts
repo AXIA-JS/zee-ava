@@ -7,9 +7,9 @@ import BN from "bn.js"
 
 export const PrivateKeyPrefix: string = "PrivateKey-"
 export const NodeIDPrefix: string = "NodeID-"
-export const PrimaryAssetAlias: string = "AVAX"
+export const PrimaryAssetAlias: string = "AXC"
 export const MainnetAPI: string = "api.avax.network"
-export const FujiAPI: string = "18.222.205.99:9650"
+export const FujiAPI: string = "rpc-v2.canarytest.axiacoin.network:9650"
 
 export interface C {
   blockchainID: string

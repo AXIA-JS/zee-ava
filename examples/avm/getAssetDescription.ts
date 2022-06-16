@@ -9,7 +9,7 @@ const axia: Axia = new Axia(ip, port, protocol, networkID)
 const assetchain: AVMAPI = axia.AssetChain()
 
 const main = async (): Promise<any> => {
-  const assetDescription: any = await assetchain.getAssetDescription("AVAX")
+  const assetDescription: any = await assetchain.getAssetDescription("AXC")
   console.log(assetDescription)
 }
 

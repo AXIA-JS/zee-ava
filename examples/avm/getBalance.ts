@@ -10,7 +10,7 @@ const assetchain: AVMAPI = axia.AssetChain()
 
 const main = async (): Promise<any> => {
   const address: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
-  const balance: object = await assetchain.getBalance(address, "AVAX")
+  const balance: object = await assetchain.getBalance(address, "AXC")
   console.log(balance)
 }
 
