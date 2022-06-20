@@ -74,7 +74,6 @@ export const NetworkIDToHRP: object = {
   4: "everest",
   5: "fuji",
   1337: "custom",
-  5678: "testnet",
   12345: "local"
 }
 
@@ -86,7 +85,6 @@ export const HRPToNetworkID: object = {
   everest: 4,
   fuji: 5,
   custom: 1337,
-  testnet: 5678,
   local: 12345
 }
 
@@ -97,7 +95,6 @@ export const NetworkIDToNetworkNames: object = {
   3: ["Denali"],
   4: ["Everest"],
   5: ["Fuji", "Testnet"],
-  5678: ["Testnet"],
   1337: ["Custom Network"],
   12345: ["Local Network"]
 }
@@ -110,7 +107,6 @@ export const NetworkNameToNetworkID: object = {
   Denali: 3,
   Everest: 4,
   Fuji: 5,
-  Testnet: 5678,
   Custom: 1337,
   "Custom Network": 1337,
   Local: 12345,
@@ -414,56 +410,6 @@ const n5C: C = {
 }
 // End Fuji
 
-// Start Testnet
-axcAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
-const n5678X: X = {
-  blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
-  axcAssetID: axcAssetID,
-  alias: SwapChainAlias,
-  vm: SwapChainVMName,
-  txFee: MILLIAXC,
-  creationTxFee: CENTIAXC,
-  mintTxFee: MILLIAXC
-}
-
-const n5678P: P = {
-  blockchainID: PlatformChainID,
-  axcAssetID: axcAssetID,
-  alias: CoreChainAlias,
-  vm: CoreChainVMName,
-  txFee: MILLIAXC,
-  creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
-  createChainTx: ONEAXC,
-  minConsumption: 0.1,
-  maxConsumption: 0.12,
-  maxStakingDuration: new BN(31536000),
-  maxSupply: new BN(720000000).mul(ONEAXC),
-  minStake: ONEAXC,
-  minStakeDuration: 24 * 60 * 60, //one day
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
-  minDelegationStake: ONEAXC,
-  minDelegationFee: new BN(2)
-}
-
-const n5678C: C = {
-  blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
-  alias: AXChainAlias,
-  vm: AXChainVMName,
-  txBytesGas: 1,
-  costPerSignature: 1000,
-  // DEPRECATED - txFee
-  // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  txFee: MILLIAXC,
-  // DEPRECATED - gasPrice
-  // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  gasPrice: GWEI.mul(new BN(225)),
-  minGasPrice: GWEI.mul(new BN(25)),
-  maxGasPrice: GWEI.mul(new BN(1000)),
-  chainID: 4000
-}
-// End Testnet
-
 // Start custom network
 axcAssetID = "BUuypiq2wyuLMvyhzFXcPyxPMCgSp7eeDohhQRqTChoBjKziC"
 const n1337X: X = { ...n5X }
@@ -554,15 +500,6 @@ export class Defaults {
       "11111111111111111111111111111111LpoYY": n1337P,
       C: n1337C,
       BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88: n1337C
-    },
-    5678: {
-      hrp: NetworkIDToHRP[5678],
-      X: n5678X,
-      "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5678X,
-      P: n5678P,
-      "11111111111111111111111111111111LpoYY": n5678P,
-      C: n5678C,
-      yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5678C
     },
     12345: {
       hrp: NetworkIDToHRP[12345],
