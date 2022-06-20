@@ -28,8 +28,7 @@ const cKeychain: EVMKeyChain = axchain.keyChain()
 xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
-const swapChainBlockchainId: string =
-  Defaults.network[networkID].X.blockchainID
+const swapChainBlockchainId: string = Defaults.network[networkID].X.blockchainID
 
 const main = async (): Promise<any> => {
   const baseFeeResponse: string = await axchain.getBaseFee()

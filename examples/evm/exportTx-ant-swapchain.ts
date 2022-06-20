@@ -56,12 +56,11 @@ const main = async (): Promise<any> => {
   const antAssetIDStr: string =
     "verma4Pa9biWKbjDGNsTXU47cYCyDSNGSU1iBkxucfVSFVXdv"
   const antAssetIDBuf: Buffer = bintools.cb58Decode(antAssetIDStr)
-  const antAssetBalanceResponse: RequestResponseData =
-    await axchain.callMethod(
-      "eth_getAssetBalance",
-      [cHexAddress, "latest", antAssetIDStr],
-      "ext/bc/C/rpc"
-    )
+  const antAssetBalanceResponse: RequestResponseData = await axchain.callMethod(
+    "eth_getAssetBalance",
+    [cHexAddress, "latest", antAssetIDStr],
+    "ext/bc/C/rpc"
+  )
   const antAssetBalance: number = parseInt(
     antAssetBalanceResponse.data.result,
     16
