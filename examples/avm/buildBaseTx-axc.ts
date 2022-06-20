@@ -18,30 +18,30 @@ const networkID: number = 1337
 const xBlockchainID: string = Defaults.network[networkID].X.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axia: Axia = new Axia(ip, port, protocol, networkID, xBlockchainID)
-const assetchain: AVMAPI = axia.AssetChain()
-const xKeychain: KeyChain = assetchain.keyChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const xKeychain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const asOf: BN = UnixNow()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from("AVM utility method buildBaseTx to send AXC")
-const fee: BN = assetchain.getDefaultTxFee()
+const fee: BN = swapchain.getDefaultTxFee()
 
 const main = async (): Promise<any> => {
-  const getBalanceResponse: GetBalanceResponse = await assetchain.getBalance(
+  const getBalanceResponse: GetBalanceResponse = await swapchain.getBalance(
     xAddressStrings[0],
     axcAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
-  const avmUTXOResponse: GetUTXOsResponse = await assetchain.getUTXOs(
+  const avmUTXOResponse: GetUTXOsResponse = await swapchain.getUTXOs(
     xAddressStrings
   )
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const amount: BN = balance.sub(fee)
 
-  const unsignedTx: UnsignedTx = await assetchain.buildBaseTx(
+  const unsignedTx: UnsignedTx = await swapchain.buildBaseTx(
     utxoSet,
     amount,
     axcAssetID,
@@ -55,7 +55,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await assetchain.issueTx(tx)
+  const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

@@ -19,21 +19,22 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
+const swapchain: AVMAPI = axia.SwapChain()
 const corechain: PlatformVMAPI = axia.CoreChain()
-const xKeychain: AVMKeyChain = assetchain.keyChain()
+const xKeychain: AVMKeyChain = swapchain.keyChain()
 const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
 pKeychain.importKey(privKey)
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const appChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
+const swapChainBlockchainID: string =
+  Defaults.network[networkID].X.blockchainID
 const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildExportTx to export AXC from the CoreChain to the AppChain"
+  "PlatformVM utility method buildExportTx to export AXC from the CoreChain to the SwapChain"
 )
 const asOf: BN = UnixNow()
 
@@ -45,7 +46,7 @@ const main = async (): Promise<any> => {
   const unsignedTx: UnsignedTx = await corechain.buildExportTx(
     utxoSet,
     unlocked.sub(fee),
-    appChainBlockchainID,
+    swapChainBlockchainID,
     xAddressStrings,
     pAddressStrings,
     pAddressStrings,

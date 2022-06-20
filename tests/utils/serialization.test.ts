@@ -318,9 +318,9 @@ describe("Serialization", (): void => {
     const mHex: string =
       "66726f6d20736e6f77666c616b6520746f206176616c616e636865"
     const memo: Buffer = serialization.typeToBuffer(m, "cb58")
-    const appChainID: string =
+    const axChainID: string =
       "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
-    const appChainIDHex: string =
+    const axChainIDHex: string =
       "9d0775f450604bd2fbc49ce0c5c1c6dfeb2dc2acb8c92c26eeae6e6df4502b19"
     const hex: SerializedEncoding = "hex"
     const cb58: SerializedEncoding = "cb58"
@@ -336,7 +336,7 @@ describe("Serialization", (): void => {
     const threshold: number = 1
     const thresholdHex: string = "00000001"
     const minters: string[] = [xAddress]
-    const assetID: Buffer = serialization.typeToBuffer(appChainID, cb58)
+    const assetID: Buffer = serialization.typeToBuffer(axChainID, cb58)
     const assetidHex: string =
       "9d0775f450604bd2fbc49ce0c5c1c6dfeb2dc2acb8c92c26eeae6e6df4502b19"
     const payload: Buffer = Buffer.from("From snowflake to Axia")
@@ -583,7 +583,7 @@ describe("Serialization", (): void => {
       })
 
       test("ImportTx", (): void => {
-        const sourceChain: Buffer = serialization.typeToBuffer(appChainID, cb58)
+        const sourceChain: Buffer = serialization.typeToBuffer(axChainID, cb58)
         const importIns: TransferableInput[] = []
         const importtx: ImportTx = new ImportTx(
           networkID,
@@ -613,7 +613,7 @@ describe("Serialization", (): void => {
         expect(serialized.fields["outs"]).toStrictEqual([])
         expect(serialized.fields["ins"]).toStrictEqual([])
         expect(serialized.fields["memo"]).toBe(mHex)
-        expect(serialized.fields["sourceChain"]).toBe(appChainIDHex)
+        expect(serialized.fields["sourceChain"]).toBe(axChainIDHex)
         expect(serialized.fields["importIns"]).toStrictEqual([])
 
         serialization.deserialize(serialized, importtx2)
@@ -637,7 +637,7 @@ describe("Serialization", (): void => {
 
       test("ExportTx", (): void => {
         const destinationChain: Buffer = serialization.typeToBuffer(
-          appChainID,
+          axChainID,
           cb58
         )
         const exportOuts: TransferableOutput[] = []
@@ -669,7 +669,7 @@ describe("Serialization", (): void => {
         expect(serialized.fields["outs"]).toStrictEqual([])
         expect(serialized.fields["ins"]).toStrictEqual([])
         expect(serialized.fields["memo"]).toBe(mHex)
-        expect(serialized.fields["destinationChain"]).toBe(appChainIDHex)
+        expect(serialized.fields["destinationChain"]).toBe(axChainIDHex)
         expect(serialized.fields["exportOuts"]).toStrictEqual([])
 
         serialization.deserialize(serialized, exporttx2)
@@ -1290,12 +1290,12 @@ describe("Serialization", (): void => {
 
       test("UTXO", (): void => {
         const codecID: number = 0
-        const txID: Buffer = serialization.typeToBuffer(appChainID, cb58)
+        const txID: Buffer = serialization.typeToBuffer(axChainID, cb58)
         const txidHex: string =
           "9d0775f450604bd2fbc49ce0c5c1c6dfeb2dc2acb8c92c26eeae6e6df4502b19"
         const outputidx: number = 0
         const outputidxHex: string = "00000000"
-        const assetID: Buffer = serialization.typeToBuffer(appChainID, cb58)
+        const assetID: Buffer = serialization.typeToBuffer(axChainID, cb58)
         const nfttransferoutput: NFTTransferOutput = new NFTTransferOutput(
           groupID,
           payload

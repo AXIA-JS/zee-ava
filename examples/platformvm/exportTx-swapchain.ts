@@ -1,6 +1,7 @@
 import { Axia, BinTools, BN, Buffer } from "../../src"
+import { AVMAPI, KeyChain as AVMKeyChain } from "../../src/apis/avm"
 import {
-  AVMAPI,
+  PlatformVMAPI,
   KeyChain,
   SECPTransferOutput,
   SECPTransferInput,
@@ -12,11 +13,13 @@ import {
   UnsignedTx,
   Tx,
   ExportTx
-} from "../../src/apis/avm"
+} from "../../src/apis/platformvm"
+import { Output } from "../../src/common"
 import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,
-  Defaults
+  Defaults,
+  MILLIAXC
 } from "../../src/utils"
 
 const ip: string = "localhost"
@@ -24,53 +27,52 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = assetchain.keyChain()
+const xKeychain: AVMKeyChain = swapchain.keyChain()
+const pKeychain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = assetchain.keyChain().getAddresses()
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
-const blockchainID: string = Defaults.network[networkID].X.blockchainID
-const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
-const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
-const appChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
+pKeychain.importKey(privKey)
+const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
+const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
+const swapChainBlockchainID: string =
+  Defaults.network[networkID].X.blockchainID
+const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
-const fee: BN = assetchain.getDefaultTxFee()
+const fee: BN = MILLIAXC
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Manually Export AXC from AssetChain to AppChain"
+  "Manually Export AXC from CoreChain to SwapChain"
 )
-// Uncomment for codecID 00 01
-// const codecID: number = 1
 
 const main = async (): Promise<any> => {
-  const getBalanceResponse: any = await assetchain.getBalance(
-    xAddressStrings[0],
-    axcAssetID
-  )
-  const balance: BN = new BN(getBalanceResponse.balance)
+  const axcAssetID: Buffer = await corechain.getAXCAssetID()
+  const getBalanceResponse: any = await corechain.getBalance(pAddressStrings[0])
+  const unlocked: BN = new BN(getBalanceResponse.unlocked)
+  console.log(unlocked.sub(fee).toString())
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
-    balance.sub(fee),
+    unlocked.sub(fee),
     xAddresses,
     locktime,
     threshold
   )
-  // Uncomment for codecID 00 01
-  // secpTransferOutput.setCodecID(codecID)
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    axcAssetIDBuf,
+    axcAssetID,
     secpTransferOutput
   )
   exportedOuts.push(transferableOutput)
 
-  const avmUTXOResponse: any = await assetchain.getUTXOs(xAddressStrings)
-  const utxoSet: UTXOSet = avmUTXOResponse.utxos
+  const platformVMUTXOResponse: any = await corechain.getUTXOs(pAddressStrings)
+  const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO) => {
+    const output: Output = utxo.getOutput()
+    // if (output.getOutputID() === 7) {
     const amountOutput: AmountOutput = utxo.getOutput() as AmountOutput
     const amt: BN = amountOutput.getAmount().clone()
     const txid: Buffer = utxo.getTxID()
@@ -78,32 +80,30 @@ const main = async (): Promise<any> => {
 
     const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
     secpTransferInput.addSignatureIdx(0, xAddresses[0])
-    // Uncomment for codecID 00 01
-    // secpTransferOutput.setCodecID(codecID)
 
     const input: TransferableInput = new TransferableInput(
       txid,
       outputidx,
-      axcAssetIDBuf,
+      axcAssetID,
       secpTransferInput
     )
     inputs.push(input)
+    // }
   })
 
   const exportTx: ExportTx = new ExportTx(
     networkID,
-    bintools.cb58Decode(blockchainID),
+    bintools.cb58Decode(coreChainBlockchainID),
     outputs,
     inputs,
     memo,
-    bintools.cb58Decode(appChainBlockchainID),
+    bintools.cb58Decode(swapChainBlockchainID),
     exportedOuts
   )
-  // Uncomment for codecID 00 01
-  // exportTx.setCodecID(codecID)
+
   const unsignedTx: UnsignedTx = new UnsignedTx(exportTx)
-  const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await assetchain.issueTx(tx)
+  const tx: Tx = unsignedTx.sign(pKeychain)
+  const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

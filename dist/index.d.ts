@@ -42,13 +42,13 @@ export default class Axia extends AxiaCore {
      */
     Auth: () => AuthAPI;
     /**
-     * Returns a reference to the EVMAPI RPC pointed at the AppChain.
+     * Returns a reference to the EVMAPI RPC pointed at the AXChain.
      */
-    AppChain: () => EVMAPI;
+    AXChain: () => EVMAPI;
     /**
-     * Returns a reference to the AVM RPC pointed at the AssetChain.
+     * Returns a reference to the AVM RPC pointed at the SwapChain.
      */
-    AssetChain: () => AVMAPI;
+    SwapChain: () => AVMAPI;
     /**
      * Returns a reference to the Health RPC for a node.
      */
@@ -82,14 +82,14 @@ export default class Axia extends AxiaCore {
      * @param protocol The protocol string to use before a "://" in a request,
      * ex: "http", "https", "git", "ws", etc. Defaults to http
      * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
-     * @param AssetChainID Sets the blockchainID for the AVM. Will try to auto-detect,
+     * @param SwapChainID Sets the blockchainID for the AVM. Will try to auto-detect,
      * otherwise default "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
-     * @param AppChainID Sets the blockchainID for the EVM. Will try to auto-detect,
+     * @param AXChainID Sets the blockchainID for the EVM. Will try to auto-detect,
      * otherwise default "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
      * @param hrp The human-readable part of the bech32 addresses
      * @param skipinit Skips creating the APIs. Defaults to false
      */
-    constructor(host?: string, port?: number, protocol?: string, networkID?: number, AssetChainID?: string, AppChainID?: string, hrp?: string, skipinit?: boolean);
+    constructor(host?: string, port?: number, protocol?: string, networkID?: number, SwapChainID?: string, AXChainID?: string, hrp?: string, skipinit?: boolean);
 }
 export { Axia };
 export { AxiaCore };

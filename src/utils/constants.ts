@@ -9,7 +9,7 @@ export const PrivateKeyPrefix: string = "PrivateKey-"
 export const NodeIDPrefix: string = "NodeID-"
 export const PrimaryAssetAlias: string = "AXC"
 export const MainnetAPI: string = "api.avax.network"
-export const FujiAPI: string = "rpc-v2.canarytest.axiacoin.network:9650"
+export const TestnetAPI: string = "rpc-v2.canarytest.axiacoin.network:9650"
 
 export interface C {
   blockchainID: string
@@ -74,6 +74,7 @@ export const NetworkIDToHRP: object = {
   4: "everest",
   5: "fuji",
   1337: "custom",
+  5678: "testnet",
   12345: "local"
 }
 
@@ -85,6 +86,7 @@ export const HRPToNetworkID: object = {
   everest: 4,
   fuji: 5,
   custom: 1337,
+  testnet: 5678,
   local: 12345
 }
 
@@ -95,6 +97,7 @@ export const NetworkIDToNetworkNames: object = {
   3: ["Denali"],
   4: ["Everest"],
   5: ["Fuji", "Testnet"],
+  5678: ["Testnet"],
   1337: ["Custom Network"],
   12345: ["Local Network"]
 }
@@ -107,7 +110,7 @@ export const NetworkNameToNetworkID: object = {
   Denali: 3,
   Everest: 4,
   Fuji: 5,
-  Testnet: 5,
+  Testnet: 5678,
   Custom: 1337,
   "Custom Network": 1337,
   Local: 12345,
@@ -122,11 +125,11 @@ export const DefaultNetworkID: number = 1
 
 export const PlatformChainID: string = "11111111111111111111111111111111LpoYY"
 export const PrimaryNetworkID: string = "11111111111111111111111111111111LpoYY"
-export const AssetChainAlias: string = "X"
-export const AppChainAlias: string = "C"
+export const SwapChainAlias: string = "X"
+export const AXChainAlias: string = "C"
 export const CoreChainAlias: string = "P"
-export const AssetChainVMName: string = "avm"
-export const AppChainVMName: string = "evm"
+export const SwapChainVMName: string = "avm"
+export const AXChainVMName: string = "evm"
 export const CoreChainVMName: string = "platformvm"
 
 // DO NOT use the following private keys and/or mnemonic on Fuji or Testnet
@@ -163,8 +166,8 @@ export const AXCSTAKECAP: BN = ONEAXC.mul(new BN(3000000))
 // Start Manhattan
 const n0X: X = {
   blockchainID: "2vrXWHgGxh5n3YsLHMV16YVVJTpT4z45Fmb4y3bL6si8kLCyg9",
-  alias: AssetChainAlias,
-  vm: AssetChainVMName,
+  alias: SwapChainAlias,
+  vm: SwapChainVMName,
   fee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -191,8 +194,8 @@ const n0P: P = {
 
 const n0C: C = {
   blockchainID: "2fFZQibQXcd6LTE4rpBPBAkLVXFE91Kit8pgxaBG1mRnh5xqbb",
-  alias: AppChainAlias,
-  vm: AppChainVMName,
+  alias: AXChainAlias,
+  vm: AXChainVMName,
   fee: MILLIAXC,
   gasPrice: GWEI.mul(new BN(470)), //equivalent to gas price
   chainID: 43111
@@ -204,8 +207,8 @@ let axcAssetID: string = "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z"
 const n1X: X = {
   blockchainID: "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
   axcAssetID: axcAssetID,
-  alias: AssetChainAlias,
-  vm: AssetChainVMName,
+  alias: SwapChainAlias,
+  vm: SwapChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -233,8 +236,8 @@ const n1P: P = {
 
 const n1C: C = {
   blockchainID: "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5",
-  alias: AppChainAlias,
-  vm: AppChainVMName,
+  alias: AXChainAlias,
+  vm: AXChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee
@@ -252,8 +255,8 @@ const n1C: C = {
 // Start Cascade
 const n2X: X = {
   blockchainID: "4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM",
-  alias: AssetChainAlias,
-  vm: AssetChainVMName,
+  alias: SwapChainAlias,
+  vm: SwapChainVMName,
   txFee: 0,
   creationTxFee: 0,
   mintTxFee: new BN(0)
@@ -280,8 +283,8 @@ const n2P: P = {
 
 const n2C: C = {
   blockchainID: "2mUYSXfLrDtigwbzj1LxKVsHwELghc5sisoXrzJwLqAAQHF4i",
-  alias: AppChainAlias,
-  vm: AppChainVMName,
+  alias: AXChainAlias,
+  vm: AXChainVMName,
   gasPrice: 0
 }
 // End Cascade
@@ -289,8 +292,8 @@ const n2C: C = {
 // Start Denali
 const n3X: X = {
   blockchainID: "rrEWX7gc7D9mwcdrdBxBTdqh1a7WDVsMuadhTZgyXfFcRz45L",
-  alias: AssetChainAlias,
-  vm: AssetChainVMName,
+  alias: SwapChainAlias,
+  vm: SwapChainVMName,
   txFee: 0,
   creationTxFee: 0,
   mintTxFee: new BN(0)
@@ -317,8 +320,8 @@ const n3P: P = {
 
 const n3C: C = {
   blockchainID: "zJytnh96Pc8rM337bBrtMvJDbEdDNjcXG3WkTNCiLp18ergm9",
-  alias: AppChainAlias,
-  vm: AppChainVMName,
+  alias: AXChainAlias,
+  vm: AXChainVMName,
   gasPrice: 0
 }
 // End Denali
@@ -326,8 +329,8 @@ const n3C: C = {
 // Start Everest
 const n4X: X = {
   blockchainID: "jnUjZSRt16TcRnZzmh5aMhavwVHz3zBrSN8GfFMTQkzUnoBxC",
-  alias: AssetChainAlias,
-  vm: AssetChainVMName,
+  alias: SwapChainAlias,
+  vm: SwapChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -354,8 +357,8 @@ const n4P: P = {
 
 const n4C: C = {
   blockchainID: "saMG5YgNsFxzjz4NMkEkt3bAH6hVxWdZkWcEnGB3Z15pcAmsK",
-  alias: AppChainAlias,
-  vm: AppChainVMName,
+  alias: AXChainAlias,
+  vm: AXChainVMName,
   gasPrice: GWEI.mul(new BN(470)),
   chainID: 43110
 }
@@ -366,8 +369,8 @@ axcAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
 const n5X: X = {
   blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
   axcAssetID: axcAssetID,
-  alias: AssetChainAlias,
-  vm: AssetChainVMName,
+  alias: SwapChainAlias,
+  vm: SwapChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
   mintTxFee: MILLIAXC
@@ -395,8 +398,8 @@ const n5P: P = {
 
 const n5C: C = {
   blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
-  alias: AppChainAlias,
-  vm: AppChainVMName,
+  alias: AXChainAlias,
+  vm: AXChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee
@@ -410,6 +413,56 @@ const n5C: C = {
   chainID: 43113
 }
 // End Fuji
+
+// Start Testnet
+axcAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
+const n5678X: X = {
+  blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
+  axcAssetID: axcAssetID,
+  alias: SwapChainAlias,
+  vm: SwapChainVMName,
+  txFee: MILLIAXC,
+  creationTxFee: CENTIAXC,
+  mintTxFee: MILLIAXC
+}
+
+const n5678P: P = {
+  blockchainID: PlatformChainID,
+  axcAssetID: axcAssetID,
+  alias: CoreChainAlias,
+  vm: CoreChainVMName,
+  txFee: MILLIAXC,
+  creationTxFee: CENTIAXC,
+  createSubnetTx: ONEAXC,
+  createChainTx: ONEAXC,
+  minConsumption: 0.1,
+  maxConsumption: 0.12,
+  maxStakingDuration: new BN(31536000),
+  maxSupply: new BN(720000000).mul(ONEAXC),
+  minStake: ONEAXC,
+  minStakeDuration: 24 * 60 * 60, //one day
+  maxStakeDuration: 365 * 24 * 60 * 60, // one year
+  minDelegationStake: ONEAXC,
+  minDelegationFee: new BN(2)
+}
+
+const n5678C: C = {
+  blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
+  alias: AXChainAlias,
+  vm: AXChainVMName,
+  txBytesGas: 1,
+  costPerSignature: 1000,
+  // DEPRECATED - txFee
+  // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
+  txFee: MILLIAXC,
+  // DEPRECATED - gasPrice
+  // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
+  gasPrice: GWEI.mul(new BN(225)),
+  minGasPrice: GWEI.mul(new BN(25)),
+  maxGasPrice: GWEI.mul(new BN(1000)),
+  chainID: 4000
+}
+// End Testnet
 
 // Start custom network
 axcAssetID = "BUuypiq2wyuLMvyhzFXcPyxPMCgSp7eeDohhQRqTChoBjKziC"
@@ -501,6 +554,15 @@ export class Defaults {
       "11111111111111111111111111111111LpoYY": n1337P,
       C: n1337C,
       BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88: n1337C
+    },
+    5678: {
+      hrp: NetworkIDToHRP[5678],
+      X: n5678X,
+      "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5678X,
+      P: n5678P,
+      "11111111111111111111111111111111LpoYY": n5678P,
+      C: n5678C,
+      yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5678C
     },
     12345: {
       hrp: NetworkIDToHRP[12345],

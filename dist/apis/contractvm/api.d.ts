@@ -190,15 +190,15 @@ export declare class ContractVMAPI extends JRPCAPI {
      */
     listAddresses: (username: string, password: string) => Promise<Array<string>>;
     /**
-     * Send AXC from an account on the CoreChain to an address on the AssetChain. This transaction
+     * Send AXC from an account on the CoreChain to an address on the SwapChain. This transaction
      * must be signed with the key of the account that the AXC is sent from and which pays
-     * the transaction fee. After issuing this transaction, you must call the AssetChain’s
+     * the transaction fee. After issuing this transaction, you must call the SwapChain’s
      * importAXC method to complete the transfer.
      *
      * @param username The Keystore user that controls the account specified in `to`
      * @param password The password of the Keystore user
      * @param to The ID of the account the AXC is sent to. This must be the same as the to
-     * argument in the corresponding call to the AssetChain’s exportAXC
+     * argument in the corresponding call to the SwapChain’s exportAXC
      * @param sourceChain The chainID where the funds are coming from.
      *
      * @returns Promise for a string for the transaction, which should be sent to the network

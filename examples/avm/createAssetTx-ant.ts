@@ -26,19 +26,19 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
+const swapchain: AVMAPI = axia.SwapChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: AVMKeyChain = assetchain.keyChain()
+const xKeychain: AVMKeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = assetchain.keyChain().getAddresses()
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].X.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
-const fee: BN = assetchain.getDefaultTxFee()
+const fee: BN = swapchain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from("AVM manual CreateAssetTx to create an ANT")
@@ -49,7 +49,7 @@ const denomination: number = 3
 // const codecID: number = 1
 
 const main = async (): Promise<any> => {
-  const getBalanceResponse: any = await assetchain.getBalance(
+  const getBalanceResponse: any = await swapchain.getBalance(
     xAddressStrings[0],
     axcAssetID
   )
@@ -68,7 +68,7 @@ const main = async (): Promise<any> => {
   )
   outputs.push(transferableOutput)
 
-  const avmUTXOResponse: any = await assetchain.getUTXOs(xAddressStrings)
+  const avmUTXOResponse: any = await swapchain.getUTXOs(xAddressStrings)
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO) => {
@@ -127,7 +127,7 @@ const main = async (): Promise<any> => {
   // createAssetTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(createAssetTx)
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await assetchain.issueTx(tx)
+  const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

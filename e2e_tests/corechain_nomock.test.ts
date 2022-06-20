@@ -27,7 +27,7 @@ describe("CoreChain", (): void => {
     "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
   const nodeID: string = "NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg"
   const subnetID: string = "2bGsYJorY6X7RhjPBFs3kYjiNEHo4zGrD2eeyZbb43T2KKi7fM"
-  const assetChainAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
+  const swapChainAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
   const axiaBlockChainID: string =
     "2VvmkRw4yrz8tPrVnCCbvEK1JxNyujpqhmU6SGonxMpkWBx9UD"
 
@@ -234,7 +234,7 @@ describe("CoreChain", (): void => {
     ],
     // [
     //   "exportAXC",
-    //   () => corechain.exportAXC(user, passwd, new BN(10), assetChainAddr),
+    //   () => corechain.exportAXC(user, passwd, new BN(10), swapChainAddr),
     //   (x) => x,
     //   Matcher.toThrow,
     //   () =>

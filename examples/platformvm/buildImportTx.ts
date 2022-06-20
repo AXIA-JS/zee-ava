@@ -20,12 +20,12 @@ const privKey: string =
   "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
 pKeychain.importKey(privKey)
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const assetChainBlockchainID: string = Defaults.network["12345"].X.blockchainID
+const swapChainBlockchainID: string = Defaults.network["12345"].X.blockchainID
 const coreChainBlockchainID: string = Defaults.network["12345"].P.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildImportTx to import AXC to the CoreChain from the AssetChain"
+  "PlatformVM utility method buildImportTx to import AXC to the CoreChain from the SwapChain"
 )
 const asOf: BN = UnixNow()
 
@@ -38,7 +38,7 @@ const main = async (): Promise<any> => {
   const unsignedTx: UnsignedTx = await corechain.buildImportTx(
     utxoSet,
     pAddressStrings,
-    assetChainBlockchainID,
+    swapChainBlockchainID,
     pAddressStrings,
     pAddressStrings,
     pAddressStrings,

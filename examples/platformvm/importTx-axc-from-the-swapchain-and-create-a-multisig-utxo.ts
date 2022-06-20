@@ -27,41 +27,54 @@ const axia: Axia = new Axia(ip, port, protocol, networkID)
 const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
 const pKeychain: KeyChain = corechain.keyChain()
-const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+// X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
+pKeychain.importKey(privKey)
+
+privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
+// P-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
+pKeychain.importKey(privKey)
+
+privKey = "PrivateKey-rKsiN3X4NSJcPpWxMSh7WcuY653NGQ7tfADgQwDZ9yyUPPDG9"
+// P-custom1jwwk62ktygl0w29rsq2hq55amamhpvx82kfnte
 pKeychain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const assetChainID: string = Defaults.network[networkID].X.blockchainID
+const swapChainID: string = Defaults.network[networkID].X.blockchainID
+const swapChainIDBuf: Buffer = bintools.cb58Decode(swapChainID)
 const coreChainID: string = Defaults.network[networkID].P.blockchainID
+const coreChainIDBuf: Buffer = bintools.cb58Decode(coreChainID)
 const importedInputs: TransferableInput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const fee: BN = corechain.getDefaultTxFee()
-const threshold: number = 1
+const threshold: number = 2
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Manually Import AXC to the CoreChain from the AssetChain"
+  "Import AXC to CoreChain from SwapChain and consume a multisig atomic output and create a multisig utxo"
 )
 
 const main = async (): Promise<any> => {
   const axcAssetID: Buffer = await corechain.getAXCAssetID()
   const platformvmUTXOResponse: any = await corechain.getUTXOs(
     pAddressStrings,
-    assetChainID
+    swapChainID
   )
   const utxoSet: UTXOSet = platformvmUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   let amount: BN = new BN(0)
-  utxos.forEach((utxo: UTXO) => {
+  utxos.forEach((utxo: UTXO): void => {
+    console.log(utxo.getOutput().getAddresses())
     const amountOutput: AmountOutput = utxo.getOutput() as AmountOutput
-    const amt: BN = amountOutput.getAmount().clone()
+    const amt: BN = amountOutput.getAmount()
     const txid: Buffer = utxo.getTxID()
     const outputidx: Buffer = utxo.getOutputIdx()
     const assetID: Buffer = utxo.getAssetID()
 
     if (axcAssetID.toString("hex") === assetID.toString("hex")) {
       const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
-      secpTransferInput.addSignatureIdx(0, pAddresses[0])
+      secpTransferInput.addSignatureIdx(1, pAddresses[2])
+      secpTransferInput.addSignatureIdx(2, pAddresses[1])
       const input: TransferableInput = new TransferableInput(
         txid,
         outputidx,
@@ -86,11 +99,11 @@ const main = async (): Promise<any> => {
 
   const importTx: ImportTx = new ImportTx(
     networkID,
-    bintools.cb58Decode(coreChainID),
+    coreChainIDBuf,
     outputs,
     inputs,
     memo,
-    bintools.cb58Decode(assetChainID),
+    swapChainIDBuf,
     importedInputs
   )
 

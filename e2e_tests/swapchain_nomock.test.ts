@@ -2,17 +2,17 @@ import { getAxia, createTests, Matcher } from "./e2etestlib"
 import { KeystoreAPI } from "src/apis/keystore/api"
 import BN from "bn.js"
 
-describe("AssetChain", (): void => {
+describe("SwapChain", (): void => {
   let tx = { value: "" }
   let asset = { value: "" }
   let addrB = { value: "" }
   let addrC = { value: "" }
 
   const axia = getAxia()
-  const assetchain = axia.AssetChain()
+  const swapchain = axia.SwapChain()
   const keystore = new KeystoreAPI(axia)
 
-  const user: string = "axiaJsAssetChainUser"
+  const user: string = "axiaJsSwapChainUser"
   const passwd: string = "axiaJsP1ssw4rd"
   const badUser: string = "asdfasdfsa"
   const badPass: string = "pass"
@@ -32,14 +32,14 @@ describe("AssetChain", (): void => {
     ],
     [
       "createaddrB",
-      () => assetchain.createAddress(user, passwd),
+      () => swapchain.createAddress(user, passwd),
       (x) => x,
       Matcher.Get,
       () => addrB
     ],
     [
       "createaddrB",
-      () => assetchain.createAddress(user, passwd),
+      () => swapchain.createAddress(user, passwd),
       (x) => x,
       Matcher.Get,
       () => addrC
@@ -47,7 +47,7 @@ describe("AssetChain", (): void => {
     [
       "incorrectUser",
       () =>
-        assetchain.send(
+        swapchain.send(
           badUser,
           passwd,
           "AXC",
@@ -64,7 +64,7 @@ describe("AssetChain", (): void => {
     [
       "incorrectPass",
       () =>
-        assetchain.send(
+        swapchain.send(
           user,
           badPass,
           "AXC",
@@ -80,21 +80,21 @@ describe("AssetChain", (): void => {
     ],
     [
       "getBalance",
-      () => assetchain.getBalance(whaleAddr, "AXC"),
+      () => swapchain.getBalance(whaleAddr, "AXC"),
       (x) => x.balance,
       Matcher.toBe,
       () => "300000000000000000"
     ],
     [
       "getBalance2",
-      () => assetchain.getBalance(whaleAddr, "AXC"),
+      () => swapchain.getBalance(whaleAddr, "AXC"),
       (x) => x.utxoIDs[0].txID,
       Matcher.toBe,
       () => "BUuypiq2wyuLMvyhzFXcPyxPMCgSp7eeDohhQRqTChoBjKziC"
     ],
     [
       "importKey",
-      () => assetchain.importKey(user, passwd, key),
+      () => swapchain.importKey(user, passwd, key),
       (x) => x,
       Matcher.toBe,
       () => whaleAddr
@@ -102,7 +102,7 @@ describe("AssetChain", (): void => {
     [
       "send",
       () =>
-        assetchain.send(
+        swapchain.send(
           user,
           passwd,
           "AXC",
@@ -119,7 +119,7 @@ describe("AssetChain", (): void => {
     [
       "sendMultiple",
       () =>
-        assetchain.sendMultiple(
+        swapchain.sendMultiple(
           user,
           passwd,
           [
@@ -136,14 +136,14 @@ describe("AssetChain", (): void => {
     ],
     [
       "listAddrs",
-      () => assetchain.listAddresses(user, passwd),
+      () => swapchain.listAddresses(user, passwd),
       (x) => x.sort(),
       Matcher.toEqual,
       () => [whaleAddr, addrB.value, addrC.value].sort()
     ],
     [
       "exportKey",
-      () => assetchain.exportKey(user, passwd, addrB.value),
+      () => swapchain.exportKey(user, passwd, addrB.value),
       (x) => x,
       Matcher.toMatch,
       () => /PrivateKey-\w*/
@@ -151,7 +151,7 @@ describe("AssetChain", (): void => {
     [
       "export",
       () =>
-        assetchain.export(
+        swapchain.export(
           user,
           passwd,
           "C" + addrB.value.substring(1),
@@ -164,7 +164,7 @@ describe("AssetChain", (): void => {
     ],
     [
       "import",
-      () => assetchain.import(user, passwd, addrB.value, "P"),
+      () => swapchain.import(user, passwd, addrB.value, "P"),
       (x) => x,
       Matcher.toThrow,
       () => "problem issuing transaction: no import inputs"
@@ -172,7 +172,7 @@ describe("AssetChain", (): void => {
     [
       "createFixed",
       () =>
-        assetchain.createFixedCapAsset(user, passwd, "Some Coin", "SCC", 0, [
+        swapchain.createFixedCapAsset(user, passwd, "Some Coin", "SCC", 0, [
           { address: whaleAddr, amount: "10000" }
         ]),
       (x) => x,
@@ -182,7 +182,7 @@ describe("AssetChain", (): void => {
     [
       "createVar",
       () =>
-        assetchain.createVariableCapAsset(user, passwd, "Some Coin", "SCC", 0, [
+        swapchain.createVariableCapAsset(user, passwd, "Some Coin", "SCC", 0, [
           { minters: [whaleAddr], threshold: 1 }
         ]),
       (x) => x,
@@ -192,28 +192,28 @@ describe("AssetChain", (): void => {
     [
       "mint",
       () =>
-        assetchain.mint(user, passwd, 1500, asset.value, addrB.value, [whaleAddr]),
+        swapchain.mint(user, passwd, 1500, asset.value, addrB.value, [whaleAddr]),
       (x) => x,
       Matcher.toThrow,
       () => "couldn't unmarshal an argument"
     ],
     [
       "getTx",
-      () => assetchain.getTx(tx.value),
+      () => swapchain.getTx(tx.value),
       (x) => x,
       Matcher.toMatch,
       () => /\w+/
     ],
     [
       "getTxStatus",
-      () => assetchain.getTxStatus(tx.value),
+      () => swapchain.getTxStatus(tx.value),
       (x) => x,
       Matcher.toBe,
       () => "Processing"
     ],
     [
       "getAssetDesc",
-      () => assetchain.getAssetDescription(asset.value),
+      () => swapchain.getAssetDescription(asset.value),
       (x) => [x.name, x.symbol],
       Matcher.toEqual,
       () => ["Some Coin", "SCC"]

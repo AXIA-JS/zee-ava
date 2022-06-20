@@ -13,30 +13,30 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
-const xKeychain: KeyChain = assetchain.keyChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const xKeychain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
-const appChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
+const axChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
-  "AVM utility method buildImportTx to import AXC to the AssetChain from the AppChain"
+  "AVM utility method buildImportTx to import AXC to the SwapChain from the AXChain"
 )
 
 const main = async (): Promise<any> => {
-  const avmUTXOResponse: GetUTXOsResponse = await assetchain.getUTXOs(
+  const avmUTXOResponse: GetUTXOsResponse = await swapchain.getUTXOs(
     xAddressStrings,
-    appChainBlockchainID
+    axChainBlockchainID
   )
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
 
-  const unsignedTx: UnsignedTx = await assetchain.buildImportTx(
+  const unsignedTx: UnsignedTx = await swapchain.buildImportTx(
     utxoSet,
     xAddressStrings,
-    appChainBlockchainID,
+    axChainBlockchainID,
     xAddressStrings,
     xAddressStrings,
     xAddressStrings,
@@ -46,7 +46,7 @@ const main = async (): Promise<any> => {
     threshold
   )
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await assetchain.issueTx(tx)
+  const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

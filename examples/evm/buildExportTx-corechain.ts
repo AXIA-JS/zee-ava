@@ -22,14 +22,14 @@ const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const corechain: PlatformVMAPI = axia.CoreChain()
-const appchain: EVMAPI = axia.AppChain()
+const axchain: EVMAPI = axia.AXChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 const pKeychain: PlatformKeyChain = corechain.keyChain()
-const cKeychain: EVMKeyChain = appchain.keyChain()
+const cKeychain: EVMKeyChain = axchain.keyChain()
 pKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
+const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
 const coreChainBlockchainIdStr: string =
   Defaults.network[networkID].P.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
@@ -42,7 +42,7 @@ const threshold: number = 1
 const main = async (): Promise<any> => {
   let balance: BN = await web3.eth.getBalance(cHexAddress)
   balance = new BN(balance.toString().substring(0, 17))
-  const baseFeeResponse: string = await appchain.getBaseFee()
+  const baseFeeResponse: string = await axchain.getBaseFee()
   const baseFee = new BN(parseInt(baseFeeResponse, 16))
   const txcount = await web3.eth.getTransactionCount(cHexAddress)
   const nonce: number = txcount
@@ -51,7 +51,7 @@ const main = async (): Promise<any> => {
   let fee: BN = baseFee.div(new BN(1e9))
   fee = fee.add(new BN(1e6))
 
-  let unsignedTx: UnsignedTx = await appchain.buildExportTx(
+  let unsignedTx: UnsignedTx = await axchain.buildExportTx(
     axcAmount,
     axcAssetID,
     coreChainBlockchainIdStr,
@@ -65,7 +65,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(cKeychain)
-  const txid: string = await appchain.issueTx(tx)
+  const txid: string = await axchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

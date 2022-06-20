@@ -6,10 +6,10 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const appchain: EVMAPI = axia.AppChain()
+const axchain: EVMAPI = axia.AXChain()
 
 const main = async (): Promise<any> => {
-  const baseFeeResponse: string = await appchain.getBaseFee()
+  const baseFeeResponse: string = await axchain.getBaseFee()
   const baseFee: BN = new BN(parseInt(baseFeeResponse))
   console.log(`BaseFee: ${baseFee.toString()}`)
 }

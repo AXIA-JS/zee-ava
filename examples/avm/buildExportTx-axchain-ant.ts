@@ -20,24 +20,24 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
-const appchain: EVMAPI = axia.AppChain()
-const xKeychain: AVMKeyChain = assetchain.keyChain()
-const cKeychain: EVMKeyChain = appchain.keyChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const axchain: EVMAPI = axia.AXChain()
+const xKeychain: AVMKeyChain = swapchain.keyChain()
+const cKeychain: EVMKeyChain = axchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
-const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
-const appChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
+const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
+const axChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
-  "AVM utility method buildExportTx to export ANT to the AppChain from the AssetChain"
+  "AVM utility method buildExportTx to export ANT to the AXChain from the SwapChain"
 )
 
 const main = async (): Promise<any> => {
-  const avmUTXOResponse: GetUTXOsResponse = await assetchain.getUTXOs(
+  const avmUTXOResponse: GetUTXOsResponse = await swapchain.getUTXOs(
     xAddressStrings
   )
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
@@ -45,10 +45,10 @@ const main = async (): Promise<any> => {
   const threshold: number = 1
   const assetID: string = "Ycg5QzddNwe3ebfFXhoGUDnWgC6GE88QRakRnn9dp3nGwqCwD"
 
-  const unsignedTx: UnsignedTx = await assetchain.buildExportTx(
+  const unsignedTx: UnsignedTx = await swapchain.buildExportTx(
     utxoSet,
     amount,
-    appChainBlockchainID,
+    axChainBlockchainID,
     cAddressStrings,
     xAddressStrings,
     xAddressStrings,
@@ -60,7 +60,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await assetchain.issueTx(tx)
+  const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

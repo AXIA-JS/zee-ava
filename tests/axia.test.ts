@@ -36,7 +36,7 @@ describe("Axia", (): void => {
       skipinit
     )
     axia.addAPI("admin", AdminAPI)
-    axia.addAPI("assetchain", AVMAPI, "/ext/subnet/avm", blockchainID)
+    axia.addAPI("swapchain", AVMAPI, "/ext/subnet/avm", blockchainID)
     axia.addAPI("health", HealthAPI)
     axia.addAPI("info", InfoAPI)
     axia.addAPI("keystore", KeystoreAPI)
@@ -96,8 +96,8 @@ describe("Axia", (): void => {
     expect(axia.Admin()).not.toBeInstanceOf(AVMAPI)
     expect(axia.Admin()).toBeInstanceOf(AdminAPI)
 
-    expect(axia.AssetChain()).not.toBeInstanceOf(AdminAPI)
-    expect(axia.AssetChain()).toBeInstanceOf(AVMAPI)
+    expect(axia.SwapChain()).not.toBeInstanceOf(AdminAPI)
+    expect(axia.SwapChain()).toBeInstanceOf(AVMAPI)
 
     expect(axia.Health()).not.toBeInstanceOf(KeystoreAPI)
     expect(axia.Health()).toBeInstanceOf(HealthAPI)
@@ -115,7 +115,7 @@ describe("Axia", (): void => {
     expect(axia.Metrics()).toBeInstanceOf(MetricsAPI)
 
     expect(axia.Admin().getRPCID()).toBe(1)
-    expect(axia.AssetChain().getRPCID()).toBe(1)
+    expect(axia.SwapChain().getRPCID()).toBe(1)
     expect(axia.CoreChain().getRPCID()).toBe(1)
     expect(axia.NodeKeys().getRPCID()).toBe(1)
   })

@@ -8,9 +8,9 @@ import {
   B58STRPayload,
   B64STRPayload,
   BIGNUMPayload,
-  ASSETCHAINADDRPayload,
+  SWAPCHAINADDRPayload,
   CORECHAINADDRPayload,
-  APPCHAINADDRPayload,
+  AXCHAINADDRPayload,
   TXIDPayload,
   JSONPayload,
   EMAILPayload
@@ -84,9 +84,9 @@ describe("Payload", (): void => {
     ["B58STR", utf8b58, utf8b58],
     ["B64STR", utf8b64, utf8b58],
     ["BIGNUM", bnhex, bintools.bufferToB58(Buffer.from(bnhex, "hex"))],
-    ["ASSETCHAINADDR", "X-" + bech, cb58buf],
+    ["SWAPCHAINADDR", "X-" + bech, cb58buf],
     ["CORECHAINADDR", "P-" + bech, cb58buf],
-    ["APPCHAINADDR", "C-" + bech, cb58buf],
+    ["AXCHAINADDR", "C-" + bech, cb58buf],
     ["TXID", cb58str, cb58buf],
     ["ASSETID", cb58str, cb58buf],
     ["UTXOID", cb58str, cb58buf],
@@ -173,9 +173,9 @@ describe("Payload", (): void => {
     expect(pl.returnType().toString("hex")).toBe(jenny.toString("hex"))
   })
 
-  test("ASSETCHAINADDRPayload special cases", (): void => {
+  test("SWAPCHAINADDRPayload special cases", (): void => {
     const addr: string = `X-${bech}`
-    const pl: ASSETCHAINADDRPayload = new ASSETCHAINADDRPayload(addr, hrp)
+    const pl: SWAPCHAINADDRPayload = new SWAPCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
     expect(pl.returnChainID()).toBe("X")
   })
@@ -187,9 +187,9 @@ describe("Payload", (): void => {
     expect(pl.returnChainID()).toBe("P")
   })
 
-  test("APPCHAINADDRPayload special cases", (): void => {
+  test("AXCHAINADDRPayload special cases", (): void => {
     const addr: string = `C-${bech}`
-    const pl: APPCHAINADDRPayload = new APPCHAINADDRPayload(addr, hrp)
+    const pl: AXCHAINADDRPayload = new AXCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
     expect(pl.returnChainID()).toBe("C")
   })

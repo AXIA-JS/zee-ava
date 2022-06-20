@@ -47,14 +47,14 @@ export default class Axia extends AxiaCore {
   Auth = () => this.apis.auth as AuthAPI
 
   /**
-   * Returns a reference to the EVMAPI RPC pointed at the AppChain.
+   * Returns a reference to the EVMAPI RPC pointed at the AXChain.
    */
-  AppChain = () => this.apis.appchain as EVMAPI
+  AXChain = () => this.apis.axchain as EVMAPI
 
   /**
-   * Returns a reference to the AVM RPC pointed at the AssetChain.
+   * Returns a reference to the AVM RPC pointed at the SwapChain.
    */
-  AssetChain = () => this.apis.assetchain as AVMAPI
+  SwapChain = () => this.apis.swapchain as AVMAPI
 
   /**
    * Returns a reference to the Health RPC for a node.
@@ -95,9 +95,9 @@ export default class Axia extends AxiaCore {
    * @param protocol The protocol string to use before a "://" in a request,
    * ex: "http", "https", "git", "ws", etc. Defaults to http
    * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
-   * @param AssetChainID Sets the blockchainID for the AVM. Will try to auto-detect,
+   * @param SwapChainID Sets the blockchainID for the AVM. Will try to auto-detect,
    * otherwise default "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
-   * @param AppChainID Sets the blockchainID for the EVM. Will try to auto-detect,
+   * @param AXChainID Sets the blockchainID for the EVM. Will try to auto-detect,
    * otherwise default "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
    * @param hrp The human-readable part of the bech32 addresses
    * @param skipinit Skips creating the APIs. Defaults to false
@@ -107,35 +107,35 @@ export default class Axia extends AxiaCore {
     port?: number,
     protocol: string = "http",
     networkID: number = DefaultNetworkID,
-    AssetChainID: string = undefined,
-    AppChainID: string = undefined,
+    SwapChainID: string = undefined,
+    AXChainID: string = undefined,
     hrp: string = undefined,
     skipinit: boolean = false
   ) {
     super(host, port, protocol)
-    let assetchainid: string = AssetChainID
-    let appchainid: string = AppChainID
+    let swapchainid: string = SwapChainID
+    let axchainid: string = AXChainID
 
     if (
-      typeof AssetChainID === "undefined" ||
-      !AssetChainID ||
-      AssetChainID.toLowerCase() === "x"
+      typeof SwapChainID === "undefined" ||
+      !SwapChainID ||
+      SwapChainID.toLowerCase() === "x"
     ) {
       if (networkID.toString() in Defaults.network) {
-        assetchainid = Defaults.network[`${networkID}`].X.blockchainID
+        swapchainid = Defaults.network[`${networkID}`].X.blockchainID
       } else {
-        assetchainid = Defaults.network[12345].X.blockchainID
+        swapchainid = Defaults.network[12345].X.blockchainID
       }
     }
     if (
-      typeof AppChainID === "undefined" ||
-      !AppChainID ||
-      AppChainID.toLowerCase() === "c"
+      typeof AXChainID === "undefined" ||
+      !AXChainID ||
+      AXChainID.toLowerCase() === "c"
     ) {
       if (networkID.toString() in Defaults.network) {
-        appchainid = Defaults.network[`${networkID}`].C.blockchainID
+        axchainid = Defaults.network[`${networkID}`].C.blockchainID
       } else {
-        appchainid = Defaults.network[12345].C.blockchainID
+        axchainid = Defaults.network[12345].C.blockchainID
       }
     }
     if (typeof networkID === "number" && networkID >= 0) {
@@ -152,8 +152,8 @@ export default class Axia extends AxiaCore {
     if (!skipinit) {
       this.addAPI("admin", AdminAPI)
       this.addAPI("auth", AuthAPI)
-      this.addAPI("assetchain", AVMAPI, "/ext/bc/X", assetchainid)
-      this.addAPI("appchain", EVMAPI, "/ext/bc/C/axc", appchainid)
+      this.addAPI("swapchain", AVMAPI, "/ext/bc/X", swapchainid)
+      this.addAPI("axchain", EVMAPI, "/ext/bc/C/axc", axchainid)
       this.addAPI("health", HealthAPI)
       this.addAPI("info", InfoAPI)
       this.addAPI("index", IndexAPI)

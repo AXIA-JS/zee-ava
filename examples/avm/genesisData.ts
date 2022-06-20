@@ -20,11 +20,11 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
-const xKeychain: KeyChain = assetchain.keyChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const xKeychain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = assetchain.keyChain().getAddresses()
+const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
 const cb58: SerializedType = "cb58"
 const threshold: number = 1
 const locktime: BN = new BN(0)

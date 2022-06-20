@@ -831,14 +831,14 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from an account on the CoreChain to an address on the AssetChain. This transaction
+   * Send AXC from an account on the CoreChain to an address on the SwapChain. This transaction
    * must be signed with the key of the account that the AXC is sent from and which pays the
-   * transaction fee. After issuing this transaction, you must call the AssetChain’s importAXC
+   * transaction fee. After issuing this transaction, you must call the SwapChain’s importAXC
    * method to complete the transfer.
    *
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The address on the AssetChain to send the AXC to. Do not include X- in the address
+   * @param to The address on the SwapChain to send the AXC to. Do not include X- in the address
    * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
    *
    * @returns Promise for an unsigned transaction to be signed by the account the the AXC is
@@ -866,15 +866,15 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from an account on the CoreChain to an address on the AssetChain. This transaction
+   * Send AXC from an account on the CoreChain to an address on the SwapChain. This transaction
    * must be signed with the key of the account that the AXC is sent from and which pays
-   * the transaction fee. After issuing this transaction, you must call the AssetChain’s
+   * the transaction fee. After issuing this transaction, you must call the SwapChain’s
    * importAXC method to complete the transfer.
    *
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
    * @param to The ID of the account the AXC is sent to. This must be the same as the to
-   * argument in the corresponding call to the AssetChain’s exportAXC
+   * argument in the corresponding call to the SwapChain’s exportAXC
    * @param sourceChain The chainID where the funds are coming from.
    *
    * @returns Promise for a string for the transaction, which should be sent to the network
@@ -1324,14 +1324,14 @@ export class PlatformVMAPI extends JRPCAPI {
       "buildBaseTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
 
-    let srappChain: string = undefined
+    let sraxChain: string = undefined
 
     if (typeof sourceChain === "undefined") {
       throw new ChainIdError(
         "Error - PlatformVMAPI.buildImportTx: Source ChainID is undefined."
       )
     } else if (typeof sourceChain === "string") {
-      srappChain = sourceChain
+      sraxChain = sourceChain
       sourceChain = bintools.cb58Decode(sourceChain)
     } else if (!(sourceChain instanceof Buffer)) {
       throw new ChainIdError(
@@ -1340,7 +1340,7 @@ export class PlatformVMAPI extends JRPCAPI {
       )
     }
     const atomicUTXOs: UTXOSet = await (
-      await this.getUTXOs(ownerAddresses, srappChain, 0, undefined)
+      await this.getUTXOs(ownerAddresses, sraxChain, 0, undefined)
     ).utxos
     const axcAssetID: Buffer = await this.getAXCAssetID()
 
@@ -1432,7 +1432,7 @@ export class PlatformVMAPI extends JRPCAPI {
     }
     /*
     if(bintools.cb58Encode(destinationChain) !== Defaults.network[this.core.getNetworkID()].X["blockchainID"]) {
-      throw new Error("Error - PlatformVMAPI.buildExportTx: Destination ChainID must The AssetChain ID in the current version of AxiaJS.")
+      throw new Error("Error - PlatformVMAPI.buildExportTx: Destination ChainID must The SwapChain ID in the current version of AxiaJS.")
     }*/
 
     let to: Buffer[] = []

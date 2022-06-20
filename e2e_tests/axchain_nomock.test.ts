@@ -4,21 +4,21 @@ import BN from "bn.js"
 import Axia from "src"
 import { EVMAPI } from "src/apis/evm"
 
-describe("AppChain", (): void => {
+describe("AXChain", (): void => {
   const axia: Axia = getAxia()
-  const appchain: EVMAPI = axia.AppChain()
+  const axchain: EVMAPI = axia.AXChain()
   const keystore: KeystoreAPI = axia.NodeKeys()
 
   let exportTxHash = { value: "" }
 
-  const user: string = "axiaJsAppChainUser"
+  const user: string = "axiaJsAXChainUser"
   const passwd: string = "axiaJsP@ssw4rd"
   const key: string =
     "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
   const privateKeyHex: string =
     "0x56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027"
   const whaleAddr: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
-  const assetChainAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
+  const swapChainAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
 
   // test_name        response_promise                            resp_fn          matcher           expected_value/obtained_value
   const tests_spec: any = [
@@ -31,35 +31,35 @@ describe("AppChain", (): void => {
     ],
     [
       "importKey",
-      () => appchain.importKey(user, passwd, key),
+      () => axchain.importKey(user, passwd, key),
       (x) => x,
       Matcher.toBe,
       () => whaleAddr
     ],
     [
       "exportAXC",
-      () => appchain.exportAXC(user, passwd, assetChainAddr, new BN(10)),
+      () => axchain.exportAXC(user, passwd, swapChainAddr, new BN(10)),
       (x) => x,
       Matcher.Get,
       () => exportTxHash
     ],
     [
       "getBaseFee",
-      () => appchain.getBaseFee(),
+      () => axchain.getBaseFee(),
       (x) => x,
       Matcher.toBe,
       () => "0x34630b8a00"
     ],
     [
       "getMaxPriorityFeePerGas",
-      () => appchain.getMaxPriorityFeePerGas(),
+      () => axchain.getMaxPriorityFeePerGas(),
       (x) => x,
       Matcher.toBe,
       () => "0x0"
     ],
     [
       "exportKey",
-      () => appchain.exportKey(user, passwd, whaleAddr),
+      () => axchain.exportKey(user, passwd, whaleAddr),
       (x) => x,
       Matcher.toEqual,
       () => ({

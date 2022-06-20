@@ -12,11 +12,11 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
-const xKeychain: KeyChain = assetchain.keyChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const xKeychain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const asOf: BN = UnixNow()
 const threshold: number = 1
 const locktime: BN = new BN(0)
@@ -26,14 +26,14 @@ const memo: Buffer = Buffer.from(
 
 const main = async (): Promise<any> => {
   const amount: BN = new BN(5)
-  const avmUTXOResponse: GetUTXOsResponse = await assetchain.getUTXOs(
+  const avmUTXOResponse: GetUTXOsResponse = await swapchain.getUTXOs(
     xAddressStrings
   )
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const assetID: string = "KD4byR998qmVivF2zmrhLb6gjwKGSB5xCerV2nYXb4XNXVGEP"
   const toAddresses: string[] = [xAddressStrings[0]]
 
-  const unsignedTx: UnsignedTx = await assetchain.buildBaseTx(
+  const unsignedTx: UnsignedTx = await swapchain.buildBaseTx(
     utxoSet,
     amount,
     assetID,
@@ -47,7 +47,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await assetchain.issueTx(tx)
+  const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

@@ -121,7 +121,7 @@ export class EVMAPI extends JRPCAPI {
       typeof blockchainID === "undefined" &&
       typeof Defaults.network[`${netID}`] !== "undefined"
     ) {
-      this.blockchainID = Defaults.network[`${netID}`].C.blockchainID //default to AppChain
+      this.blockchainID = Defaults.network[`${netID}`].C.blockchainID //default to AXChain
       return true
     }
 
@@ -320,13 +320,13 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Axia Native Token) assets including AXC from the AppChain to an account on the AssetChain.
+   * Send ANT (Axia Native Token) assets including AXC from the AXChain to an account on the SwapChain.
    *
-   * After calling this method, you must call the AssetChain’s import method to complete the transfer.
+   * After calling this method, you must call the SwapChain’s import method to complete the transfer.
    *
-   * @param username The Keystore user that controls the AssetChain account specified in `to`
+   * @param username The Keystore user that controls the SwapChain account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The account on the AssetChain to send the AXC to.
+   * @param to The account on the SwapChain to send the AXC to.
    * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
    * @param assetID The asset id which is being sent
    *
@@ -356,13 +356,13 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from the AppChain to an account on the AssetChain.
+   * Send AXC from the AXChain to an account on the SwapChain.
    *
-   * After calling this method, you must call the AssetChain’s importAXC method to complete the transfer.
+   * After calling this method, you must call the SwapChain’s importAXC method to complete the transfer.
    *
-   * @param username The Keystore user that controls the AssetChain account specified in `to`
+   * @param username The Keystore user that controls the SwapChain account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The account on the AssetChain to send the AXC to.
+   * @param to The account on the SwapChain to send the AXC to.
    * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
    *
    * @returns String representing the transaction id
@@ -437,7 +437,7 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Axia Native Token) assets including AXC from an account on the AssetChain to an address on the AppChain. This transaction
+   * Send ANT (Axia Native Token) assets including AXC from an account on the SwapChain to an address on the AXChain. This transaction
    * must be signed with the key of the account that the asset is sent from and which pays
    * the transaction fee.
    *
@@ -471,14 +471,14 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AXC from an account on the AssetChain to an address on the AppChain. This transaction
+   * Send AXC from an account on the SwapChain to an address on the AXChain. This transaction
    * must be signed with the key of the account that the AXC is sent from and which pays
    * the transaction fee.
    *
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
    * @param to The address of the account the AXC is sent to. This must be the same as the to
-   * argument in the corresponding call to the AssetChain’s exportAXC
+   * argument in the corresponding call to the SwapChain’s exportAXC
    * @param sourceChain The chainID where the funds are coming from.
    *
    * @returns Promise for a string for the transaction, which should be sent to the network
@@ -621,12 +621,12 @@ export class EVMAPI extends JRPCAPI {
       fromAddresses,
       "buildImportTx"
     ).map((a: string): Buffer => bintools.stringToAddress(a))
-    let srappChain: string = undefined
+    let sraxChain: string = undefined
 
     if (typeof sourceChain === "string") {
       // if there is a sourceChain passed in and it's a string then save the string value and cast the original
       // variable from a string to a Buffer
-      srappChain = sourceChain
+      sraxChain = sourceChain
       sourceChain = bintools.cb58Decode(sourceChain)
     } else if (
       typeof sourceChain === "undefined" ||
@@ -639,7 +639,7 @@ export class EVMAPI extends JRPCAPI {
     }
     const utxoResponse: UTXOResponse = await this.getUTXOs(
       ownerAddresses,
-      srappChain,
+      sraxChain,
       0,
       undefined
     )

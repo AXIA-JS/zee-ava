@@ -354,15 +354,15 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
                 .then((response) => response.data.result.addresses);
         });
         /**
-         * Send AXC from an account on the CoreChain to an address on the AssetChain. This transaction
+         * Send AXC from an account on the CoreChain to an address on the SwapChain. This transaction
          * must be signed with the key of the account that the AXC is sent from and which pays
-         * the transaction fee. After issuing this transaction, you must call the AssetChain’s
+         * the transaction fee. After issuing this transaction, you must call the SwapChain’s
          * importAXC method to complete the transfer.
          *
          * @param username The Keystore user that controls the account specified in `to`
          * @param password The password of the Keystore user
          * @param to The ID of the account the AXC is sent to. This must be the same as the to
-         * argument in the corresponding call to the AssetChain’s exportAXC
+         * argument in the corresponding call to the SwapChain’s exportAXC
          * @param sourceChain The chainID where the funds are coming from.
          *
          * @returns Promise for a string for the transaction, which should be sent to the network
@@ -551,19 +551,19 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
             const to = this._cleanAddressArray(toAddresses, 'buildBaseTx').map((a) => bintools.stringToAddress(a));
             const from = this._cleanAddressArray(fromAddresses, 'buildBaseTx').map((a) => bintools.stringToAddress(a));
             const change = this._cleanAddressArray(changeAddresses, 'buildBaseTx').map((a) => bintools.stringToAddress(a));
-            let srappChain = undefined;
+            let sraxChain = undefined;
             if (typeof sourceChain === "undefined") {
                 throw new Error("Error - ContractVMAPI.buildImportTx: Source ChainID is undefined.");
             }
             else if (typeof sourceChain === "string") {
-                srappChain = sourceChain;
+                sraxChain = sourceChain;
                 sourceChain = bintools.cb58Decode(sourceChain);
             }
             else if (!(sourceChain instanceof buffer_1.Buffer)) {
-                srappChain = bintools.cb58Encode(sourceChain);
+                sraxChain = bintools.cb58Encode(sourceChain);
                 throw new Error("Error - ContractVMAPI.buildImportTx: Invalid destinationChain type: " + (typeof sourceChain));
             }
-            const atomicUTXOs = yield (yield this.getUTXOs(ownerAddresses, srappChain, 0, undefined)).utxos;
+            const atomicUTXOs = yield (yield this.getUTXOs(ownerAddresses, sraxChain, 0, undefined)).utxos;
             const axcAssetID = yield this.getAXCAssetID();
             if (memo instanceof payload_1.PayloadBase) {
                 memo = memo.getPayload();
@@ -615,7 +615,7 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
             }
             /*
             if(bintools.cb58Encode(destinationChain) !== Defaults.network[this.core.getNetworkID()].X["blockchainID"]) {
-              throw new Error("Error - ContractVMAPI.buildExportTx: Destination ChainID must The AssetChain ID in the current version of AxiaJS.");
+              throw new Error("Error - ContractVMAPI.buildExportTx: Destination ChainID must The SwapChain ID in the current version of AxiaJS.");
             }*/
             let to = [];
             toAddresses.map((a) => {

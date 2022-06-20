@@ -23,9 +23,9 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const appchain: EVMAPI = axia.AppChain()
+const axchain: EVMAPI = axia.AXChain()
 const bintools: BinTools = BinTools.getInstance()
-const cKeychain: KeyChain = appchain.keyChain()
+const cKeychain: KeyChain = axchain.keyChain()
 const cHexAddress: string = "0xeA6B543A9E625C04745EcA3D7a74D74B733b8C15"
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 // X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
@@ -40,18 +40,18 @@ cKeychain.importKey(privKey)
 privKey = "PrivateKey-rKsiN3X4NSJcPpWxMSh7WcuY653NGQ7tfADgQwDZ9yyUPPDG9"
 // P-custom1jwwk62ktygl0w29rsq2hq55amamhpvx82kfnte
 cKeychain.importKey(privKey)
-const cAddresses: Buffer[] = appchain.keyChain().getAddresses()
-const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
-const appChainId: string = Defaults.network[networkID].C.blockchainID
-const appChainIdBuf: Buffer = bintools.cb58Decode(appChainId)
+const cAddresses: Buffer[] = axchain.keyChain().getAddresses()
+const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
+const axChainId: string = Defaults.network[networkID].C.blockchainID
+const axChainIdBuf: Buffer = bintools.cb58Decode(axChainId)
 const coreChainId: string = Defaults.network[networkID].P.blockchainID
 const coreChainIdBuf: Buffer = bintools.cb58Decode(coreChainId)
 const importedIns: TransferableInput[] = []
 const evmOutputs: EVMOutput[] = []
-const fee: BN = appchain.getDefaultTxFee()
+const fee: BN = axchain.getDefaultTxFee()
 
 const main = async (): Promise<any> => {
-  const u: any = await appchain.getUTXOs(cAddressStrings, "P")
+  const u: any = await axchain.getUTXOs(cAddressStrings, "P")
   const utxoSet: UTXOSet = u.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO): void => {
@@ -81,7 +81,7 @@ const main = async (): Promise<any> => {
 
   const importTx: ImportTx = new ImportTx(
     networkID,
-    appChainIdBuf,
+    axChainIdBuf,
     coreChainIdBuf,
     importedIns,
     evmOutputs
@@ -89,7 +89,7 @@ const main = async (): Promise<any> => {
 
   const unsignedTx: UnsignedTx = new UnsignedTx(importTx)
   const tx: Tx = unsignedTx.sign(cKeychain)
-  const txid: string = await appchain.issueTx(tx)
+  const txid: string = await axchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

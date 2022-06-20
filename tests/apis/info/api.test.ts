@@ -37,7 +37,7 @@ describe("Info", (): void => {
     const result: Promise<string> = info.getBlockchainID("X")
     const payload: object = {
       result: {
-        blockchainID: axia.AssetChain().getBlockchainID()
+        blockchainID: axia.SwapChain().getBlockchainID()
       }
     }
     const responseObj: HttpResponse = {

@@ -21,25 +21,25 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
-const appchain: EVMAPI = axia.AppChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const axchain: EVMAPI = axia.AXChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: AVMKeyChain = assetchain.keyChain()
+const xKeychain: AVMKeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-const cKeychain: EVMKeyChain = appchain.keyChain()
+const cKeychain: EVMKeyChain = axchain.keyChain()
 xKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
-const xAddresses: Buffer[] = assetchain.keyChain().getAddresses()
-const cAddresses: Buffer[] = appchain.keyChain().getAddresses()
-const assetChainBlockchainIdStr: string =
+const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
+const cAddresses: Buffer[] = axchain.keyChain().getAddresses()
+const swapChainBlockchainIdStr: string =
   Defaults.network[networkID].X.blockchainID
-const assetChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
-  assetChainBlockchainIdStr
+const swapChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
+  swapChainBlockchainIdStr
 )
-const appChainBlockchainIdStr: string =
+const axChainBlockchainIdStr: string =
   Defaults.network[networkID].C.blockchainID
-const appChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
-  appChainBlockchainIdStr
+const axChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
+  axChainBlockchainIdStr
 )
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
@@ -54,7 +54,7 @@ const threshold: number = 1
 const main = async (): Promise<any> => {
   let balance: BN = await web3.eth.getBalance(cHexAddress)
   balance = new BN(balance.toString().substring(0, 17))
-  const fee: BN = appchain.getDefaultTxFee()
+  const fee: BN = axchain.getDefaultTxFee()
   const txcount = await web3.eth.getTransactionCount(cHexAddress)
   const nonce: number = txcount
   const locktime: BN = new BN(0)
@@ -82,15 +82,15 @@ const main = async (): Promise<any> => {
 
   const exportTx: ExportTx = new ExportTx(
     networkID,
-    appChainBlockchainIdBuf,
-    assetChainBlockchainIdBuf,
+    axChainBlockchainIdBuf,
+    swapChainBlockchainIdBuf,
     evmInputs,
     exportedOuts
   )
 
   const unsignedTx: UnsignedTx = new UnsignedTx(exportTx)
   const tx: Tx = unsignedTx.sign(cKeychain)
-  const txid: string = await appchain.issueTx(tx)
+  const txid: string = await axchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

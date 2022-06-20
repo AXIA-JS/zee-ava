@@ -8,8 +8,8 @@ const protocol: string = "http"
 const networkID: number = 1
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const mnemonic: Mnemonic = Mnemonic.getInstance()
-const assetchain: AVMAPI = axia.AssetChain()
-const xKeychain: KeyChain = assetchain.keyChain()
+const swapchain: AVMAPI = axia.SwapChain()
+const xKeychain: KeyChain = swapchain.keyChain()
 
 describe("HDNode", (): void => {
   const xPriv: string =
@@ -89,7 +89,7 @@ describe("HDNode", (): void => {
       const child: HDNode = hdnode.derive(`m/44'/9000'/0'/0/${i}`)
       xKeychain.importKey(child.privateKeyCB58)
     }
-    const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+    const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
     expect(xAddressStrings).toStrictEqual(addrs)
   })
 })

@@ -42,8 +42,8 @@ privKey = "PrivateKey-rKsiN3X4NSJcPpWxMSh7WcuY653NGQ7tfADgQwDZ9yyUPPDG9"
 pKeychain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const appChainID: string = Defaults.network[networkID].C.blockchainID
-const appChainIDBuf: Buffer = bintools.cb58Decode(appChainID)
+const axChainID: string = Defaults.network[networkID].C.blockchainID
+const axChainIDBuf: Buffer = bintools.cb58Decode(axChainID)
 const coreChainID: string = Defaults.network[networkID].P.blockchainID
 const coreChainIDBuf: Buffer = bintools.cb58Decode(coreChainID)
 const importedInputs: TransferableInput[] = []
@@ -53,14 +53,14 @@ const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 2
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Import AXC to the CoreChain from the AppChain and consume a multisig atomic output and a create multisig output"
+  "Import AXC to the CoreChain from the AXChain and consume a multisig atomic output and a create multisig output"
 )
 
 const main = async (): Promise<any> => {
   const axcAssetID: Buffer = await corechain.getAXCAssetID()
   const platformvmUTXOResponse: any = await corechain.getUTXOs(
     pAddressStrings,
-    appChainID
+    axChainID
   )
   const utxoSet: UTXOSet = platformvmUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
@@ -104,7 +104,7 @@ const main = async (): Promise<any> => {
     outputs,
     inputs,
     memo,
-    appChainIDBuf,
+    axChainIDBuf,
     importedInputs
   )
 

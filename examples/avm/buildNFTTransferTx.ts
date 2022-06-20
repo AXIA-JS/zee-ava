@@ -41,12 +41,12 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
+const swapchain: AVMAPI = axia.SwapChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = assetchain.keyChain()
+const xKeychain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
@@ -55,7 +55,7 @@ const memo: Buffer = Buffer.from(
 const asOf: BN = UnixNow()
 
 const main = async (): Promise<any> => {
-  const avmUTXOResponse: GetUTXOsResponse = await assetchain.getUTXOs(
+  const avmUTXOResponse: GetUTXOsResponse = await swapchain.getUTXOs(
     xAddressStrings
   )
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
@@ -76,7 +76,7 @@ const main = async (): Promise<any> => {
   )
   const nftTransferOutputUTXOID: string = nftTransferOutputUTXOIDs[0]
 
-  const unsignedTx: UnsignedTx = await assetchain.buildNFTTransferTx(
+  const unsignedTx: UnsignedTx = await swapchain.buildNFTTransferTx(
     utxoSet,
     xAddressStrings,
     xAddressStrings,
@@ -89,7 +89,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const id: string = await assetchain.issueTx(tx)
+  const id: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${id}`)
 }
 

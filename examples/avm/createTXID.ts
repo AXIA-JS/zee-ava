@@ -26,36 +26,36 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
+const swapchain: AVMAPI = axia.SwapChain()
 const corechain: PlatformVMAPI = axia.CoreChain()
-const xKeychain: AVMKeyChain = assetchain.keyChain()
+const xKeychain: AVMKeyChain = swapchain.keyChain()
 const pKeychain: PlatformVMKeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
 pKeychain.importKey(privKey)
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
-  "AVM utility method buildExportTx to export AXC to the CoreChain from the AssetChain"
+  "AVM utility method buildExportTx to export AXC to the CoreChain from the SwapChain"
 )
-const fee: BN = assetchain.getDefaultTxFee()
+const fee: BN = swapchain.getDefaultTxFee()
 const cb58: SerializedType = "cb58"
 
 const main = async (): Promise<any> => {
-  const avmUTXOResponse: any = await assetchain.getUTXOs(xAddressStrings)
+  const avmUTXOResponse: any = await swapchain.getUTXOs(xAddressStrings)
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
-  const getBalanceResponse: any = await assetchain.getBalance(
+  const getBalanceResponse: any = await swapchain.getBalance(
     xAddressStrings[0],
     axcAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const amount: BN = balance.sub(fee)
 
-  const unsignedTx: UnsignedTx = await assetchain.buildExportTx(
+  const unsignedTx: UnsignedTx = await swapchain.buildExportTx(
     utxoSet,
     amount,
     coreChainBlockchainID,

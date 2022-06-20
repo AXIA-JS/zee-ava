@@ -23,26 +23,26 @@ const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const corechain: PlatformVMAPI = axia.CoreChain()
-const appchain: EVMAPI = axia.AppChain()
+const axchain: EVMAPI = axia.AXChain()
 const pKeychain: PlatformVMKeyChain = corechain.keyChain()
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-const cKeychain: EVMKeyChain = appchain.keyChain()
+const cKeychain: EVMKeyChain = axchain.keyChain()
 pKeychain.importKey(privKey)
 cKeychain.importKey(privKey)
-const cAddressStrings: string[] = appchain.keyChain().getAddressStrings()
+const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
 const coreChainBlockchainId: string = Defaults.network[networkID].P.blockchainID
 
 const main = async (): Promise<any> => {
-  const baseFeeResponse: string = await appchain.getBaseFee()
+  const baseFeeResponse: string = await axchain.getBaseFee()
   const baseFee = new BN(parseInt(baseFeeResponse, 16) / 1e9)
   let fee: BN = baseFee
-  const evmUTXOResponse: any = await appchain.getUTXOs(
+  const evmUTXOResponse: any = await axchain.getUTXOs(
     cAddressStrings,
     coreChainBlockchainId
   )
   const utxoSet: UTXOSet = evmUTXOResponse.utxos
-  let unsignedTx: UnsignedTx = await appchain.buildImportTx(
+  let unsignedTx: UnsignedTx = await axchain.buildImportTx(
     utxoSet,
     cHexAddress,
     cAddressStrings,
@@ -53,7 +53,7 @@ const main = async (): Promise<any> => {
   const importCost: number = costImportTx(unsignedTx)
   fee = baseFee.mul(new BN(importCost))
 
-  unsignedTx = await appchain.buildImportTx(
+  unsignedTx = await axchain.buildImportTx(
     utxoSet,
     cHexAddress,
     cAddressStrings,
@@ -63,7 +63,7 @@ const main = async (): Promise<any> => {
   )
 
   const tx: Tx = unsignedTx.sign(cKeychain)
-  const txid: string = await appchain.issueTx(tx)
+  const txid: string = await axchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

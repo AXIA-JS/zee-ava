@@ -24,31 +24,31 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const assetchain: AVMAPI = axia.AssetChain()
+const swapchain: AVMAPI = axia.SwapChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = assetchain.keyChain()
+const xKeychain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = assetchain.keyChain().getAddresses()
-const xAddressStrings: string[] = assetchain.keyChain().getAddressStrings()
+const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
+const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].X.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
-const appChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
+const axChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
-const fee: BN = assetchain.getDefaultTxFee()
+const fee: BN = swapchain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Manually Export AXC and ANT from AssetChain to AppChain"
+  "Manually Export AXC and ANT from SwapChain to AXChain"
 )
 // Uncomment for codecID 00 01
 // const codecID: number = 1
 
 const main = async (): Promise<any> => {
-  const avmUTXOResponse: any = await assetchain.getUTXOs(xAddressStrings)
+  const avmUTXOResponse: any = await swapchain.getUTXOs(xAddressStrings)
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO) => {
@@ -103,14 +103,14 @@ const main = async (): Promise<any> => {
     outputs,
     inputs,
     memo,
-    bintools.cb58Decode(appChainBlockchainID),
+    bintools.cb58Decode(axChainBlockchainID),
     exportedOuts
   )
   // Uncomment for codecID 00 01
   // exportTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(exportTx)
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const txid: string = await assetchain.issueTx(tx)
+  const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }
 

@@ -6,10 +6,10 @@ const port: number = 9650
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
-const appchain: EVMAPI = axia.AppChain()
+const axchain: EVMAPI = axia.AXChain()
 
 const main = async (): Promise<any> => {
-  const maxPriorityFeePerGas: string = await appchain.getMaxPriorityFeePerGas()
+  const maxPriorityFeePerGas: string = await axchain.getMaxPriorityFeePerGas()
   console.log(maxPriorityFeePerGas)
 }
 

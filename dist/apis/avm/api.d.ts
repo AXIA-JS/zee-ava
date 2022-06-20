@@ -272,14 +272,14 @@ export declare class AVMAPI extends JRPCAPI {
      * @param from Optional. An array of addresses managed by the node's keystore for this blockchain which will fund this transaction
      * @param changeAddr Optional. An address to send the change
      * @param assetID The asset id which is being sent
-     * @param to Address on AssetChain of the account to which this NFT is being sent
+     * @param to Address on SwapChain of the account to which this NFT is being sent
      * @param encoding Optional.  is the encoding format to use for the payload argument. Can be either "cb58" or "hex". Defaults to "hex".
      *
      * @returns ID of the transaction
      */
     mintNFT: (username: string, password: string, from: string[] | Buffer[], changeAddr: string, payload: string, assetID: string | Buffer, to: string, encoding?: string) => Promise<string>;
     /**
-     * Send NFT from one account to another on AssetChain
+     * Send NFT from one account to another on SwapChain
      *
      * @param username The user paying the transaction fee (in $AXC) for asset creation
      * @param password The password for the user paying the transaction fee (in $AXC) for asset creation
@@ -287,7 +287,7 @@ export declare class AVMAPI extends JRPCAPI {
      * @param changeAddr Optional. An address to send the change
      * @param assetID The asset id which is being sent
      * @param groupID The group this NFT is issued to.
-     * @param to Address on AssetChain of the account to which this NFT is being sent
+     * @param to Address on SwapChain of the account to which this NFT is being sent
      *
      * @returns ID of the transaction
      */
@@ -313,13 +313,13 @@ export declare class AVMAPI extends JRPCAPI {
      */
     importKey: (username: string, password: string, privateKey: string) => Promise<string>;
     /**
-     * Send ANT (Axia Native Token) assets including AXC from the AssetChain to an account on the CoreChain or AppChain.
+     * Send ANT (Axia Native Token) assets including AXC from the SwapChain to an account on the CoreChain or AXChain.
      *
-     * After calling this method, you must call the CoreChain's `import` or the AppChain’s `import` method to complete the transfer.
+     * After calling this method, you must call the CoreChain's `import` or the AXChain’s `import` method to complete the transfer.
      *
-     * @param username The Keystore user that controls the CoreChain or AppChain account specified in `to`
+     * @param username The Keystore user that controls the CoreChain or AXChain account specified in `to`
      * @param password The password of the Keystore user
-     * @param to The account on the CoreChain or AppChain to send the asset to.
+     * @param to The account on the CoreChain or AXChain to send the asset to.
      * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
      * @param assetID The asset id which is being sent
      *
@@ -327,7 +327,7 @@ export declare class AVMAPI extends JRPCAPI {
      */
     export: (username: string, password: string, to: string, amount: BN, assetID: string) => Promise<string>;
     /**
-     * Send ANT (Axia Native Token) assets including AXC from an account on the CoreChain or AppChain to an address on the AssetChain. This transaction
+     * Send ANT (Axia Native Token) assets including AXC from an account on the CoreChain or AXChain to an address on the SwapChain. This transaction
      * must be signed with the key of the account that the asset is sent from and which pays
      * the transaction fee.
      *

@@ -34,7 +34,7 @@ const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].X.blockchainID
 const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
-const axChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
+const axChainBlockchainID: string = Defaults.network[networkID].C.blockchainID
 const importedInputs: TransferableInput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
@@ -42,7 +42,7 @@ const fee: BN = swapchain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Manually Import AXC to the SwapChain from the CoreChain"
+  "Manually Import AXC and ANT to the SwapChain from the AXChain"
 )
 // Uncomment for codecID 00 01
 // const codecID: number = 1
@@ -53,38 +53,51 @@ const main = async (): Promise<any> => {
     axChainBlockchainID
   )
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
-  const utxo: UTXO = utxoSet.getAllUTXOs()[0]
-  const amountOutput: AmountOutput = utxo.getOutput() as AmountOutput
-  const amt: BN = amountOutput.getAmount().clone()
-  const txid: Buffer = utxo.getTxID()
-  const outputidx: Buffer = utxo.getOutputIdx()
+  const utxos: UTXO[] = utxoSet.getAllUTXOs()
+  utxos.forEach((utxo: UTXO) => {
+    const amountOutput: AmountOutput = utxo.getOutput() as AmountOutput
+    const amt: BN = amountOutput.getAmount().clone()
+    const txid: Buffer = utxo.getTxID()
+    let assetID: Buffer = utxo.getAssetID()
+    const outputidx: Buffer = utxo.getOutputIdx()
+    let secpTransferOutput: SECPTransferOutput = new SECPTransferOutput()
+    if (axcAssetIDBuf.toString("hex") === assetID.toString("hex")) {
+      secpTransferOutput = new SECPTransferOutput(
+        amt.sub(fee),
+        xAddresses,
+        locktime,
+        threshold
+      )
+    } else {
+      secpTransferOutput = new SECPTransferOutput(
+        amt,
+        xAddresses,
+        locktime,
+        threshold
+      )
+    }
+    // Uncomment for codecID 00 01
+    // secpTransferOutput.setCodecID(codecID)
 
-  const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
-  secpTransferInput.addSignatureIdx(0, xAddresses[0])
-  // Uncomment for codecID 00 01
-  // secpTransferInput.setCodecID(codecID)
+    const transferableOutput: TransferableOutput = new TransferableOutput(
+      assetID,
+      secpTransferOutput
+    )
+    outputs.push(transferableOutput)
 
-  const input: TransferableInput = new TransferableInput(
-    txid,
-    outputidx,
-    axcAssetIDBuf,
-    secpTransferInput
-  )
-  importedInputs.push(input)
+    const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
+    secpTransferInput.addSignatureIdx(0, xAddresses[0])
+    // Uncomment for codecID 00 01
+    // secpTransferInput.setCodecID(codecID)
 
-  const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
-    amt.sub(fee),
-    xAddresses,
-    locktime,
-    threshold
-  )
-  // Uncomment for codecID 00 01
-  // secpTransferOutput.setCodecID(codecID)
-  const transferableOutput: TransferableOutput = new TransferableOutput(
-    axcAssetIDBuf,
-    secpTransferOutput
-  )
-  outputs.push(transferableOutput)
+    const input: TransferableInput = new TransferableInput(
+      txid,
+      outputidx,
+      assetID,
+      secpTransferInput
+    )
+    importedInputs.push(input)
+  })
 
   const importTx: ImportTx = new ImportTx(
     networkID,
@@ -100,8 +113,8 @@ const main = async (): Promise<any> => {
 
   const unsignedTx: UnsignedTx = new UnsignedTx(importTx)
   const tx: Tx = unsignedTx.sign(xKeychain)
-  const id: string = await swapchain.issueTx(tx)
-  console.log(`Success! TXID: ${id}`)
+  const txid: string = await swapchain.issueTx(tx)
+  console.log(`Success! TXID: ${txid}`)
 }
 
 main()
