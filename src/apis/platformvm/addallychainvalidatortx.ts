@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module API-PlatformVM-AddSubnetValidatorTx
+ * @module API-PlatformVM-AddAllychainValidatorTx
  */
 import { Buffer } from "buffer/"
 import BinTools from "../../utils/bintools"
@@ -11,7 +11,7 @@ import { Credential, SigIdx, Signature } from "../../common/credentials"
 import { BaseTx } from "./basetx"
 import { DefaultNetworkID } from "../../utils/constants"
 import { Serialization, SerializedEncoding } from "../../utils/serialization"
-import { SelectCredentialClass, SubnetAuth } from "."
+import { SelectCredentialClass, AllychainAuth } from "."
 import { KeyChain, KeyPair } from "./keychain"
 import BN from "bn.js"
 import { bufferToNodeIDString } from "../../utils"
@@ -23,24 +23,24 @@ const bintools: BinTools = BinTools.getInstance()
 const serialization: Serialization = Serialization.getInstance()
 
 /**
- * Class representing an unsigned AddSubnetValidatorTx transaction.
+ * Class representing an unsigned AddAllychainValidatorTx transaction.
  */
-export class AddSubnetValidatorTx extends BaseTx {
-  protected _typeName = "AddSubnetValidatorTx"
+export class AddAllychainValidatorTx extends BaseTx {
+  protected _typeName = "AddAllychainValidatorTx"
   protected _typeID = PlatformVMConstants.ADDSUBNETVALIDATORTX
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     let fields: object = super.serialize(encoding)
     return {
       ...fields,
-      subnetID: serialization.encoder(this.subnetID, encoding, "Buffer", "cb58")
+      allychainID: serialization.encoder(this.allychainID, encoding, "Buffer", "cb58")
       // exportOuts: this.exportOuts.map((e) => e.serialize(encoding))
     }
   }
   deserialize(fields: object, encoding: SerializedEncoding = "hex") {
     super.deserialize(fields, encoding)
-    this.subnetID = serialization.decoder(
-      fields["subnetID"],
+    this.allychainID = serialization.decoder(
+      fields["allychainID"],
       encoding,
       "cb58",
       "Buffer",
@@ -57,13 +57,13 @@ export class AddSubnetValidatorTx extends BaseTx {
   protected startTime: Buffer = Buffer.alloc(8)
   protected endTime: Buffer = Buffer.alloc(8)
   protected weight: Buffer = Buffer.alloc(8)
-  protected subnetID: Buffer = Buffer.alloc(32)
-  protected subnetAuth: SubnetAuth
+  protected allychainID: Buffer = Buffer.alloc(32)
+  protected allychainAuth: AllychainAuth
   protected sigCount: Buffer = Buffer.alloc(4)
-  protected sigIdxs: SigIdx[] = [] // idxs of subnet auth signers
+  protected sigIdxs: SigIdx[] = [] // idxs of allychain auth signers
 
   /**
-   * Returns the id of the [[AddSubnetValidatorTx]]
+   * Returns the id of the [[AddAllychainValidatorTx]]
    */
   getTxType(): number {
     return PlatformVMConstants.ADDSUBNETVALIDATORTX
@@ -105,24 +105,24 @@ export class AddSubnetValidatorTx extends BaseTx {
   }
 
   /**
-   * Returns the subnetID as a string
+   * Returns the allychainID as a string
    */
-  getSubnetID(): string {
-    return bintools.cb58Encode(this.subnetID)
+  getAllychainID(): string {
+    return bintools.cb58Encode(this.allychainID)
   }
   /**
-   * Returns the subnetAuth
+   * Returns the allychainAuth
    */
-  getSubnetAuth(): SubnetAuth {
-    return this.subnetAuth
+  getAllychainAuth(): AllychainAuth {
+    return this.allychainAuth
   }
 
   /**
-   * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[AddSubnetValidatorTx]], parses it, populates the class, and returns the length of the [[CreateChainTx]] in bytes.
+   * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[AddAllychainValidatorTx]], parses it, populates the class, and returns the length of the [[CreateChainTx]] in bytes.
    *
-   * @param bytes A {@link https://github.com/feross/buffer|Buffer} containing a raw [[AddSubnetValidatorTx]]
+   * @param bytes A {@link https://github.com/feross/buffer|Buffer} containing a raw [[AddAllychainValidatorTx]]
    *
-   * @returns The length of the raw [[AddSubnetValidatorTx]]
+   * @returns The length of the raw [[AddAllychainValidatorTx]]
    *
    * @remarks assume not-checksummed
    */
@@ -141,12 +141,12 @@ export class AddSubnetValidatorTx extends BaseTx {
     this.weight = bintools.copyFrom(bytes, offset, offset + 8)
     offset += 8
 
-    this.subnetID = bintools.copyFrom(bytes, offset, offset + 32)
+    this.allychainID = bintools.copyFrom(bytes, offset, offset + 32)
     offset += 32
 
-    const sa: SubnetAuth = new SubnetAuth()
+    const sa: AllychainAuth = new AllychainAuth()
     offset += sa.fromBuffer(bintools.copyFrom(bytes, offset))
-    this.subnetAuth = sa
+    this.allychainAuth = sa
 
     return offset
   }
@@ -163,8 +163,8 @@ export class AddSubnetValidatorTx extends BaseTx {
       this.startTime.length +
       this.endTime.length +
       this.weight.length +
-      this.subnetID.length +
-      this.subnetAuth.toBuffer().length
+      this.allychainID.length +
+      this.allychainAuth.toBuffer().length
 
     const barr: Buffer[] = [
       superbuff,
@@ -172,25 +172,25 @@ export class AddSubnetValidatorTx extends BaseTx {
       this.startTime,
       this.endTime,
       this.weight,
-      this.subnetID,
-      this.subnetAuth.toBuffer()
+      this.allychainID,
+      this.allychainAuth.toBuffer()
     ]
     return Buffer.concat(barr, bsize)
   }
 
   clone(): this {
-    const newAddSubnetValidatorTx: AddSubnetValidatorTx =
-      new AddSubnetValidatorTx()
-    newAddSubnetValidatorTx.fromBuffer(this.toBuffer())
-    return newAddSubnetValidatorTx as this
+    const newAddAllychainValidatorTx: AddAllychainValidatorTx =
+      new AddAllychainValidatorTx()
+    newAddAllychainValidatorTx.fromBuffer(this.toBuffer())
+    return newAddAllychainValidatorTx as this
   }
 
   create(...args: any[]): this {
-    return new AddSubnetValidatorTx(...args) as this
+    return new AddAllychainValidatorTx(...args) as this
   }
 
   /**
-   * Creates and adds a [[SigIdx]] to the [[AddSubnetValidatorTx]].
+   * Creates and adds a [[SigIdx]] to the [[AddAllychainValidatorTx]].
    *
    * @param addressIdx The index of the address to reference in the signatures
    * @param address The address of the source of the signature
@@ -198,7 +198,7 @@ export class AddSubnetValidatorTx extends BaseTx {
   addSignatureIdx(addressIdx: number, address: Buffer): void {
     const addressIndex: Buffer = Buffer.alloc(4)
     addressIndex.writeUIntBE(addressIdx, 0, 4)
-    this.subnetAuth.addAddressIndex(addressIndex)
+    this.allychainAuth.addAddressIndex(addressIndex)
 
     const sigidx: SigIdx = new SigIdx()
     const b: Buffer = Buffer.alloc(4)
@@ -255,7 +255,7 @@ export class AddSubnetValidatorTx extends BaseTx {
    * @param startTime Optional. The Unix time when the validator starts validating the Primary Network.
    * @param endTime Optional. The Unix time when the validator stops validating the Primary Network (and staked AXC is returned).
    * @param weight Optional. Weight of this validator used when sampling
-   * @param subnetID Optional. ID of the subnet this validator is validating
+   * @param allychainID Optional. ID of the allychain this validator is validating
    */
   constructor(
     networkID: number = DefaultNetworkID,
@@ -267,14 +267,14 @@ export class AddSubnetValidatorTx extends BaseTx {
     startTime: BN = undefined,
     endTime: BN = undefined,
     weight: BN = undefined,
-    subnetID: string | Buffer = undefined
+    allychainID: string | Buffer = undefined
   ) {
     super(networkID, blockchainID, outs, ins, memo)
-    if (typeof subnetID != "undefined") {
-      if (typeof subnetID === "string") {
-        this.subnetID = bintools.cb58Decode(subnetID)
+    if (typeof allychainID != "undefined") {
+      if (typeof allychainID === "string") {
+        this.allychainID = bintools.cb58Decode(allychainID)
       } else {
-        this.subnetID = subnetID
+        this.allychainID = allychainID
       }
     }
     if (typeof nodeID != "undefined") {
@@ -290,7 +290,7 @@ export class AddSubnetValidatorTx extends BaseTx {
       this.weight = bintools.fromBNToBuffer(weight, 8)
     }
 
-    const subnetAuth: SubnetAuth = new SubnetAuth()
-    this.subnetAuth = subnetAuth
+    const allychainAuth: AllychainAuth = new AllychainAuth()
+    this.allychainAuth = allychainAuth
   }
 }

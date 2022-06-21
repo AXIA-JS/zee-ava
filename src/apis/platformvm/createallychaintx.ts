@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module API-PlatformVM-CreateSubnetTx
+ * @module API-PlatformVM-CreateAllychainTx
  */
 import { Buffer } from "buffer/"
 import { BaseTx } from "./basetx"
@@ -9,29 +9,29 @@ import { DefaultNetworkID } from "../../utils/constants"
 import { TransferableOutput, SECPOwnerOutput } from "./outputs"
 import { TransferableInput } from "./inputs"
 import { SerializedEncoding } from "../../utils/serialization"
-import { SubnetOwnerError } from "../../utils/errors"
+import { AllychainOwnerError } from "../../utils/errors"
 
-export class CreateSubnetTx extends BaseTx {
-  protected _typeName = "CreateSubnetTx"
+export class CreateAllychainTx extends BaseTx {
+  protected _typeName = "CreateAllychainTx"
   protected _typeID = PlatformVMConstants.CREATESUBNETTX
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     let fields: object = super.serialize(encoding)
     return {
       ...fields,
-      subnetOwners: this.subnetOwners.serialize(encoding)
+      allychainOwners: this.allychainOwners.serialize(encoding)
     }
   }
   deserialize(fields: object, encoding: SerializedEncoding = "hex") {
     super.deserialize(fields, encoding)
-    this.subnetOwners = new SECPOwnerOutput()
-    this.subnetOwners.deserialize(fields["subnetOwners"], encoding)
+    this.allychainOwners = new SECPOwnerOutput()
+    this.allychainOwners.deserialize(fields["allychainOwners"], encoding)
   }
 
-  protected subnetOwners: SECPOwnerOutput = undefined
+  protected allychainOwners: SECPOwnerOutput = undefined
 
   /**
-   * Returns the id of the [[CreateSubnetTx]]
+   * Returns the id of the [[CreateAllychainTx]]
    */
   getTxType(): number {
     return this._typeID
@@ -40,59 +40,59 @@ export class CreateSubnetTx extends BaseTx {
   /**
    * Returns a {@link https://github.com/feross/buffer|Buffer} for the reward address.
    */
-  getSubnetOwners(): SECPOwnerOutput {
-    return this.subnetOwners
+  getAllychainOwners(): SECPOwnerOutput {
+    return this.allychainOwners
   }
 
   /**
-   * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[CreateSubnetTx]], parses it, populates the class, and returns the length of the [[CreateSubnetTx]] in bytes.
+   * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[CreateAllychainTx]], parses it, populates the class, and returns the length of the [[CreateAllychainTx]] in bytes.
    *
-   * @param bytes A {@link https://github.com/feross/buffer|Buffer} containing a raw [[CreateSubnetTx]]
+   * @param bytes A {@link https://github.com/feross/buffer|Buffer} containing a raw [[CreateAllychainTx]]
    * @param offset A number for the starting position in the bytes.
    *
-   * @returns The length of the raw [[CreateSubnetTx]]
+   * @returns The length of the raw [[CreateAllychainTx]]
    *
    * @remarks assume not-checksummed
    */
   fromBuffer(bytes: Buffer, offset: number = 0): number {
     offset = super.fromBuffer(bytes, offset)
     offset += 4
-    this.subnetOwners = new SECPOwnerOutput()
-    offset = this.subnetOwners.fromBuffer(bytes, offset)
+    this.allychainOwners = new SECPOwnerOutput()
+    offset = this.allychainOwners.fromBuffer(bytes, offset)
     return offset
   }
 
   /**
-   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[CreateSubnetTx]].
+   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[CreateAllychainTx]].
    */
   toBuffer(): Buffer {
     if (
-      typeof this.subnetOwners === "undefined" ||
-      !(this.subnetOwners instanceof SECPOwnerOutput)
+      typeof this.allychainOwners === "undefined" ||
+      !(this.allychainOwners instanceof SECPOwnerOutput)
     ) {
-      throw new SubnetOwnerError(
-        "CreateSubnetTx.toBuffer -- this.subnetOwners is not a SECPOwnerOutput"
+      throw new AllychainOwnerError(
+        "CreateAllychainTx.toBuffer -- this.allychainOwners is not a SECPOwnerOutput"
       )
     }
     let typeID: Buffer = Buffer.alloc(4)
-    typeID.writeUInt32BE(this.subnetOwners.getOutputID(), 0)
+    typeID.writeUInt32BE(this.allychainOwners.getOutputID(), 0)
     let barr: Buffer[] = [
       super.toBuffer(),
       typeID,
-      this.subnetOwners.toBuffer()
+      this.allychainOwners.toBuffer()
     ]
     return Buffer.concat(barr)
   }
 
   /**
-   * Class representing an unsigned Create Subnet transaction.
+   * Class representing an unsigned Create Allychain transaction.
    *
    * @param networkID Optional networkID, [[DefaultNetworkID]]
    * @param blockchainID Optional blockchainID, default Buffer.alloc(32, 16)
    * @param outs Optional array of the [[TransferableOutput]]s
    * @param ins Optional array of the [[TransferableInput]]s
    * @param memo Optional {@link https://github.com/feross/buffer|Buffer} for the memo field
-   * @param subnetOwners Optional [[SECPOwnerOutput]] class for specifying who owns the subnet.
+   * @param allychainOwners Optional [[SECPOwnerOutput]] class for specifying who owns the allychain.
    */
   constructor(
     networkID: number = DefaultNetworkID,
@@ -100,9 +100,9 @@ export class CreateSubnetTx extends BaseTx {
     outs: TransferableOutput[] = undefined,
     ins: TransferableInput[] = undefined,
     memo: Buffer = undefined,
-    subnetOwners: SECPOwnerOutput = undefined
+    allychainOwners: SECPOwnerOutput = undefined
   ) {
     super(networkID, blockchainID, outs, ins, memo)
-    this.subnetOwners = subnetOwners
+    this.allychainOwners = allychainOwners
   }
 }

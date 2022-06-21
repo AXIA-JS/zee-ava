@@ -40,7 +40,7 @@ export interface Core {
   alias: string
   vm: string
   creationTxFee: BN | number
-  createSubnetTx: BN | number
+  createAllychainTx: BN | number
   createChainTx: BN | number
   minConsumption: number
   maxConsumption: number
@@ -175,7 +175,7 @@ const n0P: Core = {
   vm: CoreChainVMName,
   fee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
+  createAllychainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -216,7 +216,7 @@ const n1P: Core = {
   alias: CoreChainAlias,
   vm: CoreChainVMName,
   txFee: MILLIAXC,
-  createSubnetTx: ONEAXC,
+  createAllychainTx: ONEAXC,
   createChainTx: ONEAXC,
   creationTxFee: CENTIAXC,
   minConsumption: 0.1,
@@ -264,7 +264,7 @@ const n2P: Core = {
   vm: CoreChainVMName,
   txFee: 0,
   creationTxFee: 0,
-  createSubnetTx: ONEAXC,
+  createAllychainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -301,7 +301,7 @@ const n3P: Core = {
   vm: CoreChainVMName,
   txFee: 0,
   creationTxFee: 0,
-  createSubnetTx: ONEAXC,
+  createAllychainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -338,7 +338,7 @@ const n4P: Core = {
   vm: CoreChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
+  createAllychainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -379,7 +379,7 @@ const n5P: Core = {
   vm: CoreChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
+  createAllychainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -429,7 +429,7 @@ const n5678P: Core = {
   vm: CoreChainVMName,
   txFee: MILLIAXC,
   creationTxFee: CENTIAXC,
-  createSubnetTx: ONEAXC,
+  createAllychainTx: ONEAXC,
   createChainTx: ONEAXC,
   minConsumption: 0.1,
   maxConsumption: 0.12,

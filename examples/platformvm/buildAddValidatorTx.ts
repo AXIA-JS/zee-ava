@@ -25,7 +25,7 @@ const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildAddValidatorTx to add a validator to the primary subnet"
+  "PlatformVM utility method buildAddValidatorTx to add a validator to the primary allychain"
 )
 const asOf: BN = UnixNow()
 const nodeID: string = "NodeID-DueWyGi3B9jtKfa9mPoecd4YSDJ1ftF69"

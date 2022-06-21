@@ -27,7 +27,7 @@ import {
   StakeError,
   TimeError,
   DelegationFeeError,
-  SubnetOwnerError,
+  AllychainOwnerError,
   BufferSizeError,
   AddressIndexError,
   PublicKeyError,
@@ -43,7 +43,7 @@ import {
   EVMFeeError,
   InvalidEntropy,
   ProtocolError,
-  SubnetIdError
+  AllychainIdError
 } from "src/utils"
 
 describe("Errors", (): void => {
@@ -425,17 +425,17 @@ describe("Errors", (): void => {
     }).toThrowError()
   })
 
-  test("SubnetOwnerError", (): void => {
+  test("AllychainOwnerError", (): void => {
     try {
-      throw new SubnetOwnerError("Testing SubnetOwnerError")
+      throw new AllychainOwnerError("Testing AllychainOwnerError")
     } catch (error: any) {
       expect(error.getCode()).toBe("1026")
     }
     expect((): void => {
-      throw new SubnetOwnerError("Testing SubnetOwnerError")
-    }).toThrow("Testing SubnetOwnerError")
+      throw new AllychainOwnerError("Testing AllychainOwnerError")
+    }).toThrow("Testing AllychainOwnerError")
     expect((): void => {
-      throw new SubnetOwnerError("Testing SubnetOwnerError")
+      throw new AllychainOwnerError("Testing AllychainOwnerError")
     }).toThrowError()
   })
 
@@ -649,17 +649,17 @@ describe("Errors", (): void => {
     }).toThrowError()
   })
 
-  test("SubnetIdError", (): void => {
+  test("AllychainIdError", (): void => {
     try {
-      throw new SubnetIdError("Testing SubnetIdError")
+      throw new AllychainIdError("Testing AllychainIdError")
     } catch (error: any) {
       expect(error.getCode()).toBe("1041")
     }
     expect((): void => {
-      throw new SubnetIdError("Testing SubnetIdError")
-    }).toThrow("Testing SubnetIdError")
+      throw new AllychainIdError("Testing AllychainIdError")
+    }).toThrow("Testing AllychainIdError")
     expect((): void => {
-      throw new SubnetIdError("Testing SubnetIdError")
+      throw new AllychainIdError("Testing AllychainIdError")
     }).toThrowError()
   })
 })

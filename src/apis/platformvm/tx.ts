@@ -15,7 +15,7 @@ import { ImportTx } from "./importtx"
 import { ExportTx } from "./exporttx"
 import { SerializedEncoding } from "../../utils/serialization"
 import { AddNominatorTx, AddValidatorTx } from "./validationtx"
-import { CreateSubnetTx } from "./createsubnettx"
+import { CreateAllychainTx } from "./createallychaintx"
 import { TransactionError } from "../../utils/errors"
 
 /**
@@ -42,7 +42,7 @@ export const SelectTxClass = (txtype: number, ...args: any[]): BaseTx => {
   } else if (txtype === PlatformVMConstants.ADDVALIDATORTX) {
     return new AddValidatorTx(...args)
   } else if (txtype === PlatformVMConstants.CREATESUBNETTX) {
-    return new CreateSubnetTx(...args)
+    return new CreateAllychainTx(...args)
   }
   /* istanbul ignore next */
   throw new TransactionError("Error - SelectTxClass: unknown txtype")

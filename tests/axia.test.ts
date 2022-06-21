@@ -36,7 +36,7 @@ describe("Axia", (): void => {
       skipinit
     )
     axia.addAPI("admin", AdminAPI)
-    axia.addAPI("swapchain", AVMAPI, "/ext/subnet/avm", blockchainID)
+    axia.addAPI("swapchain", AVMAPI, "/ext/allychain/avm", blockchainID)
     axia.addAPI("health", HealthAPI)
     axia.addAPI("info", InfoAPI)
     axia.addAPI("keystore", KeystoreAPI)

@@ -239,10 +239,10 @@ export class DelegationFeeError extends AxiaError {
   }
 }
 
-export class SubnetOwnerError extends AxiaError {
+export class AllychainOwnerError extends AxiaError {
   constructor(m: string) {
     super(m, SUBNET_OWNER_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetOwnerError.prototype)
+    Object.setPrototypeOf(this, AllychainOwnerError.prototype)
   }
 }
 
@@ -351,24 +351,24 @@ export class ProtocolError extends AxiaError {
   }
 }
 
-export class SubnetIdError extends AxiaError {
+export class AllychainIdError extends AxiaError {
   constructor(m: string) {
     super(m, SUBNET_ID_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetIdError.prototype)
+    Object.setPrototypeOf(this, AllychainIdError.prototype)
   }
 }
 
-export class SubnetThresholdError extends AxiaError {
+export class AllychainThresholdError extends AxiaError {
   constructor(m: string) {
     super(m, SUBNET_THRESHOLD_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetThresholdError.prototype)
+    Object.setPrototypeOf(this, AllychainThresholdError.prototype)
   }
 }
 
-export class SubnetAddressError extends AxiaError {
+export class AllychainAddressError extends AxiaError {
   constructor(m: string) {
     super(m, SUBNET_ADDRESS_ERROR_CODE)
-    Object.setPrototypeOf(this, SubnetAddressError.prototype)
+    Object.setPrototypeOf(this, AllychainAddressError.prototype)
   }
 }
 

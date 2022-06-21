@@ -121,7 +121,7 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      */
     buildExportTx: (networkID: number, blockchainID: Buffer, amount: BN, axcAssetID: Buffer, toAddresses: Buffer[], fromAddresses: Buffer[], changeAddresses?: Buffer[], destinationChain?: Buffer, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, locktime?: BN, threshold?: number) => UnsignedTx;
     /**
-     * Class representing an unsigned [[AddSubnetValidatorTx]] transaction.
+     * Class representing an unsigned [[AddAllychainValidatorTx]] transaction.
      *
      * @param networkID Networkid, [[DefaultNetworkID]]
      * @param blockchainID Blockchainid, default undefined
@@ -130,16 +130,16 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      * @param nodeID The node ID of the validator being added.
      * @param startTime The Unix time when the validator starts validating the Primary Network.
      * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AXC is returned).
-     * @param weight The amount of weight for this subnet validator.
+     * @param weight The amount of weight for this allychain validator.
      * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
      * @param feeAssetID Optional. The assetID of the fees being burned.
      * @param memo Optional contains arbitrary bytes, up to 256 bytes
      * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-     * @param subnetAuthCredentials Optional. An array of index and address to sign for each SubnetAuth.
+     * @param allychainAuthCredentials Optional. An array of index and address to sign for each AllychainAuth.
      *
      * @returns An unsigned transaction created from the passed in parameters.
      */
-    buildAddSubnetValidatorTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], nodeID: Buffer, startTime: BN, endTime: BN, weight: BN, subnetID: string, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, subnetAuthCredentials?: [number, Buffer][]) => UnsignedTx;
+    buildAddAllychainValidatorTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], nodeID: Buffer, startTime: BN, endTime: BN, weight: BN, allychainID: string, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, allychainAuthCredentials?: [number, Buffer][]) => UnsignedTx;
     /**
      * Class representing an unsigned [[AddNominatorTx]] transaction.
      *
@@ -191,14 +191,14 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      */
     buildAddValidatorTx: (networkID: number, blockchainID: Buffer, axcAssetID: Buffer, toAddresses: Buffer[], fromAddresses: Buffer[], changeAddresses: Buffer[], nodeID: Buffer, startTime: BN, endTime: BN, stakeAmount: BN, rewardLocktime: BN, rewardThreshold: number, rewardAddresses: Buffer[], delegationFee: number, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
     /**
-     * Class representing an unsigned [[CreateSubnetTx]] transaction.
+     * Class representing an unsigned [[CreateAllychainTx]] transaction.
      *
      * @param networkID Networkid, [[DefaultNetworkID]]
      * @param blockchainID Blockchainid, default undefined
      * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
      * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs.
-     * @param subnetOwnerAddresses An array of {@link https://github.com/feross/buffer|Buffer} for the addresses to add to a subnet
-     * @param subnetOwnerThreshold The number of owners's signatures required to add a validator to the network
+     * @param allychainOwnerAddresses An array of {@link https://github.com/feross/buffer|Buffer} for the addresses to add to a allychain
+     * @param allychainOwnerThreshold The number of owners's signatures required to add a validator to the network
      * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
      * @param feeAssetID Optional. The assetID of the fees being burned
      * @param memo Optional contains arbitrary bytes, up to 256 bytes
@@ -206,7 +206,7 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      *
      * @returns An unsigned transaction created from the passed in parameters.
      */
-    buildCreateSubnetTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], subnetOwnerAddresses: Buffer[], subnetOwnerThreshold: number, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
+    buildCreateAllychainTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], allychainOwnerAddresses: Buffer[], allychainOwnerThreshold: number, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN) => UnsignedTx;
     /**
      * Build an unsigned [[CreateChainTx]].
      *
@@ -214,7 +214,7 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      * @param blockchainID Blockchainid, default undefined
      * @param fromAddresses The addresses being used to send the funds from the UTXOs {@link https://github.com/feross/buffer|Buffer}
      * @param changeAddresses The addresses that can spend the change remaining from the spent UTXOs.
-     * @param subnetID Optional ID of the Subnet that validates this blockchain
+     * @param allychainID Optional ID of the Allychain that validates this blockchain
      * @param chainName Optional A human readable name for the chain; need not be unique
      * @param vmID Optional ID of the VM running on the new chain
      * @param fxIDs Optional IDs of the feature extensions running on the new chain
@@ -223,10 +223,10 @@ export declare class UTXOSet extends StandardUTXOSet<UTXO> {
      * @param feeAssetID Optional. The assetID of the fees being burned
      * @param memo Optional contains arbitrary bytes, up to 256 bytes
      * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
-     * @param subnetAuthCredentials Optional. An array of index and address to sign for each SubnetAuth.
+     * @param allychainAuthCredentials Optional. An array of index and address to sign for each AllychainAuth.
      *
      * @returns An unsigned CreateChainTx created from the passed in parameters.
      */
-    buildCreateChainTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], subnetID?: string | Buffer, chainName?: string, vmID?: string, fxIDs?: string[], genesisData?: string | GenesisData, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, subnetAuthCredentials?: [number, Buffer][]) => UnsignedTx;
+    buildCreateChainTx: (networkID: number, blockchainID: Buffer, fromAddresses: Buffer[], changeAddresses: Buffer[], allychainID?: string | Buffer, chainName?: string, vmID?: string, fxIDs?: string[], genesisData?: string | GenesisData, fee?: BN, feeAssetID?: Buffer, memo?: Buffer, asOf?: BN, allychainAuthCredentials?: [number, Buffer][]) => UnsignedTx;
 }
 //# sourceMappingURL=utxos.d.ts.map

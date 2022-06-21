@@ -1,16 +1,16 @@
 /**
  * @packageDocumentation
- * @module API-PlatformVM-SubnetAuth
+ * @module API-PlatformVM-AllychainAuth
  */
 import { Buffer } from "buffer/";
 import { Serializable, SerializedEncoding } from "../../utils";
-export declare class SubnetAuth extends Serializable {
+export declare class AllychainAuth extends Serializable {
     protected _typeName: string;
     protected _typeID: number;
     serialize(encoding?: SerializedEncoding): object;
     deserialize(fields: object, encoding?: SerializedEncoding): void;
     /**
-     * Add an address index for Subnet Auth signing
+     * Add an address index for Allychain Auth signing
      *
      * @param index the Buffer of the address index to add
      */
@@ -27,8 +27,8 @@ export declare class SubnetAuth extends Serializable {
     protected numAddressIndices: Buffer;
     fromBuffer(bytes: Buffer, offset?: number): number;
     /**
-     * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[SubnetAuth]].
+     * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AllychainAuth]].
      */
     toBuffer(): Buffer;
 }
-//# sourceMappingURL=subnetauth.d.ts.map
+//# sourceMappingURL=allychainauth.d.ts.map

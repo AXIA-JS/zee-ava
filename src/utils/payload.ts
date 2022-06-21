@@ -539,7 +539,7 @@ export class NFTIDPayload extends UTXOIDPayload {
 }
 
 /**
- * Class for payloads representing SubnetIDs.
+ * Class for payloads representing AllychainIDs.
  */
 export class SUBNETIDPayload extends cb58EncodedPayload {
   protected typeid = 13

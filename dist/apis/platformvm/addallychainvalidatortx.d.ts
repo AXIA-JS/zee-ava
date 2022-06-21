@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module API-PlatformVM-AddSubnetValidatorTx
+ * @module API-PlatformVM-AddAllychainValidatorTx
  */
 import { Buffer } from "buffer/";
 import { TransferableOutput } from "./outputs";
@@ -8,13 +8,13 @@ import { TransferableInput } from "./inputs";
 import { Credential, SigIdx } from "../../common/credentials";
 import { BaseTx } from "./basetx";
 import { SerializedEncoding } from "../../utils/serialization";
-import { SubnetAuth } from ".";
+import { AllychainAuth } from ".";
 import { KeyChain } from "./keychain";
 import BN from "bn.js";
 /**
- * Class representing an unsigned AddSubnetValidatorTx transaction.
+ * Class representing an unsigned AddAllychainValidatorTx transaction.
  */
-export declare class AddSubnetValidatorTx extends BaseTx {
+export declare class AddAllychainValidatorTx extends BaseTx {
     protected _typeName: string;
     protected _typeID: number;
     serialize(encoding?: SerializedEncoding): object;
@@ -23,12 +23,12 @@ export declare class AddSubnetValidatorTx extends BaseTx {
     protected startTime: Buffer;
     protected endTime: Buffer;
     protected weight: Buffer;
-    protected subnetID: Buffer;
-    protected subnetAuth: SubnetAuth;
+    protected allychainID: Buffer;
+    protected allychainAuth: AllychainAuth;
     protected sigCount: Buffer;
     protected sigIdxs: SigIdx[];
     /**
-     * Returns the id of the [[AddSubnetValidatorTx]]
+     * Returns the id of the [[AddAllychainValidatorTx]]
      */
     getTxType(): number;
     /**
@@ -52,19 +52,19 @@ export declare class AddSubnetValidatorTx extends BaseTx {
      */
     getWeight(): BN;
     /**
-     * Returns the subnetID as a string
+     * Returns the allychainID as a string
      */
-    getSubnetID(): string;
+    getAllychainID(): string;
     /**
-     * Returns the subnetAuth
+     * Returns the allychainAuth
      */
-    getSubnetAuth(): SubnetAuth;
+    getAllychainAuth(): AllychainAuth;
     /**
-     * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[AddSubnetValidatorTx]], parses it, populates the class, and returns the length of the [[CreateChainTx]] in bytes.
+     * Takes a {@link https://github.com/feross/buffer|Buffer} containing an [[AddAllychainValidatorTx]], parses it, populates the class, and returns the length of the [[CreateChainTx]] in bytes.
      *
-     * @param bytes A {@link https://github.com/feross/buffer|Buffer} containing a raw [[AddSubnetValidatorTx]]
+     * @param bytes A {@link https://github.com/feross/buffer|Buffer} containing a raw [[AddAllychainValidatorTx]]
      *
-     * @returns The length of the raw [[AddSubnetValidatorTx]]
+     * @returns The length of the raw [[AddAllychainValidatorTx]]
      *
      * @remarks assume not-checksummed
      */
@@ -76,7 +76,7 @@ export declare class AddSubnetValidatorTx extends BaseTx {
     clone(): this;
     create(...args: any[]): this;
     /**
-     * Creates and adds a [[SigIdx]] to the [[AddSubnetValidatorTx]].
+     * Creates and adds a [[SigIdx]] to the [[AddAllychainValidatorTx]].
      *
      * @param addressIdx The index of the address to reference in the signatures
      * @param address The address of the source of the signature
@@ -108,8 +108,8 @@ export declare class AddSubnetValidatorTx extends BaseTx {
      * @param startTime Optional. The Unix time when the validator starts validating the Primary Network.
      * @param endTime Optional. The Unix time when the validator stops validating the Primary Network (and staked AXC is returned).
      * @param weight Optional. Weight of this validator used when sampling
-     * @param subnetID Optional. ID of the subnet this validator is validating
+     * @param allychainID Optional. ID of the allychain this validator is validating
      */
-    constructor(networkID?: number, blockchainID?: Buffer, outs?: TransferableOutput[], ins?: TransferableInput[], memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, weight?: BN, subnetID?: string | Buffer);
+    constructor(networkID?: number, blockchainID?: Buffer, outs?: TransferableOutput[], ins?: TransferableInput[], memo?: Buffer, nodeID?: Buffer, startTime?: BN, endTime?: BN, weight?: BN, allychainID?: string | Buffer);
 }
-//# sourceMappingURL=addsubnetvalidatortx.d.ts.map
+//# sourceMappingURL=addallychainvalidatortx.d.ts.map

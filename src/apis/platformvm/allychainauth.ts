@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module API-PlatformVM-SubnetAuth
+ * @module API-PlatformVM-AllychainAuth
  */
 import { Buffer } from "buffer/"
 import BinTools from "../../utils/bintools"
@@ -12,8 +12,8 @@ import { PlatformVMConstants } from "."
  */
 const bintools: BinTools = BinTools.getInstance()
 
-export class SubnetAuth extends Serializable {
-  protected _typeName = "SubnetAuth"
+export class AllychainAuth extends Serializable {
+  protected _typeName = "AllychainAuth"
   protected _typeID = PlatformVMConstants.SUBNETAUTH
 
   serialize(encoding: SerializedEncoding = "hex"): object {
@@ -27,7 +27,7 @@ export class SubnetAuth extends Serializable {
   }
 
   /**
-   * Add an address index for Subnet Auth signing
+   * Add an address index for Allychain Auth signing
    *
    * @param index the Buffer of the address index to add
    */
@@ -67,7 +67,7 @@ export class SubnetAuth extends Serializable {
   }
 
   /**
-   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[SubnetAuth]].
+   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AllychainAuth]].
    */
   toBuffer(): Buffer {
     const typeIDBuf: Buffer = Buffer.alloc(4)

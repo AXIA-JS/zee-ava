@@ -85,7 +85,7 @@ const main = async (): Promise<any> => {
   const initialStates: InitialStates = new InitialStates()
   initialStates.addOutput(vcapSecpOutput)
   const memo: Buffer = Buffer.from(
-    "Manually create a CreateChainTx which creates a 1-of-2 AXC utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 SubnetAuth"
+    "Manually create a CreateChainTx which creates a 1-of-2 AXC utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 AllychainAuth"
   )
   const genesisAsset = new GenesisAsset(
     assetAlias,
@@ -139,7 +139,7 @@ const main = async (): Promise<any> => {
     }
   })
 
-  const subnetID: Buffer = bintools.cb58Decode(
+  const allychainID: Buffer = bintools.cb58Decode(
     "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
   )
   const chainName: string = "EPIC AVM"
@@ -153,7 +153,7 @@ const main = async (): Promise<any> => {
     outputs,
     inputs,
     memo,
-    subnetID,
+    allychainID,
     chainName,
     vmID,
     fxIDs,

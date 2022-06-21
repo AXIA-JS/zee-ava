@@ -10,8 +10,8 @@ const corechain: PlatformVMAPI = axia.CoreChain()
 
 const main = async (): Promise<any> => {
   const ids: string[] = []
-  const subnets: object[] = await corechain.getSubnets(ids)
-  console.log(subnets)
+  const allychains: object[] = await corechain.getAllychains(ids)
+  console.log(allychains)
 }
 
 main()

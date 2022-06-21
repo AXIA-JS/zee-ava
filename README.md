@@ -26,8 +26,8 @@ We built AxiaJS with ease of use in mind. With this library, any Javascript deve
 * Build and sign transactions
 * Issue signed transactions to the SwapChain, CoreChain, and AXChain
 * Perform cross-chain swaps between the SwapChain<->CoreChain and between the SwapChain<->AXChain
-* Add Validators and Nominators to the Primary Subnetwork by staking AXC
-* Create a Subnetwork
+* Add Validators and Nominators to the Primary Allychainwork by staking AXC
+* Create a Allychainwork
 * Administer a local node
 * Retrieve Axia network information from a node
 

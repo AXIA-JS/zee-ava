@@ -41,33 +41,40 @@ privKey = "PrivateKey-2uWuEQbY5t7NPzgqzDrXSgGPhi3uyKj2FeAvPUHYo6CmENHJfn"
 // Core-custom1t3qjau2pf3ys83yallqt4y5xc3l6ya5f7wr6aq
 coreKeyChain.importKey(privKey)
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const threshold: number = 2
-const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildCreateSubnetTx to create a CreateSubnetTx which creates a 1-of-2 AXC utxo and a 2-of-3 SubnetAuth"
-)
+const nodeID: string = "NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN"
+const startTime: BN = new BN(1652217329)
+const endTime: BN = new BN(1653511017)
 const asOf: BN = UnixNow()
-const subnetAuthKeychain: string[] = [
-  pAddressStrings[1],
-  pAddressStrings[2],
-  pAddressStrings[3]
-]
 
 const main = async (): Promise<any> => {
   const platformVMUTXOResponse: GetUTXOsResponse = await corechain.getUTXOs(
     pAddressStrings
   )
+  const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
 
-  const unsignedTx: UnsignedTx = await corechain.buildCreateSubnetTx(
+  const weight: BN = new BN(1)
+  const allychainID: string = "2tFRAeosSsgd1XV9Bn2y9VEHKPkeuk41RdnAZh9PuZJDWWkR5"
+  const memo: Buffer = Buffer.from(
+    "Utility function to create a AddAllychainValidatorTx transaction"
+  )
+  const allychainAuthCredentials: [number, Buffer][] = [
+    [0, pAddresses[3]],
+    [1, pAddresses[1]]
+  ]
+  const unsignedTx: UnsignedTx = await corechain.buildAddAllychainValidatorTx(
     utxoSet,
     pAddressStrings,
     pAddressStrings,
-    subnetAuthKeychain,
-    threshold,
+    nodeID,
+    startTime,
+    endTime,
+    weight,
+    allychainID,
     memo,
-    asOf
+    asOf,
+    allychainAuthCredentials
   )
-
   const tx: Tx = unsignedTx.sign(coreKeyChain)
   const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)

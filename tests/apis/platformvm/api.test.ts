@@ -40,7 +40,7 @@ import {
   Blockchain,
   GetMinStakeResponse,
   GetRewardUTXOsResponse,
-  Subnet,
+  Allychain,
   GetTxStatusResponse,
   GetValidatorsAtResponse
 } from "../../../src/apis/platformvm/interfaces"
@@ -145,10 +145,10 @@ describe("PlatformVMAPI", (): void => {
     mockAxios.reset()
   })
 
-  test("getCreateSubnetTxFee", async (): Promise<void> => {
+  test("getCreateAllychainTxFee", async (): Promise<void> => {
     let corechain: PlatformVMAPI = new PlatformVMAPI(axia, "/ext/bc/Core")
     const feeResponse: string = "1000000000"
-    const fee: BN = corechain.getCreateSubnetTxFee()
+    const fee: BN = corechain.getCreateAllychainTxFee()
     expect(fee.toString()).toBe(feeResponse)
   })
 
@@ -300,10 +300,10 @@ describe("PlatformVMAPI", (): void => {
 
   test("getValidatorsAt", async (): Promise<void> => {
     const height: number = 0
-    const subnetID: string = "11111111111111111111111111111111LpoYY"
+    const allychainID: string = "11111111111111111111111111111111LpoYY"
     const result: Promise<GetValidatorsAtResponse> = api.getValidatorsAt(
       height,
-      subnetID
+      allychainID
     )
     const payload: object = {
       result: {
@@ -407,19 +407,19 @@ describe("PlatformVMAPI", (): void => {
     expect(JSON.stringify(response["stakedOutputs"])).toBe(JSON.stringify(objs))
   })
 
-  test("addSubnetValidator 1", async (): Promise<void> => {
+  test("addAllychainValidator 1", async (): Promise<void> => {
     const nodeID: string = "abcdef"
-    const subnetID: string = "4R5p2RXDGLqaifZE4hHWH9owe34pfoBULn1DrQTWivjg8o4aH"
+    const allychainID: string = "4R5p2RXDGLqaifZE4hHWH9owe34pfoBULn1DrQTWivjg8o4aH"
     const startTime: Date = new Date(1985, 5, 9, 12, 59, 43, 9)
     const endTime: Date = new Date(1982, 3, 1, 12, 58, 33, 7)
     const weight: number = 13
     const utx: string = "valid"
     const result: Promise<string | ErrorResponseObject> =
-      api.addSubnetValidator(
+      api.addAllychainValidator(
         username,
         password,
         nodeID,
-        subnetID,
+        allychainID,
         startTime,
         endTime,
         weight
@@ -440,19 +440,19 @@ describe("PlatformVMAPI", (): void => {
     expect(response).toBe(utx)
   })
 
-  test("addSubnetValidator", async (): Promise<void> => {
+  test("addAllychainValidator", async (): Promise<void> => {
     const nodeID: string = "abcdef"
-    const subnetID: Buffer = Buffer.from("abcdef", "hex")
+    const allychainID: Buffer = Buffer.from("abcdef", "hex")
     const startTime: Date = new Date(1985, 5, 9, 12, 59, 43, 9)
     const endTime: Date = new Date(1982, 3, 1, 12, 58, 33, 7)
     const weight: number = 13
     const utx: string = "valid"
     const result: Promise<string | ErrorResponseObject> =
-      api.addSubnetValidator(
+      api.addAllychainValidator(
         username,
         password,
         nodeID,
-        subnetID,
+        allychainID,
         startTime,
         endTime,
         weight
@@ -509,7 +509,7 @@ describe("PlatformVMAPI", (): void => {
     const resp: object[] = [
       {
         id: "nodeID",
-        subnetID: "subnetID",
+        allychainID: "allychainID",
         vmID: "vmID"
       }
     ]
@@ -530,7 +530,7 @@ describe("PlatformVMAPI", (): void => {
     expect(response).toBe(resp)
   })
 
-  test("getSubnets 1", async (): Promise<void> => {
+  test("getAllychains 1", async (): Promise<void> => {
     const resp: object[] = [
       {
         id: "id",
@@ -538,10 +538,10 @@ describe("PlatformVMAPI", (): void => {
         threshold: "threshold"
       }
     ]
-    const result: Promise<Subnet[]> = api.getSubnets()
+    const result: Promise<Allychain[]> = api.getAllychains()
     const payload: object = {
       result: {
-        subnets: resp
+        allychains: resp
       }
     }
     const responseObj: HttpResponse = {
@@ -575,9 +575,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("getCurrentValidators 2", async (): Promise<void> => {
-    const subnetID: string = "abcdef"
+    const allychainID: string = "abcdef"
     const validators: string[] = ["val1", "val2"]
-    const result: Promise<object> = api.getCurrentValidators(subnetID)
+    const result: Promise<object> = api.getCurrentValidators(allychainID)
     const payload: object = {
       result: {
         validators
@@ -595,9 +595,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("getCurrentValidators 3", async (): Promise<void> => {
-    const subnetID: Buffer = Buffer.from("abcdef", "hex")
+    const allychainID: Buffer = Buffer.from("abcdef", "hex")
     const validators: string[] = ["val1", "val2"]
-    const result: Promise<object> = api.getCurrentValidators(subnetID)
+    const result: Promise<object> = api.getCurrentValidators(allychainID)
     const payload: object = {
       result: {
         validators
@@ -698,11 +698,11 @@ describe("PlatformVMAPI", (): void => {
     const vmID: string = "7sik3Pr6r1FeLrvK1oWwECBS8iJ5VPuSh"
     const name: string = "Some Blockchain"
     const genesis: string = '{ruh:"roh"}'
-    const subnetID: Buffer = Buffer.from("abcdef", "hex")
+    const allychainID: Buffer = Buffer.from("abcdef", "hex")
     const result: Promise<string | ErrorResponseObject> = api.createBlockchain(
       username,
       password,
-      subnetID,
+      allychainID,
       vmID,
       [1, 2, 3],
       name,
@@ -763,11 +763,11 @@ describe("PlatformVMAPI", (): void => {
     expect(response).toBe(alias)
   })
 
-  test("createSubnet 1", async (): Promise<void> => {
+  test("createAllychain 1", async (): Promise<void> => {
     const controlKeys: string[] = ["abcdef"]
     const threshold: number = 13
     const utx: string = "valid"
-    const result: Promise<string | ErrorResponseObject> = api.createSubnet(
+    const result: Promise<string | ErrorResponseObject> = api.createAllychain(
       username,
       password,
       controlKeys,
@@ -790,9 +790,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("sampleValidators 1", async (): Promise<void> => {
-    let subnetID
+    let allychainID
     const validators: string[] = ["val1", "val2"]
-    const result: Promise<string[]> = api.sampleValidators(10, subnetID)
+    const result: Promise<string[]> = api.sampleValidators(10, allychainID)
     const payload: object = {
       result: {
         validators
@@ -810,9 +810,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("sampleValidators 2", async (): Promise<void> => {
-    const subnetID: string = "abcdef"
+    const allychainID: string = "abcdef"
     const validators: string[] = ["val1", "val2"]
-    const result: Promise<string[]> = api.sampleValidators(10, subnetID)
+    const result: Promise<string[]> = api.sampleValidators(10, allychainID)
     const payload: object = {
       result: {
         validators
@@ -830,9 +830,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("sampleValidators 3", async (): Promise<void> => {
-    const subnetID = Buffer.from("abcdef", "hex")
+    const allychainID = Buffer.from("abcdef", "hex")
     const validators: string[] = ["val1", "val2"]
-    const result: Promise<string[]> = api.sampleValidators(10, subnetID)
+    const result: Promise<string[]> = api.sampleValidators(10, allychainID)
     const payload: object = {
       result: {
         validators
@@ -855,7 +855,7 @@ describe("PlatformVMAPI", (): void => {
     const result: Promise<string> = api.validatedBy(blockchainID)
     const payload: object = {
       result: {
-        subnetID: resp
+        allychainID: resp
       }
     }
     const responseObj: HttpResponse = {
@@ -870,9 +870,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("validates 1", async (): Promise<void> => {
-    let subnetID
+    let allychainID
     const resp: string[] = ["valid"]
-    const result: Promise<string[]> = api.validates(subnetID)
+    const result: Promise<string[]> = api.validates(allychainID)
     const payload: object = {
       result: {
         blockchainIDs: resp
@@ -890,9 +890,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("validates 2", async (): Promise<void> => {
-    const subnetID: string = "deadbeef"
+    const allychainID: string = "deadbeef"
     const resp: string[] = ["valid"]
-    const result: Promise<string[]> = api.validates(subnetID)
+    const result: Promise<string[]> = api.validates(allychainID)
     const payload: object = {
       result: {
         blockchainIDs: resp
@@ -910,9 +910,9 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("validates 3", async (): Promise<void> => {
-    const subnetID = Buffer.from("abcdef", "hex")
+    const allychainID = Buffer.from("abcdef", "hex")
     const resp: string[] = ["valid"]
-    const result: Promise<string[]> = api.validates(subnetID)
+    const result: Promise<string[]> = api.validates(allychainID)
     const payload: object = {
       result: {
         blockchainIDs: resp
@@ -1435,14 +1435,14 @@ describe("PlatformVMAPI", (): void => {
       serialzeit(tx1, "ExportTx")
     })
     /*
-        test('buildAddSubnetValidatorTx', async (): Promise<void> => {
+        test('buildAddAllychainValidatorTx', async (): Promise<void> => {
           platformvm.setFee(new BN(fee));
           const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a));
           const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a));
           const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a));
           const amount:BN = new BN(90);
 
-          const txu1:UnsignedTx = await platformvm.buildAddSubnetValidatorTx(
+          const txu1:UnsignedTx = await platformvm.buildAddAllychainValidatorTx(
             set,
             addrs1,
             addrs2,
@@ -1453,7 +1453,7 @@ describe("PlatformVMAPI", (): void => {
             new UTF8Payload("hello world"), UnixNow()
           );
 
-          const txu2:UnsignedTx = set.buildAddSubnetValidatorTx(
+          const txu2:UnsignedTx = set.buildAddAllychainValidatorTx(
             networkID, bintools.cb58Decode(blockchainID),
             addrbuff1,
             addrbuff2,
@@ -2447,7 +2447,7 @@ describe("PlatformVMAPI", (): void => {
       expect(totaltotal.toString(10)).toBe("4000000000")
     })
 
-    test("buildCreateSubnetTx1", async (): Promise<void> => {
+    test("buildCreateAllychainTx1", async (): Promise<void> => {
       platformvm.setCreationTxFee(new BN(10))
       const addrbuff1: Buffer[] = addrs1.map(
         (a): Buffer => platformvm.parseAddress(a)
@@ -2459,7 +2459,7 @@ describe("PlatformVMAPI", (): void => {
         (a): Buffer => platformvm.parseAddress(a)
       )
 
-      const txu1: UnsignedTx = await platformvm.buildCreateSubnetTx(
+      const txu1: UnsignedTx = await platformvm.buildCreateAllychainTx(
         set,
         addrs1,
         addrs2,
@@ -2469,14 +2469,14 @@ describe("PlatformVMAPI", (): void => {
         UnixNow()
       )
 
-      const txu2: UnsignedTx = set.buildCreateSubnetTx(
+      const txu2: UnsignedTx = set.buildCreateAllychainTx(
         networkID,
         bintools.cb58Decode(blockchainID),
         addrbuff1,
         addrbuff2,
         [addrbuff1[0]],
         1,
-        platformvm.getCreateSubnetTxFee(),
+        platformvm.getCreateAllychainTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()
@@ -2507,10 +2507,10 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx4.toBuffer().toString("hex")).toBe(checkTx)
 
-      serialzeit(tx1, "CreateSubnetTx")
+      serialzeit(tx1, "CreateAllychainTx")
     })
 
-    test("buildCreateSubnetTx2", async (): Promise<void> => {
+    test("buildCreateAllychainTx2", async (): Promise<void> => {
       platformvm.setCreationTxFee(new BN(10))
       const addrbuff1: Buffer[] = addrs1.map((a: string) =>
         platformvm.parseAddress(a)
@@ -2522,7 +2522,7 @@ describe("PlatformVMAPI", (): void => {
         platformvm.parseAddress(a)
       )
 
-      const txu1: UnsignedTx = await platformvm.buildCreateSubnetTx(
+      const txu1: UnsignedTx = await platformvm.buildCreateAllychainTx(
         lset,
         addrs1,
         addrs2,
@@ -2532,14 +2532,14 @@ describe("PlatformVMAPI", (): void => {
         UnixNow()
       )
 
-      const txu2: UnsignedTx = lset.buildCreateSubnetTx(
+      const txu2: UnsignedTx = lset.buildCreateAllychainTx(
         networkID,
         bintools.cb58Decode(blockchainID),
         addrbuff1,
         addrbuff2,
         [addrbuff1[0]],
         1,
-        platformvm.getCreateSubnetTxFee(),
+        platformvm.getCreateAllychainTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()

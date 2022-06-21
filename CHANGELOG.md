@@ -82,6 +82,6 @@
 
 ### New RPC Calls
 
-* `platform.getSubnets`
+* `core.getAllychains`
 * `avm.buildGenesis`
 * `keystore.deleteUser`

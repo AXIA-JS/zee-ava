@@ -26,22 +26,22 @@ export interface GetRewardUTXOsResponse {
 }
 export interface GetValidatorsAtParams {
     height: number;
-    subnetID?: string;
+    allychainID?: string;
 }
 export interface GetValidatorsAtResponse {
     validators: object;
 }
 export interface GetCurrentValidatorsParams {
-    subnetID?: Buffer | string;
+    allychainID?: Buffer | string;
     nodeIDs?: string[];
 }
 export interface SampleValidatorsParams {
     size: number | string;
-    subnetID?: Buffer | string | undefined;
+    allychainID?: Buffer | string | undefined;
 }
 export interface SampleValidatorsParams {
     size: number | string;
-    subnetID?: Buffer | string | undefined;
+    allychainID?: Buffer | string | undefined;
 }
 export interface AddValidatorParams {
     username: string;
@@ -63,7 +63,7 @@ export interface AddNominatorParams {
     rewardAddress: string;
 }
 export interface GetPendingValidatorsParams {
-    subnetID?: Buffer | string;
+    allychainID?: Buffer | string;
     nodeIDs?: string[];
 }
 export interface ExportAXCParams {
@@ -127,13 +127,13 @@ export interface GetUTXOsResponse {
     utxos: UTXOSet;
     endIndex: EndIndex;
 }
-export interface CreateSubnetParams {
+export interface CreateAllychainParams {
     username: string;
     password: string;
     controlKeys: string[];
     threshold: number;
 }
-export interface Subnet {
+export interface Allychain {
     ids: string;
     controlKeys: string[];
     threshold: number;
@@ -141,7 +141,7 @@ export interface Subnet {
 export interface CreateBlockchainParams {
     username: string;
     password: string;
-    subnetID?: Buffer | string | undefined;
+    allychainID?: Buffer | string | undefined;
     vmID: string;
     fxIDs: number[];
     name: string;
@@ -150,7 +150,7 @@ export interface CreateBlockchainParams {
 export interface Blockchain {
     id: string;
     name: string;
-    subnetID: string;
+    allychainID: string;
     vmID: string;
 }
 export interface GetTxStatusParams {
@@ -166,7 +166,7 @@ export interface GetMinStakeResponse {
     minNominatorStake: BN;
 }
 export interface GetMaxStakeAmountParams {
-    subnetID?: string;
+    allychainID?: string;
     nodeID: string;
     startTime: BN;
     endTime: BN;

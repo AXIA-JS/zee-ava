@@ -37,7 +37,7 @@ export interface Core {
     alias: string;
     vm: string;
     creationTxFee: BN | number;
-    createSubnetTx: BN | number;
+    createAllychainTx: BN | number;
     createChainTx: BN | number;
     minConsumption: number;
     maxConsumption: number;

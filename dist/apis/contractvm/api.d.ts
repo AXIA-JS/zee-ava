@@ -136,7 +136,7 @@ export declare class ContractVMAPI extends JRPCAPI {
      */
     checkGooseEgg: (utx: UnsignedTx, outTotal?: BN) => Promise<boolean>;
     /**
-     * Retrieves an assetID for a subnet's staking assset.
+     * Retrieves an assetID for a allychain's staking assset.
      *
      * @returns Returns a Promise<string> with cb58 encoded value of the assetID.
      */
@@ -146,15 +146,15 @@ export declare class ContractVMAPI extends JRPCAPI {
      *
      * @param username The username of the Keystore user that controls the new account
      * @param password The password of the Keystore user that controls the new account
-     * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the SubnetID or its alias.
+     * @param allychainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the AllychainID or its alias.
      * @param vmID The ID of the Virtual Machine the blockchain runs. Can also be an alias of the Virtual Machine.
      * @param FXIDs The ids of the FXs the VM is running.
      * @param name A human-readable name for the new blockchain
      * @param genesis The base 58 (with checksum) representation of the genesis state of the new blockchain. Virtual Machines should have a static API method named buildGenesis that can be used to generate genesisData.
      *
-     * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Subnet’s control keys and by the account paying the transaction fee.
+     * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Allychain’s control keys and by the account paying the transaction fee.
      */
-    createBlockchain: (username: string, password: string, subnetID: Buffer | string, vmID: string, fxIDs: Array<number>, name: string, genesis: string) => Promise<string>;
+    createBlockchain: (username: string, password: string, allychainID: Buffer | string, vmID: string, fxIDs: Array<number>, name: string, genesis: string) => Promise<string>;
     /**
      * Gets the status of a blockchain.
      *

@@ -251,7 +251,7 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
             }
         });
         /**
-         * Retrieves an assetID for a subnet's staking assset.
+         * Retrieves an assetID for a allychain's staking assset.
          *
          * @returns Returns a Promise<string> with cb58 encoded value of the assetID.
          */
@@ -264,15 +264,15 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
          *
          * @param username The username of the Keystore user that controls the new account
          * @param password The password of the Keystore user that controls the new account
-         * @param subnetID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the SubnetID or its alias.
+         * @param allychainID Optional. Either a {@link https://github.com/feross/buffer|Buffer} or an cb58 serialized string for the AllychainID or its alias.
          * @param vmID The ID of the Virtual Machine the blockchain runs. Can also be an alias of the Virtual Machine.
          * @param FXIDs The ids of the FXs the VM is running.
          * @param name A human-readable name for the new blockchain
          * @param genesis The base 58 (with checksum) representation of the genesis state of the new blockchain. Virtual Machines should have a static API method named buildGenesis that can be used to generate genesisData.
          *
-         * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Subnet’s control keys and by the account paying the transaction fee.
+         * @returns Promise for the unsigned transaction to create this blockchain. Must be signed by a sufficient number of the Allychain’s control keys and by the account paying the transaction fee.
          */
-        this.createBlockchain = (username, password, subnetID = undefined, vmID, fxIDs, name, genesis) => __awaiter(this, void 0, void 0, function* () {
+        this.createBlockchain = (username, password, allychainID = undefined, vmID, fxIDs, name, genesis) => __awaiter(this, void 0, void 0, function* () {
             const params = {
                 username,
                 password,
@@ -281,11 +281,11 @@ class ContractVMAPI extends jrpcapi_1.JRPCAPI {
                 name,
                 genesisData: genesis,
             };
-            if (typeof subnetID === 'string') {
-                params.subnetID = subnetID;
+            if (typeof allychainID === 'string') {
+                params.allychainID = allychainID;
             }
-            else if (typeof subnetID !== 'undefined') {
-                params.subnetID = bintools.cb58Encode(subnetID);
+            else if (typeof allychainID !== 'undefined') {
+                params.allychainID = bintools.cb58Encode(allychainID);
             }
             return this.callMethod('platform.createBlockchain', params)
                 .then((response) => response.data.result.txID);
