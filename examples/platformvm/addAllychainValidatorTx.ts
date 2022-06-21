@@ -110,18 +110,19 @@ const main = async (): Promise<any> => {
     "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
   )
   const nodeIDBuf: Buffer = NodeIDStringToBuffer(nodeID)
-  const addAllychainValidatorTx: AddAllychainValidatorTx = new AddAllychainValidatorTx(
-    networkID,
-    coreChainBlockchainIDBuf,
-    outputs,
-    inputs,
-    memo,
-    nodeIDBuf,
-    startTime,
-    endTime,
-    weight,
-    allychainID
-  )
+  const addAllychainValidatorTx: AddAllychainValidatorTx =
+    new AddAllychainValidatorTx(
+      networkID,
+      coreChainBlockchainIDBuf,
+      outputs,
+      inputs,
+      memo,
+      nodeIDBuf,
+      startTime,
+      endTime,
+      weight,
+      allychainID
+    )
   addAllychainValidatorTx.addSignatureIdx(0, pAddresses[3])
   addAllychainValidatorTx.addSignatureIdx(1, pAddresses[1])
   const unsignedTx: UnsignedTx = new UnsignedTx(addAllychainValidatorTx)

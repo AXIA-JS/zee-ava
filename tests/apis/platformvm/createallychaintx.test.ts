@@ -30,7 +30,8 @@ describe("CreateAllychainTx", (): void => {
   })
 
   describe("AllychainOwners", (): void => {
-    const allychainOwners: SECPOwnerOutput = createAllychainTx.getAllychainOwners()
+    const allychainOwners: SECPOwnerOutput =
+      createAllychainTx.getAllychainOwners()
 
     test("getTypeName", async (): Promise<void> => {
       const allychainOwnersTypeName: string = allychainOwners.getTypeName()

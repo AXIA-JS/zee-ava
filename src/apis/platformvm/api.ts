@@ -252,7 +252,9 @@ export class PlatformVMAPI extends JRPCAPI {
   getCreateAllychainTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
       ? new BN(
-          Defaults.network[this.core.getNetworkID()]["Core"]["createAllychainTx"]
+          Defaults.network[this.core.getNetworkID()]["Core"][
+            "createAllychainTx"
+          ]
         )
       : new BN(0)
   }

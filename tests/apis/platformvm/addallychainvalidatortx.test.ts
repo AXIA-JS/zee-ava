@@ -14,7 +14,8 @@ describe("AddAllychainValidatorTx", (): void => {
     addAllychainValidatorTxHex,
     "hex"
   )
-  const addAllychainValidatorTx: AddAllychainValidatorTx = new AddAllychainValidatorTx()
+  const addAllychainValidatorTx: AddAllychainValidatorTx =
+    new AddAllychainValidatorTx()
   addAllychainValidatorTx.fromBuffer(addAllychainValidatorTxBuf)
 
   test("getTypeName", async (): Promise<void> => {
@@ -24,7 +25,8 @@ describe("AddAllychainValidatorTx", (): void => {
   })
 
   test("getTypeID", async (): Promise<void> => {
-    const addAllychainValidatorTxTypeID: number = addAllychainValidatorTx.getTypeID()
+    const addAllychainValidatorTxTypeID: number =
+      addAllychainValidatorTx.getTypeID()
     expect(addAllychainValidatorTxTypeID).toBe(
       PlatformVMConstants.ADDSUBNETVALIDATORTX
     )
@@ -64,7 +66,8 @@ describe("AddAllychainValidatorTx", (): void => {
   })
 
   test("getAllychainID", async (): Promise<void> => {
-    const allychainID: string = "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
+    const allychainID: string =
+      "yKRV4EvGYWj7HHXUxSYzaAQVazEvaFPKPhJie4paqbrML5dub"
     const sID: string = addAllychainValidatorTx.getAllychainID()
     expect(allychainID).toBe(sID)
   })
