@@ -44,7 +44,8 @@ const cAddresses: Buffer[] = axchain.keyChain().getAddresses()
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
 const axChainBlockchainID: string = Defaults.network[networkID].AX.blockchainID
-const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const coreChainBlockchainID: string =
+  Defaults.network[networkID].Core.blockchainID
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []

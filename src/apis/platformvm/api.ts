@@ -264,7 +264,9 @@ export class PlatformVMAPI extends JRPCAPI {
    */
   getCreateChainTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["Core"]["createChainTx"])
+      ? new BN(
+          Defaults.network[this.core.getNetworkID()]["Core"]["createChainTx"]
+        )
       : new BN(0)
   }
 
@@ -284,7 +286,9 @@ export class PlatformVMAPI extends JRPCAPI {
    */
   getDefaultCreationTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["Core"]["creationTxFee"])
+      ? new BN(
+          Defaults.network[this.core.getNetworkID()]["Core"]["creationTxFee"]
+        )
       : new BN(0)
   }
 

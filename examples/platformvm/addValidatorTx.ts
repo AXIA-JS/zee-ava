@@ -36,7 +36,8 @@ const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 coreKeyChain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const coreChainBlockchainID: string =
+  Defaults.network[networkID].Core.blockchainID
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const stakeOuts: TransferableOutput[] = []

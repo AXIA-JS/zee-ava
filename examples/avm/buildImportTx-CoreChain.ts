@@ -18,7 +18,8 @@ const swapKeyChain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 swapKeyChain.importKey(privKey)
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
-const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const coreChainBlockchainID: string =
+  Defaults.network[networkID].Core.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()

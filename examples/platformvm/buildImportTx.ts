@@ -20,8 +20,10 @@ const privKey: string =
   "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
 coreKeyChain.importKey(privKey)
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const swapChainBlockchainID: string = Defaults.network["12345"].Swap.blockchainID
-const coreChainBlockchainID: string = Defaults.network["12345"].Core.blockchainID
+const swapChainBlockchainID: string =
+  Defaults.network["12345"].Swap.blockchainID
+const coreChainBlockchainID: string =
+  Defaults.network["12345"].Core.blockchainID
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(

@@ -34,7 +34,8 @@ const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].Swap.blockchainID
 const axcAssetID: string = Defaults.network[networkID].Swap.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
-const axChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const axChainBlockchainID: string =
+  Defaults.network[networkID].Core.blockchainID
 const importedInputs: TransferableInput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []

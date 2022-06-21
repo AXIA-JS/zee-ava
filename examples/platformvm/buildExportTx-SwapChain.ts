@@ -28,7 +28,8 @@ swapKeyChain.importKey(privKey)
 coreKeyChain.importKey(privKey)
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const swapChainBlockchainID: string = Defaults.network[networkID].Swap.blockchainID
+const swapChainBlockchainID: string =
+  Defaults.network[networkID].Swap.blockchainID
 const fee: BN = corechain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)

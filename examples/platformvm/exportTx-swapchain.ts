@@ -37,8 +37,10 @@ swapKeyChain.importKey(privKey)
 coreKeyChain.importKey(privKey)
 const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const swapChainBlockchainID: string = Defaults.network[networkID].Swap.blockchainID
-const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const swapChainBlockchainID: string =
+  Defaults.network[networkID].Swap.blockchainID
+const coreChainBlockchainID: string =
+  Defaults.network[networkID].Core.blockchainID
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []

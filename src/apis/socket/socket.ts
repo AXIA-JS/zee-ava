@@ -42,7 +42,9 @@ export class Socket extends WebSocket {
    * @param options Optional
    */
   constructor(
-    url: string | import("url").URL = `wss://${MainnetAPI}:443/ext/bc/Swap/events`,
+    url:
+      | string
+      | import("url").URL = `wss://${MainnetAPI}:443/ext/bc/Swap/events`,
     options?: WebSocket.ClientOptions | ClientRequestArgs
   ) {
     super(url, options)

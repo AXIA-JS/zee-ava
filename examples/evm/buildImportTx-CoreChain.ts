@@ -31,7 +31,8 @@ const axKeyChain: EVMKeyChain = axchain.keyChain()
 coreKeyChain.importKey(privKey)
 axKeyChain.importKey(privKey)
 const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
-const coreChainBlockchainId: string = Defaults.network[networkID].Core.blockchainID
+const coreChainBlockchainId: string =
+  Defaults.network[networkID].Core.blockchainID
 
 const main = async (): Promise<any> => {
   const baseFeeResponse: string = await axchain.getBaseFee()

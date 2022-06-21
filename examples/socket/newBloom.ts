@@ -3,7 +3,9 @@ import { PubSub, Socket } from "../../src"
 const protocol: string = "ws"
 const host: string = "localhost"
 const port: number = 80
-const addresses: string[] = ["Swap-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"]
+const addresses: string[] = [
+  "Swap-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
+]
 
 const main = async (): Promise<any> => {
   const pubsub: PubSub = new PubSub()

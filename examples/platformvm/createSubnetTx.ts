@@ -50,7 +50,8 @@ privKey = "PrivateKey-2uWuEQbY5t7NPzgqzDrXSgGPhi3uyKj2FeAvPUHYo6CmENHJfn"
 coreKeyChain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const coreChainBlockchainID: string =
+  Defaults.network[networkID].Core.blockchainID
 const coreChainBlockchainIDBuf: Buffer = bintools.cb58Decode(
   coreChainBlockchainID
 )

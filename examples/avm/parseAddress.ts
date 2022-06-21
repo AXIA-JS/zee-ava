@@ -9,7 +9,8 @@ const axia: Axia = new Axia(ip, port, protocol, networkID)
 const swapchain: AVMAPI = axia.SwapChain()
 
 const main = async (): Promise<any> => {
-  const addressString: string = "Swap-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
+  const addressString: string =
+    "Swap-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
   const addressBuffer: Buffer = swapchain.parseAddress(addressString)
   console.log(addressBuffer)
 }

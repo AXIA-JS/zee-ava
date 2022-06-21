@@ -35,7 +35,8 @@ swapKeyChain.importKey(privKey)
 coreKeyChain.importKey(privKey)
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const coreChainBlockchainID: string =
+  Defaults.network[networkID].Core.blockchainID
 const axcAssetID: string = Defaults.network[networkID].Swap.axcAssetID
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()

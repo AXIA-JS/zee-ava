@@ -251,7 +251,9 @@ export class AVMAPI extends JRPCAPI {
    */
   getDefaultCreationTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["Swap"]["creationTxFee"])
+      ? new BN(
+          Defaults.network[this.core.getNetworkID()]["Swap"]["creationTxFee"]
+        )
       : new BN(0)
   }
 
