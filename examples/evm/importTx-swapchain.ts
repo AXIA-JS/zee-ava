@@ -19,25 +19,25 @@ import {
 } from "../../src/utils"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const axchain: EVMAPI = axia.AXChain()
 const bintools: BinTools = BinTools.getInstance()
-const cKeychain: KeyChain = axchain.keyChain()
+const axKeyChain: KeyChain = axchain.keyChain()
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-cKeychain.importKey(privKey)
+axKeyChain.importKey(privKey)
 const cAddresses: Buffer[] = axchain.keyChain().getAddresses()
 const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
 const axChainBlockchainIdStr: string =
-  Defaults.network[networkID].C.blockchainID
+  Defaults.network[networkID].AX.blockchainID
 const axChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
   axChainBlockchainIdStr
 )
 const swapChainBlockchainIdStr: string =
-  Defaults.network[networkID].X.blockchainID
+  Defaults.network[networkID].Swap.blockchainID
 const swapChainBlockchainIdBuf: Buffer = bintools.cb58Decode(
   swapChainBlockchainIdStr
 )
@@ -46,7 +46,7 @@ const evmOutputs: EVMOutput[] = []
 const fee: BN = axchain.getDefaultTxFee()
 
 const main = async (): Promise<any> => {
-  const u: any = await axchain.getUTXOs(cAddressStrings[0], "X")
+  const u: any = await axchain.getUTXOs(cAddressStrings[0], "Swap")
   const utxoSet: UTXOSet = u.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO) => {
@@ -82,7 +82,7 @@ const main = async (): Promise<any> => {
   )
 
   const unsignedTx: UnsignedTx = new UnsignedTx(importTx)
-  const tx: Tx = unsignedTx.sign(cKeychain)
+  const tx: Tx = unsignedTx.sign(axKeyChain)
   const txid: string = await axchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

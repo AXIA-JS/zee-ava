@@ -2,7 +2,7 @@ import { Axia } from "../../src"
 import { HealthAPI } from "../../src/apis/health"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 12345
 const axia: Axia = new Axia(ip, port, protocol, networkID)

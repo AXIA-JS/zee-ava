@@ -15,20 +15,20 @@ import {
 } from "../../src/utils"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const swapchain: AVMAPI = axia.SwapChain()
 const axchain: EVMAPI = axia.AXChain()
-const xKeychain: AVMKeyChain = swapchain.keyChain()
+const swapKeyChain: AVMKeyChain = swapchain.keyChain()
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-const cKeychain: EVMKeyChain = axchain.keyChain()
-xKeychain.importKey(privKey)
-cKeychain.importKey(privKey)
+const axKeyChain: EVMKeyChain = axchain.keyChain()
+swapKeyChain.importKey(privKey)
+axKeyChain.importKey(privKey)
 const cAddressStrings: string[] = axchain.keyChain().getAddressStrings()
-const swapChainBlockchainId: string = Defaults.network[networkID].X.blockchainID
+const swapChainBlockchainId: string = Defaults.network[networkID].Swap.blockchainID
 
 const main = async (): Promise<any> => {
   const baseFeeResponse: string = await axchain.getBaseFee()
@@ -59,7 +59,7 @@ const main = async (): Promise<any> => {
     fee
   )
 
-  const tx: Tx = unsignedTx.sign(cKeychain)
+  const tx: Tx = unsignedTx.sign(axKeyChain)
   const txid: string = await axchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

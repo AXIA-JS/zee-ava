@@ -10,7 +10,7 @@ import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
 
 describe("Info", (): void => {
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
 
   const axia: Axia = new Axia(
@@ -34,7 +34,7 @@ describe("Info", (): void => {
   })
 
   test("getBlockchainID", async (): Promise<void> => {
-    const result: Promise<string> = info.getBlockchainID("X")
+    const result: Promise<string> = info.getBlockchainID("Swap")
     const payload: object = {
       result: {
         blockchainID: axia.SwapChain().getBlockchainID()
@@ -144,7 +144,7 @@ describe("Info", (): void => {
   })
 
   test("isBootstrapped false", async (): Promise<void> => {
-    const result: Promise<boolean> = info.isBootstrapped("X")
+    const result: Promise<boolean> = info.isBootstrapped("Swap")
     const payload: object = {
       result: {
         isBootstrapped: false
@@ -162,7 +162,7 @@ describe("Info", (): void => {
   })
 
   test("isBootstrapped true", async (): Promise<void> => {
-    const result: Promise<boolean> = info.isBootstrapped("P")
+    const result: Promise<boolean> = info.isBootstrapped("Core")
     const payload: object = {
       result: {
         isBootstrapped: true

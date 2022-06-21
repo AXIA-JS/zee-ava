@@ -28,7 +28,7 @@ import { Buffer } from "buffer/";
  *
  * Example usage:
  * ```js
- * const axia: Axia = new Axia("127.0.0.1", 9650, "https")
+ * const axia: Axia = new Axia("127.0.0.1", 80, "https")
  * ```
  *
  */

@@ -80,9 +80,9 @@ const serialzeit = (aThing: Serializable, name: string): void => {
 
 describe("AVMAPI", (): void => {
   const networkID: number = 1337
-  const blockchainID: string = Defaults.network[networkID].X.blockchainID
+  const blockchainID: string = Defaults.network[networkID].Swap.blockchainID
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
 
   const username: string = "AvaLabs"
@@ -101,19 +101,19 @@ describe("AVMAPI", (): void => {
   let api: AVMAPI
   let alias: string
 
-  const addrA: string = `X-${bech32.bech32.encode(
+  const addrA: string = `Swap-${bech32.bech32.encode(
     axia.getHRP(),
     bech32.bech32.toWords(
       bintools.cb58Decode("B6D4v1VtPYLbiUvYXtW4Px8oE9imC2vGW")
     )
   )}`
-  const addrB: string = `X-${bech32.bech32.encode(
+  const addrB: string = `Swap-${bech32.bech32.encode(
     axia.getHRP(),
     bech32.bech32.toWords(
       bintools.cb58Decode("P5wdRuZeaDt28eHMP5S3w9ZdoBfo7wuzF")
     )
   )}`
-  const addrC: string = `X-${bech32.bech32.encode(
+  const addrC: string = `Swap-${bech32.bech32.encode(
     axia.getHRP(),
     bech32.bech32.toWords(
       bintools.cb58Decode("6Y3kysjF9jnHnYkdS9yGAuoHyae2eNmeV")
@@ -121,7 +121,7 @@ describe("AVMAPI", (): void => {
   )}`
 
   beforeAll((): void => {
-    api = new AVMAPI(axia, "/ext/bc/X", blockchainID)
+    api = new AVMAPI(axia, "/ext/bc/Swap", blockchainID)
     alias = api.getBlockchainAlias()
   })
 
@@ -200,7 +200,7 @@ describe("AVMAPI", (): void => {
   test("can Send 1", async (): Promise<void> => {
     const txId: string = "asdfhvl234"
     const memo: string = "hello world"
-    const changeAddr: string = "X-local1"
+    const changeAddr: string = "Swap-local1"
     const result: Promise<SendResponse> = api.send(
       username,
       password,
@@ -232,7 +232,7 @@ describe("AVMAPI", (): void => {
   test("can Send 2", async (): Promise<void> => {
     const txId: string = "asdfhvl234"
     const memo: Buffer = Buffer.from("hello world")
-    const changeAddr: string = "X-local1"
+    const changeAddr: string = "Swap-local1"
     const result: Promise<SendResponse> = api.send(
       username,
       password,
@@ -264,7 +264,7 @@ describe("AVMAPI", (): void => {
   test("can Send Multiple", async (): Promise<void> => {
     const txId: string = "asdfhvl234"
     const memo: string = "hello world"
-    const changeAddr: string = "X-local1"
+    const changeAddr: string = "Swap-local1"
     const result: Promise<SendMultipleResponse> = api.sendMultiple(
       username,
       password,
@@ -292,8 +292,8 @@ describe("AVMAPI", (): void => {
   })
 
   test("refreshBlockchainID", async (): Promise<void> => {
-    const n3bcID: string = Defaults.network[3].X["blockchainID"]
-    const n1337bcID: string = Defaults.network[1337].X["blockchainID"]
+    const n3bcID: string = Defaults.network[3].Swap["blockchainID"]
+    const n1337bcID: string = Defaults.network[1337].Swap["blockchainID"]
     const testAPI: AVMAPI = new AVMAPI(axia, "/ext/bc/avm", n3bcID)
     const bc1: string = testAPI.getBlockchainID()
     expect(bc1).toBe(n3bcID)
@@ -410,15 +410,15 @@ describe("AVMAPI", (): void => {
     mockAxios.mockResponse(responseObj)
     const response: object = await result
     const calledWith: object = {
-      baseURL: "https://127.0.0.1:9650",
-      data: '{"id":9,"method":"avm.getBalance","params":{"address":"X-custom1d6kkj0qh4wcmus3tk59npwt3rluc6en755a58g","assetID":"ATH","includePartial":true},"jsonrpc":"2.0"}',
+      baseURL: "https://127.0.0.1:80",
+      data: '{"id":9,"method":"avm.getBalance","params":{"address":"Swap-custom1d6kkj0qh4wcmus3tk59npwt3rluc6en755a58g","assetID":"ATH","includePartial":true},"jsonrpc":"2.0"}',
       headers: {
         "Content-Type": "application/json;charset=UTF-8"
       },
       method: "POST",
       params: {},
       responseType: "json",
-      url: "/ext/bc/X"
+      url: "/ext/bc/Swap"
     }
 
     expect(mockAxios.request).toBeCalledWith(calledWith)
@@ -935,7 +935,7 @@ describe("AVMAPI", (): void => {
     let xfersecpmintop: TransferableOperation
 
     beforeEach(async (): Promise<void> => {
-      avm = new AVMAPI(axia, "/ext/bc/X", blockchainID)
+      avm = new AVMAPI(axia, "/ext/bc/Swap", blockchainID)
 
       const result: Promise<Buffer> = avm.getAXCAssetID(true)
       const payload: object = {
@@ -1505,7 +1505,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildCreateAssetTx - Variable Cap", async (): Promise<void> => {
-      avm.setCreationTxFee(new BN(Defaults.network[12345].P["creationTxFee"]))
+      avm.setCreationTxFee(new BN(Defaults.network[12345].Core["creationTxFee"]))
       const mintOutputs: SECPMintOutput[] = [secpMintOut1, secpMintOut2]
       const txu1: UnsignedTx = await avm.buildCreateAssetTx(
         set,
@@ -1628,7 +1628,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildCreateNFTAssetTx", async (): Promise<void> => {
-      avm.setCreationTxFee(new BN(Defaults.network[12345].P["creationTxFee"]))
+      avm.setCreationTxFee(new BN(Defaults.network[12345].Core["creationTxFee"]))
       const minterSets: MinterSet[] = [new MinterSet(1, addrs1)]
       const locktime: BN = new BN(0)
 
@@ -1983,7 +1983,7 @@ describe("AVMAPI", (): void => {
         amount,
         bintools.cb58Decode(PlatformChainID),
         addrbuff3.map((a: Buffer): any =>
-          serialization.bufferToType(a, type, axia.getHRP(), "P")
+          serialization.bufferToType(a, type, axia.getHRP(), "Core")
         ),
         addrs1,
         addrs2,

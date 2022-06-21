@@ -187,7 +187,7 @@ export declare abstract class ChainAddressPayload extends PayloadBase {
     constructor(payload?: any, hrp?: string);
 }
 /**
- * Class for payloads representing X-Chin addresses.
+ * Class for payloads representing Swap-Chin addresses.
  */
 export declare class SWAPCHAINADDRPayload extends ChainAddressPayload {
     protected typeid: number;

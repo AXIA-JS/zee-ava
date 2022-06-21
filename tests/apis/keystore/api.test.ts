@@ -5,7 +5,7 @@ import { KeystoreAPI } from "../../../src/apis/keystore/api"
 
 describe("Keystore", (): void => {
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
 
   const username: string = "AvaLabs"

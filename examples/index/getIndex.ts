@@ -2,7 +2,7 @@ import { Axia } from "../../src"
 import { IndexAPI } from "../../src/apis/index"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
@@ -12,7 +12,7 @@ const main = async (): Promise<any> => {
   const containerID: string =
     "eLXEKFFMgGmK7ZLokCFjppdBfGy5hDuRqh5uJVyXXPaRErpAX"
   const encoding: string = "hex"
-  const baseurl: string = "/ext/index/X/tx"
+  const baseurl: string = "/ext/index/Swap/tx"
   const containerRange: string = await index.getIndex(
     containerID,
     encoding,

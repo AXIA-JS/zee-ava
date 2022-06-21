@@ -3,13 +3,13 @@ import { Buffer } from "buffer/"
 import { AVMAPI, KeyChain } from "src/apis/avm"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const mnemonic: Mnemonic = Mnemonic.getInstance()
 const swapchain: AVMAPI = axia.SwapChain()
-const xKeychain: KeyChain = swapchain.keyChain()
+const swapKeyChain: KeyChain = swapchain.keyChain()
 
 describe("HDNode", (): void => {
   const xPriv: string =
@@ -24,16 +24,16 @@ describe("HDNode", (): void => {
   const m: string =
     "immune year obscure laptop wage diamond join glue ecology envelope box fade mixed cradle athlete absorb stick rival punch dinosaur skin blind benefit pretty"
   const addrs: string[] = [
-    "X-axc15qwuklmrfcmfw78yvka9pjsukjeevl4aveehq0",
-    "X-axc13wqaxm6zgjq5qwzuyyxyl9yrz3edcgwgfht6gt",
-    "X-axc1z3dn3vczxttts8dsdjfgtnkekf8nvqhhsj5stl",
-    "X-axc1j6kze9n7r3e8wq6jta5mf6pd3fwnu0v9wygc8p",
-    "X-axc1ngasfmvl8g63lzwznp0374myz7ajt4746g750m",
-    "X-axc1pr7pzcggtrk6uap58sfsrlnhqhayly2gtlux9l",
-    "X-axc1wwtn3gx7ke4ge2c29eg5sun36nyj55u4dle9gn",
-    "X-axc13527pvlnxa4wrfgt0h8ya7nkjawqq29sv5s89x",
-    "X-axc1gw6agtcsz969ugpqh2zx2lmjchg6npklvp43qq",
-    "X-axc10agjetvj0a0vf6wtlh7s6ctr8ha8ch8km8z567"
+    "Swap-axc15qwuklmrfcmfw78yvka9pjsukjeevl4aveehq0",
+    "Swap-axc13wqaxm6zgjq5qwzuyyxyl9yrz3edcgwgfht6gt",
+    "Swap-axc1z3dn3vczxttts8dsdjfgtnkekf8nvqhhsj5stl",
+    "Swap-axc1j6kze9n7r3e8wq6jta5mf6pd3fwnu0v9wygc8p",
+    "Swap-axc1ngasfmvl8g63lzwznp0374myz7ajt4746g750m",
+    "Swap-axc1pr7pzcggtrk6uap58sfsrlnhqhayly2gtlux9l",
+    "Swap-axc1wwtn3gx7ke4ge2c29eg5sun36nyj55u4dle9gn",
+    "Swap-axc13527pvlnxa4wrfgt0h8ya7nkjawqq29sv5s89x",
+    "Swap-axc1gw6agtcsz969ugpqh2zx2lmjchg6npklvp43qq",
+    "Swap-axc10agjetvj0a0vf6wtlh7s6ctr8ha8ch8km8z567"
   ]
 
   test("derive", (): void => {
@@ -87,7 +87,7 @@ describe("HDNode", (): void => {
     const hdnode: HDNode = new HDNode(seed)
     for (let i: number = 0; i <= 9; i++) {
       const child: HDNode = hdnode.derive(`m/44'/9000'/0'/0/${i}`)
-      xKeychain.importKey(child.privateKeyCB58)
+      swapKeyChain.importKey(child.privateKeyCB58)
     }
     const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
     expect(xAddressStrings).toStrictEqual(addrs)

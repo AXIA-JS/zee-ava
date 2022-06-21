@@ -31,7 +31,7 @@ import { Buffer } from "buffer/"
  *
  * Example usage:
  * ```js
- * const axia: Axia = new Axia("127.0.0.1", 9650, "https")
+ * const axia: Axia = new Axia("127.0.0.1", 80, "https")
  * ```
  *
  */
@@ -119,23 +119,23 @@ export default class Axia extends AxiaCore {
     if (
       typeof SwapChainID === "undefined" ||
       !SwapChainID ||
-      SwapChainID.toLowerCase() === "x"
+      SwapChainID.toLowerCase() === "swap"
     ) {
       if (networkID.toString() in Defaults.network) {
-        swapchainid = Defaults.network[`${networkID}`].X.blockchainID
+        swapchainid = Defaults.network[`${networkID}`].Swap.blockchainID
       } else {
-        swapchainid = Defaults.network[12345].X.blockchainID
+        swapchainid = Defaults.network[12345].Swap.blockchainID
       }
     }
     if (
       typeof AXChainID === "undefined" ||
       !AXChainID ||
-      AXChainID.toLowerCase() === "c"
+      AXChainID.toLowerCase() === "ax"
     ) {
       if (networkID.toString() in Defaults.network) {
-        axchainid = Defaults.network[`${networkID}`].C.blockchainID
+        axchainid = Defaults.network[`${networkID}`].AX.blockchainID
       } else {
-        axchainid = Defaults.network[12345].C.blockchainID
+        axchainid = Defaults.network[12345].AX.blockchainID
       }
     }
     if (typeof networkID === "number" && networkID >= 0) {
@@ -152,8 +152,8 @@ export default class Axia extends AxiaCore {
     if (!skipinit) {
       this.addAPI("admin", AdminAPI)
       this.addAPI("auth", AuthAPI)
-      this.addAPI("swapchain", AVMAPI, "/ext/bc/X", swapchainid)
-      this.addAPI("axchain", EVMAPI, "/ext/bc/C/axc", axchainid)
+      this.addAPI("swapchain", AVMAPI, "/ext/bc/Swap", swapchainid)
+      this.addAPI("axchain", EVMAPI, "/ext/bc/AX/axc", axchainid)
       this.addAPI("health", HealthAPI)
       this.addAPI("info", InfoAPI)
       this.addAPI("index", IndexAPI)

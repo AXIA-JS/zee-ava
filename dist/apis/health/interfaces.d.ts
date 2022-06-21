@@ -10,9 +10,9 @@ export interface Entity {
     timeOfFirstFailure?: string;
 }
 export interface Checks {
-    C: Entity;
-    P: Entity;
-    X: Entity;
+    AX: Entity;
+    Core: Entity;
+    Swap: Entity;
     bootstrapped: Entity;
     network: Entity;
     router: Entity;

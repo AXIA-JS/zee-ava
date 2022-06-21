@@ -17,7 +17,7 @@ describe("SwapChain", (): void => {
   const badUser: string = "asdfasdfsa"
   const badPass: string = "pass"
   const memo: string = "hello world"
-  const whaleAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
+  const whaleAddr: string = "Swap-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
   const key: string =
     "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
 
@@ -154,7 +154,7 @@ describe("SwapChain", (): void => {
         swapchain.export(
           user,
           passwd,
-          "C" + addrB.value.substring(1),
+          "AX" + addrB.value.substring(1),
           new BN(10),
           "AXC"
         ),
@@ -164,7 +164,7 @@ describe("SwapChain", (): void => {
     ],
     [
       "import",
-      () => swapchain.import(user, passwd, addrB.value, "P"),
+      () => swapchain.import(user, passwd, addrB.value, "Core"),
       (x) => x,
       Matcher.toThrow,
       () => "problem issuing transaction: no import inputs"

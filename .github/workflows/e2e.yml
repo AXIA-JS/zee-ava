@@ -52,5 +52,5 @@ jobs:
       - name: AxiaJS E2E Test
         env: 
           AXIAGO_IP: localhost
-          AXIAGO_PORT: 9650
+          AXIAGO_PORT: 80
         run: sleep 60 && yarn test -i --roots e2e_tests

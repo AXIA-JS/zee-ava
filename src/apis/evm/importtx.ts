@@ -290,7 +290,7 @@ export class ImportTx extends EVMBaseTx {
     const selectedNetwork: number = this.getNetworkID()
     const feeDiff: BN = new BN(0)
     const axcAssetID: string =
-      Defaults.network[`${selectedNetwork}`].X.axcAssetID
+      Defaults.network[`${selectedNetwork}`].Swap.axcAssetID
     // sum incoming AXC
     this.importIns.forEach((input: TransferableInput): void => {
       // only check StandardAmountInputs

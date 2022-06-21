@@ -342,7 +342,7 @@ export declare class PlatformVMAPI extends JRPCAPI {
      *
      * @param username The Keystore user that controls the account specified in `to`
      * @param password The password of the Keystore user
-     * @param to The address on the SwapChain to send the AXC to. Do not include X- in the address
+     * @param to The address on the SwapChain to send the AXC to. Do not include Swap- in the address
      * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
      *
      * @returns Promise for an unsigned transaction to be signed by the account the the AXC is
@@ -621,7 +621,7 @@ export declare class PlatformVMAPI extends JRPCAPI {
      * Instead use the [[Axia.addAPI]] method.
      *
      * @param core A reference to the Axia class
-     * @param baseURL Defaults to the string "/ext/P" as the path to blockchain's baseURL
+     * @param baseURL Defaults to the string "/ext/Core" as the path to blockchain's baseURL
      */
     constructor(core: AxiaCore, baseURL?: string);
     /**

@@ -59,8 +59,8 @@ describe("Transactions", (): void => {
   let api: AVMAPI
   const amnt: number = 10000
   const netid: number = 12345
-  const bID: string = Defaults.network[netid].X.blockchainID
-  const alias: string = "X"
+  const bID: string = Defaults.network[netid].Swap.blockchainID
+  const alias: string = "Swap"
   const assetID: Buffer = Buffer.from(
     createHash("sha256")
       .update(

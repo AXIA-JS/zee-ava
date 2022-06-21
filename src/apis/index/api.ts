@@ -217,9 +217,9 @@ export class IndexAPI extends JRPCAPI {
    * This class should not be instantiated directly. Instead use the [[Axia.addAPI]] method.
    *
    * @param core A reference to the Axia class
-   * @param baseURL Defaults to the string "/ext/index/X/tx" as the path to rpc's baseURL
+   * @param baseURL Defaults to the string "/ext/index/Swap/tx" as the path to rpc's baseURL
    */
-  constructor(core: AxiaCore, baseURL: string = "/ext/index/X/tx") {
+  constructor(core: AxiaCore, baseURL: string = "/ext/index/Swap/tx") {
     super(core, baseURL)
   }
 }

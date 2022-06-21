@@ -6,7 +6,7 @@ import { IndexAPI } from "../../../src/apis/index/api"
 
 describe("Index", () => {
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
 
   const axia: Axia = new Axia(ip, port, protocol, 12345)
@@ -28,7 +28,7 @@ describe("Index", () => {
 
   test("getLastAccepted", async () => {
     const encoding: string = "hex"
-    const baseurl: string = "/ext/index/X/tx"
+    const baseurl: string = "/ext/index/Swap/tx"
     const respobj = {
       id,
       bytes,
@@ -53,7 +53,7 @@ describe("Index", () => {
 
   test("getContainerByIndex", async () => {
     const encoding: string = "hex"
-    const baseurl: string = "/ext/index/X/tx"
+    const baseurl: string = "/ext/index/Swap/tx"
     const respobj = {
       id,
       bytes,
@@ -82,7 +82,7 @@ describe("Index", () => {
 
   test("getContainerByID", async () => {
     const encoding: string = "hex"
-    const baseurl: string = "/ext/index/X/tx"
+    const baseurl: string = "/ext/index/Swap/tx"
     const respobj = {
       id,
       bytes,
@@ -113,7 +113,7 @@ describe("Index", () => {
     const startIndex: number = 0
     const numToFetch: number = 100
     const encoding: string = "hex"
-    const baseurl: string = "/ext/index/X/tx"
+    const baseurl: string = "/ext/index/Swap/tx"
     const respobj = {
       id,
       bytes,
@@ -143,7 +143,7 @@ describe("Index", () => {
 
   test("getIndex", async () => {
     const encoding: string = "hex"
-    const baseurl: string = "/ext/index/X/tx"
+    const baseurl: string = "/ext/index/Swap/tx"
     const result: Promise<string> = index.getIndex(id, encoding, baseurl)
 
     const payload: object = {
@@ -164,7 +164,7 @@ describe("Index", () => {
 
   test("isAccepted", async () => {
     const encoding: string = "hex"
-    const baseurl: string = "/ext/index/X/tx"
+    const baseurl: string = "/ext/index/Swap/tx"
     const result: Promise<IsAcceptedResponse> = index.isAccepted(
       id,
       encoding,

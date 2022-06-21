@@ -47,19 +47,19 @@ const getUTXOIDs = (
 }
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const swapchain: AVMAPI = axia.SwapChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = swapchain.keyChain()
+const swapKeyChain: KeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
+swapKeyChain.importKey(privKey)
 const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
-const blockchainID: string = Defaults.network[networkID].X.blockchainID
-const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
+const blockchainID: string = Defaults.network[networkID].Swap.blockchainID
+const axcAssetID: string = Defaults.network[networkID].Swap.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
@@ -189,7 +189,7 @@ const main = async (): Promise<any> => {
   // Uncomment for codecID 00 01
   // operationTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(operationTx)
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(swapKeyChain)
   const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

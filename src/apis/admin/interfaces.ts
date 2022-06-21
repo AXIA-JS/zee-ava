@@ -27,12 +27,12 @@ export interface Level {
 }
 
 export interface LoggerLevels {
-  C: Level
-  "C.http": Level
-  P: Level
-  "P.http": Level
-  X: Level
-  "X.http": Level
+  AX: Level
+  "AX.http": Level
+  Core: Level
+  "Core.http": Level
+  Swap: Level
+  "Swap.http": Level
   http: Level
   main: Level
 }

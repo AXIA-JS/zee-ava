@@ -13,9 +13,9 @@ const bintools: BinTools = BinTools.getInstance()
 
 describe("EVMAPI", (): void => {
   const networkID: number = 1337
-  const blockchainID: string = Defaults.network[networkID].C.blockchainID
+  const blockchainID: string = Defaults.network[networkID].AX.blockchainID
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
   const username: string = "AvaLabs"
   const password: string = "password"
@@ -33,7 +33,7 @@ describe("EVMAPI", (): void => {
   let api: EVMAPI
 
   const addrA: string =
-    "C-" +
+    "AX-" +
     bech32.bech32.encode(
       axia.getHRP(),
       bech32.bech32.toWords(
@@ -41,7 +41,7 @@ describe("EVMAPI", (): void => {
       )
     )
   const addrC: string =
-    "C-" +
+    "AX-" +
     bech32.bech32.encode(
       axia.getHRP(),
       bech32.bech32.toWords(
@@ -50,7 +50,7 @@ describe("EVMAPI", (): void => {
     )
 
   beforeAll((): void => {
-    api = new EVMAPI(axia, "/ext/bc/C/axc", blockchainID)
+    api = new EVMAPI(axia, "/ext/bc/AX/axc", blockchainID)
   })
 
   afterEach((): void => {
@@ -234,9 +234,9 @@ describe("EVMAPI", (): void => {
   })
 
   test("refreshBlockchainID", async (): Promise<void> => {
-    const n5bcID: string = Defaults.network[5].C["blockchainID"]
-    const n1337bcID: string = Defaults.network[1337].C["blockchainID"]
-    const testAPI: EVMAPI = new EVMAPI(axia, "/ext/bc/C/axc", n5bcID)
+    const n5bcID: string = Defaults.network[5].AX["blockchainID"]
+    const n1337bcID: string = Defaults.network[1337].AX["blockchainID"]
+    const testAPI: EVMAPI = new EVMAPI(axia, "/ext/bc/AX/axc", n5bcID)
     const bc1: string = testAPI.getBlockchainID()
     expect(bc1).toBe(n5bcID)
 

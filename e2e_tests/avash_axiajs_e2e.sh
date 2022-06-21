@@ -8,7 +8,7 @@ is_bootstrapped () {
 }
 
 axiago_ip=127.0.0.1
-axiago_ports=$(seq 9650 2 9658)
+axiago_ports=$(seq 80 2 9658)
 
 max_bootstrapping_time=130
 

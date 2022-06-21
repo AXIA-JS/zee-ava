@@ -121,7 +121,7 @@ export class EVMAPI extends JRPCAPI {
       typeof blockchainID === "undefined" &&
       typeof Defaults.network[`${netID}`] !== "undefined"
     ) {
-      this.blockchainID = Defaults.network[`${netID}`].C.blockchainID //default to AXChain
+      this.blockchainID = Defaults.network[`${netID}`].AX.blockchainID //default to AXChain
       return true
     }
 
@@ -184,7 +184,7 @@ export class EVMAPI extends JRPCAPI {
     const tmpBaseURL: string = this.getBaseURL()
 
     // set base url to get asset description
-    this.setBaseURL("/ext/bc/X")
+    this.setBaseURL("/ext/bc/Swap")
     const response: RequestResponseData = await this.callMethod(
       "avm.getAssetDescription",
       params
@@ -236,7 +236,7 @@ export class EVMAPI extends JRPCAPI {
    */
   getDefaultTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["C"]["txFee"])
+      ? new BN(Defaults.network[this.core.getNetworkID()]["AX"]["txFee"])
       : new BN(0)
   }
 
@@ -258,7 +258,7 @@ export class EVMAPI extends JRPCAPI {
     const params: string[] = [hexAddress, blockHeight, assetID]
 
     const method: string = "eth_getAssetBalance"
-    const path: string = "ext/bc/C/rpc"
+    const path: string = "ext/bc/AX/rpc"
     const response: RequestResponseData = await this.callMethod(
       method,
       params,
@@ -444,7 +444,7 @@ export class EVMAPI extends JRPCAPI {
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
    * @param to The address of the account the asset is sent to.
-   * @param sourceChain The chainID where the funds are coming from. Ex: "X"
+   * @param sourceChain The chainID where the funds are coming from. Ex: "Swap"
    *
    * @returns Promise for a string for the transaction, which should be sent to the network
    * by calling issueTx.
@@ -645,7 +645,7 @@ export class EVMAPI extends JRPCAPI {
     )
     const atomicUTXOs: UTXOSet = utxoResponse.utxos
     const networkID: number = this.core.getNetworkID()
-    const axcAssetID: string = Defaults.network[`${networkID}`].X.axcAssetID
+    const axcAssetID: string = Defaults.network[`${networkID}`].Swap.axcAssetID
     const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
     const atomics: UTXO[] = atomicUTXOs.getAllUTXOs()
 
@@ -852,12 +852,12 @@ export class EVMAPI extends JRPCAPI {
    * Instead use the [[Axia.addAPI]] method.
    *
    * @param core A reference to the Axia class
-   * @param baseURL Defaults to the string "/ext/bc/C/axc" as the path to blockchain's baseURL
+   * @param baseURL Defaults to the string "/ext/bc/AX/axc" as the path to blockchain's baseURL
    * @param blockchainID The Blockchain's ID. Defaults to an empty string: ""
    */
   constructor(
     core: AxiaCore,
-    baseURL: string = "/ext/bc/C/axc",
+    baseURL: string = "/ext/bc/AX/axc",
     blockchainID: string = ""
   ) {
     super(core, baseURL)
@@ -880,7 +880,7 @@ export class EVMAPI extends JRPCAPI {
   getBaseFee = async (): Promise<string> => {
     const params: string[] = []
     const method: string = "eth_baseFee"
-    const path: string = "ext/bc/C/rpc"
+    const path: string = "ext/bc/AX/rpc"
     const response: RequestResponseData = await this.callMethod(
       method,
       params,
@@ -898,7 +898,7 @@ export class EVMAPI extends JRPCAPI {
     const params: string[] = []
 
     const method: string = "eth_maxPriorityFeePerGas"
-    const path: string = "ext/bc/C/rpc"
+    const path: string = "ext/bc/AX/rpc"
     const response: RequestResponseData = await this.callMethod(
       method,
       params,

@@ -464,11 +464,11 @@ export abstract class ChainAddressPayload extends PayloadBase {
 }
 
 /**
- * Class for payloads representing X-Chin addresses.
+ * Class for payloads representing Swap-Chin addresses.
  */
 export class SWAPCHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 6
-  protected chainid = "X"
+  protected chainid = "Swap"
 }
 
 /**
@@ -476,7 +476,7 @@ export class SWAPCHAINADDRPayload extends ChainAddressPayload {
  */
 export class CORECHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 7
-  protected chainid = "P"
+  protected chainid = "Core"
 }
 
 /**
@@ -484,7 +484,7 @@ export class CORECHAINADDRPayload extends ChainAddressPayload {
  */
 export class AXCHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 8
-  protected chainid = "C"
+  protected chainid = "AX"
 }
 
 /**

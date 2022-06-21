@@ -8,7 +8,7 @@ export declare const NodeIDPrefix: string;
 export declare const PrimaryAssetAlias: string;
 export declare const MainnetAPI: string;
 export declare const TestnetAPI: string;
-export interface C {
+export interface AX {
     blockchainID: string;
     alias: string;
     vm: string;
@@ -22,7 +22,7 @@ export interface C {
     txFee?: BN;
     axcAssetID?: string;
 }
-export interface X {
+export interface Swap {
     blockchainID: string;
     alias: string;
     vm: string;
@@ -32,7 +32,7 @@ export interface X {
     txFee?: BN | number;
     fee?: BN;
 }
-export interface P {
+export interface Core {
     blockchainID: string;
     alias: string;
     vm: string;
@@ -53,11 +53,11 @@ export interface P {
     fee?: BN;
 }
 export interface Network {
-    C: C;
+    AX: AX;
     hrp: string;
-    X: X;
-    P: P;
-    [key: string]: C | X | P | string;
+    Swap: Swap;
+    Core: Core;
+    [key: string]: AX | Swap | Core | string;
 }
 export interface Networks {
     [key: number]: Network;

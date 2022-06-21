@@ -22,21 +22,21 @@ import { Serialization } from "../../src/utils"
 
 const serialization: Serialization = Serialization.getInstance()
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const swapchain: AVMAPI = axia.SwapChain()
 const corechain: PlatformVMAPI = axia.CoreChain()
-const xKeychain: AVMKeyChain = swapchain.keyChain()
-const pKeychain: PlatformVMKeyChain = corechain.keyChain()
+const swapKeyChain: AVMKeyChain = swapchain.keyChain()
+const coreKeyChain: PlatformVMKeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
-pKeychain.importKey(privKey)
+swapKeyChain.importKey(privKey)
+coreKeyChain.importKey(privKey)
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
-const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
+const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
+const axcAssetID: string = Defaults.network[networkID].Swap.axcAssetID
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
@@ -67,7 +67,7 @@ const main = async (): Promise<any> => {
     locktime
   )
 
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(swapKeyChain)
   const buffer: Buffer = Buffer.from(
     createHash("sha256").update(tx.toBuffer()).digest().buffer
   )

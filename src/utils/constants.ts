@@ -9,9 +9,9 @@ export const PrivateKeyPrefix: string = "PrivateKey-"
 export const NodeIDPrefix: string = "NodeID-"
 export const PrimaryAssetAlias: string = "AXC"
 export const MainnetAPI: string = "api.avax.network"
-export const TestnetAPI: string = "rpc-v2.canarytest.axiacoin.network:9650"
+export const TestnetAPI: string = "rpc-v2.canarytest.axiacoin.network"
 
-export interface C {
+export interface AX {
   blockchainID: string
   alias: string
   vm: string
@@ -25,7 +25,7 @@ export interface C {
   txFee?: BN
   axcAssetID?: string
 }
-export interface X {
+export interface Swap {
   blockchainID: string
   alias: string
   vm: string
@@ -35,7 +35,7 @@ export interface X {
   txFee?: BN | number
   fee?: BN
 }
-export interface P {
+export interface Core {
   blockchainID: string
   alias: string
   vm: string
@@ -56,11 +56,11 @@ export interface P {
   fee?: BN
 }
 export interface Network {
-  C: C
+  AX: AX
   hrp: string
-  X: X
-  P: P
-  [key: string]: C | X | P | string
+  Swap: Swap
+  Core: Core
+  [key: string]: AX | Swap | Core | string
 }
 export interface Networks {
   [key: number]: Network
@@ -121,9 +121,9 @@ export const DefaultNetworkID: number = 1
 
 export const PlatformChainID: string = "11111111111111111111111111111111LpoYY"
 export const PrimaryNetworkID: string = "11111111111111111111111111111111LpoYY"
-export const SwapChainAlias: string = "X"
-export const AXChainAlias: string = "C"
-export const CoreChainAlias: string = "P"
+export const SwapChainAlias: string = "Swap"
+export const AXChainAlias: string = "AX"
+export const CoreChainAlias: string = "Core"
 export const SwapChainVMName: string = "avm"
 export const AXChainVMName: string = "evm"
 export const CoreChainVMName: string = "platformvm"
@@ -160,7 +160,7 @@ export const AXCGWEI: BN = NANOAXC.clone()
 export const AXCSTAKECAP: BN = ONEAXC.mul(new BN(3000000))
 
 // Start Manhattan
-const n0X: X = {
+const n0X: Swap = {
   blockchainID: "2vrXWHgGxh5n3YsLHMV16YVVJTpT4z45Fmb4y3bL6si8kLCyg9",
   alias: SwapChainAlias,
   vm: SwapChainVMName,
@@ -169,7 +169,7 @@ const n0X: X = {
   mintTxFee: MILLIAXC
 }
 
-const n0P: P = {
+const n0P: Core = {
   blockchainID: PlatformChainID,
   alias: CoreChainAlias,
   vm: CoreChainVMName,
@@ -188,7 +188,7 @@ const n0P: P = {
   minDelegationFee: new BN(2)
 }
 
-const n0C: C = {
+const n0C: AX = {
   blockchainID: "2fFZQibQXcd6LTE4rpBPBAkLVXFE91Kit8pgxaBG1mRnh5xqbb",
   alias: AXChainAlias,
   vm: AXChainVMName,
@@ -200,7 +200,7 @@ const n0C: C = {
 
 // Start mainnet
 let axcAssetID: string = "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z"
-const n1X: X = {
+const n1X: Swap = {
   blockchainID: "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
   axcAssetID: axcAssetID,
   alias: SwapChainAlias,
@@ -210,7 +210,7 @@ const n1X: X = {
   mintTxFee: MILLIAXC
 }
 
-const n1P: P = {
+const n1P: Core = {
   blockchainID: PlatformChainID,
   axcAssetID: axcAssetID,
   alias: CoreChainAlias,
@@ -230,7 +230,7 @@ const n1P: P = {
   minDelegationFee: new BN(2)
 }
 
-const n1C: C = {
+const n1C: AX = {
   blockchainID: "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5",
   alias: AXChainAlias,
   vm: AXChainVMName,
@@ -249,7 +249,7 @@ const n1C: C = {
 // End Mainnet
 
 // Start Cascade
-const n2X: X = {
+const n2X: Swap = {
   blockchainID: "4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM",
   alias: SwapChainAlias,
   vm: SwapChainVMName,
@@ -258,7 +258,7 @@ const n2X: X = {
   mintTxFee: new BN(0)
 }
 
-const n2P: P = {
+const n2P: Core = {
   blockchainID: PlatformChainID,
   alias: CoreChainAlias,
   vm: CoreChainVMName,
@@ -277,7 +277,7 @@ const n2P: P = {
   minDelegationFee: new BN(2)
 }
 
-const n2C: C = {
+const n2C: AX = {
   blockchainID: "2mUYSXfLrDtigwbzj1LxKVsHwELghc5sisoXrzJwLqAAQHF4i",
   alias: AXChainAlias,
   vm: AXChainVMName,
@@ -286,7 +286,7 @@ const n2C: C = {
 // End Cascade
 
 // Start Denali
-const n3X: X = {
+const n3X: Swap = {
   blockchainID: "rrEWX7gc7D9mwcdrdBxBTdqh1a7WDVsMuadhTZgyXfFcRz45L",
   alias: SwapChainAlias,
   vm: SwapChainVMName,
@@ -295,7 +295,7 @@ const n3X: X = {
   mintTxFee: new BN(0)
 }
 
-const n3P: P = {
+const n3P: Core = {
   blockchainID: "",
   alias: CoreChainAlias,
   vm: CoreChainVMName,
@@ -314,7 +314,7 @@ const n3P: P = {
   minDelegationFee: new BN(2)
 }
 
-const n3C: C = {
+const n3C: AX = {
   blockchainID: "zJytnh96Pc8rM337bBrtMvJDbEdDNjcXG3WkTNCiLp18ergm9",
   alias: AXChainAlias,
   vm: AXChainVMName,
@@ -323,7 +323,7 @@ const n3C: C = {
 // End Denali
 
 // Start Everest
-const n4X: X = {
+const n4X: Swap = {
   blockchainID: "jnUjZSRt16TcRnZzmh5aMhavwVHz3zBrSN8GfFMTQkzUnoBxC",
   alias: SwapChainAlias,
   vm: SwapChainVMName,
@@ -332,7 +332,7 @@ const n4X: X = {
   mintTxFee: MILLIAXC
 }
 
-const n4P: P = {
+const n4P: Core = {
   blockchainID: PlatformChainID,
   alias: CoreChainAlias,
   vm: CoreChainVMName,
@@ -351,7 +351,7 @@ const n4P: P = {
   minDelegationFee: new BN(2)
 }
 
-const n4C: C = {
+const n4C: AX = {
   blockchainID: "saMG5YgNsFxzjz4NMkEkt3bAH6hVxWdZkWcEnGB3Z15pcAmsK",
   alias: AXChainAlias,
   vm: AXChainVMName,
@@ -362,7 +362,7 @@ const n4C: C = {
 
 // Start Fuji
 axcAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
-const n5X: X = {
+const n5X: Swap = {
   blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
   axcAssetID: axcAssetID,
   alias: SwapChainAlias,
@@ -372,7 +372,7 @@ const n5X: X = {
   mintTxFee: MILLIAXC
 }
 
-const n5P: P = {
+const n5P: Core = {
   blockchainID: PlatformChainID,
   axcAssetID: axcAssetID,
   alias: CoreChainAlias,
@@ -392,7 +392,7 @@ const n5P: P = {
   minDelegationFee: new BN(2)
 }
 
-const n5C: C = {
+const n5C: AX = {
   blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
   alias: AXChainAlias,
   vm: AXChainVMName,
@@ -412,7 +412,7 @@ const n5C: C = {
 
 // Start Testnet
 axcAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
-const n5678X: X = {
+const n5678X: Swap = {
   blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
   axcAssetID: axcAssetID,
   alias: SwapChainAlias,
@@ -422,7 +422,7 @@ const n5678X: X = {
   mintTxFee: MILLIAXC
 }
 
-const n5678P: P = {
+const n5678P: Core = {
   blockchainID: PlatformChainID,
   axcAssetID: axcAssetID,
   alias: CoreChainAlias,
@@ -442,7 +442,7 @@ const n5678P: P = {
   minDelegationFee: new BN(2)
 }
 
-const n5678C: C = {
+const n5678C: AX = {
   blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
   alias: AXChainAlias,
   vm: AXChainVMName,
@@ -462,12 +462,12 @@ const n5678C: C = {
 
 // Start custom network
 axcAssetID = "BUuypiq2wyuLMvyhzFXcPyxPMCgSp7eeDohhQRqTChoBjKziC"
-const n1337X: X = { ...n5X }
+const n1337X: Swap = { ...n5X }
 n1337X.blockchainID = "qzfF3A11KzpcHkkqznEyQgupQrCNS6WV6fTUTwZpEKqhj1QE7"
 n1337X.axcAssetID = axcAssetID
-const n1337P: P = { ...n5P }
+const n1337P: Core = { ...n5P }
 n1337P.blockchainID = PlatformChainID
-const n1337C: C = { ...n5C }
+const n1337C: AX = { ...n5C }
 n1337C.blockchainID = "BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88"
 n1337C.axcAssetID = axcAssetID
 n1337C.chainID = 43112
@@ -475,12 +475,12 @@ n1337C.chainID = 43112
 
 // Start local network
 axcAssetID = "2fombhL7aGPwj3KH4bfrmJwW6PVnMobf9Y2fn9GwxiAAJyFDbe"
-const n12345X: X = { ...n5X }
+const n12345X: Swap = { ...n5X }
 n12345X.blockchainID = "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
 n12345X.axcAssetID = axcAssetID
-const n12345P: P = { ...n5P }
+const n12345P: Core = { ...n5P }
 n12345P.blockchainID = PlatformChainID
-const n12345C: C = { ...n5C }
+const n12345C: AX = { ...n5C }
 n12345C.blockchainID = "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
 n12345C.axcAssetID = axcAssetID
 n12345C.chainID = 43112
@@ -490,83 +490,83 @@ export class Defaults {
   static network: Networks = {
     0: {
       hrp: NetworkIDToHRP[0],
-      X: n0X,
+      Swap: n0X,
       "2vrXWHgGxh5n3YsLHMV16YVVJTpT4z45Fmb4y3bL6si8kLCyg9": n0X,
-      P: n0P,
+      Core: n0P,
       "11111111111111111111111111111111LpoYY": n0P,
-      C: n0C,
+      AX: n0C,
       "2fFZQibQXcd6LTE4rpBPBAkLVXFE91Kit8pgxaBG1mRnh5xqbb": n0C
     },
     1: {
       hrp: NetworkIDToHRP[1],
-      X: n1X,
+      Swap: n1X,
       "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": n1X,
-      P: n1P,
+      Core: n1P,
       "11111111111111111111111111111111LpoYY": n1P,
-      C: n1C,
+      AX: n1C,
       "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5": n1C
     },
     2: {
       hrp: NetworkIDToHRP[2],
-      X: n2X,
+      Swap: n2X,
       "4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM": n2X,
-      P: n2P,
+      Core: n2P,
       "11111111111111111111111111111111LpoYY": n2P,
-      C: n2C,
+      AX: n2C,
       "2mUYSXfLrDtigwbzj1LxKVsHwELghc5sisoXrzJwLqAAQHF4i": n2C
     },
     3: {
       hrp: NetworkIDToHRP[3],
-      X: n3X,
+      Swap: n3X,
       rrEWX7gc7D9mwcdrdBxBTdqh1a7WDVsMuadhTZgyXfFcRz45L: n3X,
-      P: n3P,
+      Core: n3P,
       "11111111111111111111111111111111LpoYY": n3P,
-      C: n3C,
+      AX: n3C,
       zJytnh96Pc8rM337bBrtMvJDbEdDNjcXG3WkTNCiLp18ergm9: n3C
     },
     4: {
       hrp: NetworkIDToHRP[4],
-      X: n4X,
+      Swap: n4X,
       jnUjZSRt16TcRnZzmh5aMhavwVHz3zBrSN8GfFMTQkzUnoBxC: n4X,
-      P: n4P,
+      Core: n4P,
       "11111111111111111111111111111111LpoYY": n4P,
-      C: n4C,
+      AX: n4C,
       saMG5YgNsFxzjz4NMkEkt3bAH6hVxWdZkWcEnGB3Z15pcAmsK: n4C
     },
     5: {
       hrp: NetworkIDToHRP[5],
-      X: n5X,
+      Swap: n5X,
       "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5X,
-      P: n5P,
+      Core: n5P,
       "11111111111111111111111111111111LpoYY": n5P,
-      C: n5C,
+      AX: n5C,
       yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5C
     },
     1337: {
       hrp: NetworkIDToHRP[1337],
-      X: n1337X,
+      Swap: n1337X,
       qzfF3A11KzpcHkkqznEyQgupQrCNS6WV6fTUTwZpEKqhj1QE7: n1337X,
-      P: n1337P,
+      Core: n1337P,
       "11111111111111111111111111111111LpoYY": n1337P,
-      C: n1337C,
+      AX: n1337C,
       BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88: n1337C
     },
     5678: {
       hrp: exports.NetworkIDToHRP[0],
-      X: n5678X,
+      Swap: n5678X,
       "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5678X,
-      P: n5678P,
+      Core: n5678P,
       "11111111111111111111111111111111LpoYY": n5678P,
-      C: n5678C,
+      AX: n5678C,
       yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5678C
     },
     12345: {
       hrp: NetworkIDToHRP[12345],
-      X: n12345X,
+      Swap: n12345X,
       "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed": n12345X,
-      P: n12345P,
+      Core: n12345P,
       "11111111111111111111111111111111LpoYY": n12345P,
-      C: n12345C,
+      AX: n12345C,
       "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU": n12345C
     }
   }

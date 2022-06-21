@@ -5,7 +5,7 @@ import { MetricsAPI } from "../../../src/apis/metrics/api"
 
 describe("Metrics", (): void => {
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
 
   const axia: Axia = new Axia(

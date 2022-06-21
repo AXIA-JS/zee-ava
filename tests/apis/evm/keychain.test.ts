@@ -5,13 +5,13 @@ import createHash from "create-hash"
 import BinTools from "../../../src/utils/bintools"
 
 const bintools: BinTools = BinTools.getInstance()
-const alias: string = "C"
+const alias: string = "AX"
 const hrp: string = "tests"
 
 describe("EVMKeyPair", (): void => {
   const networkID: number = 1337
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
   const axia: Axia = new Axia(
     ip,

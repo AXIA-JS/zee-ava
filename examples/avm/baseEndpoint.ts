@@ -1,7 +1,7 @@
 import { Axia } from "../../src"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const baseEndpoint: string = "rpc"

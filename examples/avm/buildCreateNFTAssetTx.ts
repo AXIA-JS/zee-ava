@@ -15,14 +15,14 @@ import {
 } from "../../src/utils"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const swapchain: AVMAPI = axia.SwapChain()
-const xKeychain: AVMKeyChain = swapchain.keyChain()
+const swapKeyChain: AVMKeyChain = swapchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
+swapKeyChain.importKey(privKey)
 const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const threshold: number = 1
@@ -52,7 +52,7 @@ const main = async (): Promise<any> => {
     locktime
   )
 
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(swapKeyChain)
   const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

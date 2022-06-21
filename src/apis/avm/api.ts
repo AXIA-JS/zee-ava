@@ -146,7 +146,7 @@ export class AVMAPI extends JRPCAPI {
       typeof blockchainID === "undefined" &&
       typeof Defaults.network[`${netid}`] !== "undefined"
     ) {
-      this.blockchainID = Defaults.network[`${netid}`].X.blockchainID //default to SwapChain
+      this.blockchainID = Defaults.network[`${netid}`].Swap.blockchainID //default to SwapChain
       return true
     }
     if (typeof blockchainID === "string") {
@@ -219,7 +219,7 @@ export class AVMAPI extends JRPCAPI {
    */
   getDefaultTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["X"]["txFee"])
+      ? new BN(Defaults.network[this.core.getNetworkID()]["Swap"]["txFee"])
       : new BN(0)
   }
 
@@ -251,7 +251,7 @@ export class AVMAPI extends JRPCAPI {
    */
   getDefaultCreationTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["X"]["creationTxFee"])
+      ? new BN(Defaults.network[this.core.getNetworkID()]["Swap"]["creationTxFee"])
       : new BN(0)
   }
 
@@ -262,7 +262,7 @@ export class AVMAPI extends JRPCAPI {
    */
   getDefaultMintTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["X"]["mintTxFee"])
+      ? new BN(Defaults.network[this.core.getNetworkID()]["Swap"]["mintTxFee"])
       : new BN(0)
   }
 
@@ -424,11 +424,11 @@ export class AVMAPI extends JRPCAPI {
    * Example initialHolders:
    * [
    *   {
-   *     "address": "X-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
+   *     "address": "Swap-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
    *     "amount": 10000
    *   },
    *   {
-   *     "address": "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
+   *     "address": "Swap-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
    *     "amount": 50000
    *   }
    * ]
@@ -474,15 +474,15 @@ export class AVMAPI extends JRPCAPI {
    * [
    *    {
    *      "minters":[
-   *        "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr"
+   *        "Swap-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr"
    *      ],
    *      "threshold": 1
    *     },
    *     {
    *      "minters": [
-   *        "X-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
-   *        "X-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
-   *        "X-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx"
+   *        "Swap-axc1am4w6hfrvmh3akduzkjthrtgtqafalce6an8cr",
+   *        "Swap-axc1kj06lhgx84h39snsljcey3tpc046ze68mek3g5",
+   *        "Swap-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx"
    *      ],
    *      "threshold": 2
    *     }
@@ -840,7 +840,7 @@ export class AVMAPI extends JRPCAPI {
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
    * @param to The address of the account the asset is sent to.
-   * @param sourceChain The chainID where the funds are coming from. Ex: "C"
+   * @param sourceChain The chainID where the funds are coming from. Ex: "AX"
    *
    * @returns Promise for a string for the transaction, which should be sent to the network
    * by calling issueTx.
@@ -1580,15 +1580,15 @@ export class AVMAPI extends JRPCAPI {
    * [
    *      {
    *          "minters":[
-   *              "X-axc1ghstjukrtw8935lryqtnh643xe9a94u3tc75c7"
+   *              "Swap-axc1ghstjukrtw8935lryqtnh643xe9a94u3tc75c7"
    *          ],
    *          "threshold": 1
    *      },
    *      {
    *          "minters": [
-   *              "X-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx",
-   *              "X-axc1k4nr26c80jaquzm9369j5a4shmwcjn0vmemcjz",
-   *              "X-axc1ztkzsrjnkn0cek5ryvhqswdtcg23nhge3nnr5e"
+   *              "Swap-axc1yell3e4nln0m39cfpdhgqprsd87jkh4qnakklx",
+   *              "Swap-axc1k4nr26c80jaquzm9369j5a4shmwcjn0vmemcjz",
+   *              "Swap-axc1ztkzsrjnkn0cek5ryvhqswdtcg23nhge3nnr5e"
    *          ],
    *          "threshold": 2
    *      }
@@ -2064,12 +2064,12 @@ export class AVMAPI extends JRPCAPI {
    * This class should not be instantiated directly. Instead use the [[Axia.addAP`${I}`]] method.
    *
    * @param core A reference to the Axia class
-   * @param baseURL Defaults to the string "/ext/bc/X" as the path to blockchain's baseURL
+   * @param baseURL Defaults to the string "/ext/bc/Swap" as the path to blockchain's baseURL
    * @param blockchainID The Blockchain"s ID. Defaults to an empty string: ""
    */
   constructor(
     core: AxiaCore,
-    baseURL: string = "/ext/bc/X",
+    baseURL: string = "/ext/bc/Swap",
     blockchainID: string = ""
   ) {
     super(core, baseURL)

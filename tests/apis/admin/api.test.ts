@@ -10,7 +10,7 @@ import { AdminAPI } from "../../../src/apis/admin/api"
 
 describe("Admin", (): void => {
   const ip: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const protocol: string = "https"
   const axia: Axia = new Axia(
     ip,
@@ -116,7 +116,7 @@ describe("Admin", (): void => {
     const result: Promise<GetLoggerLevelResponse> = admin.getLoggerLevel()
     const payload: object = {
       result: {
-        loggerLevels: { C: { logLevel: "DEBUG", displayLevel: "ERROR" } }
+        loggerLevels: { AX: { logLevel: "DEBUG", displayLevel: "ERROR" } }
       }
     }
     const responseObj: HttpResponse = {
@@ -185,7 +185,7 @@ describe("Admin", (): void => {
   })
 
   test("setLoggerLevel", async (): Promise<void> => {
-    const loggerName: string = "C"
+    const loggerName: string = "AX"
     const logLevel: string = "DEBUG"
     const displayLevel: string = "INFO"
     const result: Promise<SetLoggerLevelResponse> = admin.setLoggerLevel(

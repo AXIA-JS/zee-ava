@@ -13,7 +13,7 @@ import { getPreferredHRP } from "./utils/helperfunctions"
  *
  * Example usage:
  * ```js
- * let axia = new AxiaCore("127.0.0.1", 9650, "https")
+ * let axia = new AxiaCore("127.0.0.1", 80, "https")
  * ```
  *
  *

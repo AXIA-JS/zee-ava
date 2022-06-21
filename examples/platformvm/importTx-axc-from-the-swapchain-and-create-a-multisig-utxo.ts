@@ -20,29 +20,29 @@ import {
 } from "../../src/utils"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
-const pKeychain: KeyChain = corechain.keyChain()
+const coreKeyChain: KeyChain = corechain.keyChain()
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-// X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-pKeychain.importKey(privKey)
+// Swap-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
+coreKeyChain.importKey(privKey)
 
 privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
-// P-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
-pKeychain.importKey(privKey)
+// Core-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
+coreKeyChain.importKey(privKey)
 
 privKey = "PrivateKey-rKsiN3X4NSJcPpWxMSh7WcuY653NGQ7tfADgQwDZ9yyUPPDG9"
-// P-custom1jwwk62ktygl0w29rsq2hq55amamhpvx82kfnte
-pKeychain.importKey(privKey)
+// Core-custom1jwwk62ktygl0w29rsq2hq55amamhpvx82kfnte
+coreKeyChain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const swapChainID: string = Defaults.network[networkID].X.blockchainID
+const swapChainID: string = Defaults.network[networkID].Swap.blockchainID
 const swapChainIDBuf: Buffer = bintools.cb58Decode(swapChainID)
-const coreChainID: string = Defaults.network[networkID].P.blockchainID
+const coreChainID: string = Defaults.network[networkID].Core.blockchainID
 const coreChainIDBuf: Buffer = bintools.cb58Decode(coreChainID)
 const importedInputs: TransferableInput[] = []
 const outputs: TransferableOutput[] = []
@@ -108,7 +108,7 @@ const main = async (): Promise<any> => {
   )
 
   const unsignedTx: UnsignedTx = new UnsignedTx(importTx)
-  const tx: Tx = unsignedTx.sign(pKeychain)
+  const tx: Tx = unsignedTx.sign(coreKeyChain)
   const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

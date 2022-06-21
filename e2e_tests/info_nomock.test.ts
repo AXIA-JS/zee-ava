@@ -11,7 +11,7 @@ describe("Info", (): void => {
   const tests_spec: any = [
     [
       "getBlockchainID",
-      () => info.getBlockchainID("X"),
+      () => info.getBlockchainID("Swap"),
       (x) => x,
       Matcher.toBe,
       () => "qzfF3A11KzpcHkkqznEyQgupQrCNS6WV6fTUTwZpEKqhj1QE7"
@@ -46,7 +46,7 @@ describe("Info", (): void => {
     ],
     [
       "isBootstrapped",
-      () => info.isBootstrapped("X"),
+      () => info.isBootstrapped("Swap"),
       (x) => x,
       Matcher.toBe,
       () => true

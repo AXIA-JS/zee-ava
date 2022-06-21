@@ -31,5 +31,5 @@ avash> runscript scripts/five_node_staking.lua
 
 # Open another terminal tab/window
 cd /path/to/axiajs
-AXIAGO_IP=localhost AXIAGO_PORT=9650 yarn test -i --roots e2e_tests
+AXIAGO_IP=localhost AXIAGO_PORT=80 yarn test -i --roots e2e_tests
 ```

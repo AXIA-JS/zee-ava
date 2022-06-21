@@ -41,7 +41,7 @@ import { getPreferredHRP } from "../../src/utils"
 const serialization: Serialization = Serialization.getInstance()
 
 describe("Serialization", (): void => {
-  const address: string = "X-axc1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"
+  const address: string = "Swap-axc1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"
   const nodeID: string = "NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ"
   const privateKey: string =
     "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
@@ -54,7 +54,7 @@ describe("Serialization", (): void => {
   const bn: BN = new BN(9000)
   const name: string = "BaseTx"
   const denomination: Buffer = Buffer.alloc(1)
-  const chainID: string = "X"
+  const chainID: string = "Swap"
   const hrp: any = getPreferredHRP(1)
 
   test("instance of", (): void => {
@@ -328,9 +328,9 @@ describe("Serialization", (): void => {
     const amount: BN = new BN(0)
     const amountHex: string = "0000000000000000"
     const bytes: string = "0000000000000000000000000000000000000000"
-    const xAddress: string = "X-axc1pdurs53v6vtue9sw7am9ayjqh9mcnqe9s80sgn"
+    const xAddress: string = "Swap-axc1pdurs53v6vtue9sw7am9ayjqh9mcnqe9s80sgn"
     const xAddressHex: string = "0b7838522cd317cc960ef7765e9240b977898325"
-    const address: string = "X-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
+    const address: string = "Swap-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
     const bech32: SerializedType = "bech32"
     const addressBuf: Buffer = serialization.typeToBuffer(address, bech32)
     const threshold: number = 1
@@ -348,7 +348,7 @@ describe("Serialization", (): void => {
 
     describe("AVM", (): void => {
       const blockchainIDCB58: Buffer = serialization.typeToBuffer(
-        Defaults.network[12345]["X"].blockchainID,
+        Defaults.network[12345]["Swap"].blockchainID,
         cb58
       )
       const blockchainIDHex: string =

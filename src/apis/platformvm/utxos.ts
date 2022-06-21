@@ -838,7 +838,7 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
 
     if (typeof destinationChain === "undefined") {
       destinationChain = bintools.cb58Decode(
-        Defaults.network[`${networkID}`].X["blockchainID"]
+        Defaults.network[`${networkID}`].Swap["blockchainID"]
       )
     }
 

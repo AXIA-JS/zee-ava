@@ -24,37 +24,37 @@ import {
 } from "../../src/utils"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const swapchain: AVMAPI = axia.SwapChain()
 const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = swapchain.keyChain()
-const pKeychain: PlatformVMKeyChain = corechain.keyChain()
+const swapKeyChain: KeyChain = swapchain.keyChain()
+const coreKeyChain: PlatformVMKeyChain = corechain.keyChain()
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-// P-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-xKeychain.importKey(privKey)
-pKeychain.importKey(privKey)
+// Core-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
+swapKeyChain.importKey(privKey)
+coreKeyChain.importKey(privKey)
 
 privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
-// X-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
-xKeychain.importKey(privKey)
-pKeychain.importKey(privKey)
+// Swap-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
+swapKeyChain.importKey(privKey)
+coreKeyChain.importKey(privKey)
 
 privKey = "PrivateKey-rKsiN3X4NSJcPpWxMSh7WcuY653NGQ7tfADgQwDZ9yyUPPDG9"
-// P-custom1jwwk62ktygl0w29rsq2hq55amamhpvx82kfnte
-xKeychain.importKey(privKey)
-pKeychain.importKey(privKey)
+// Core-custom1jwwk62ktygl0w29rsq2hq55amamhpvx82kfnte
+swapKeyChain.importKey(privKey)
+coreKeyChain.importKey(privKey)
 const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
-const swapChainID: string = Defaults.network[networkID].X.blockchainID
+const swapChainID: string = Defaults.network[networkID].Swap.blockchainID
 const swapChainIDBuf: Buffer = bintools.cb58Decode(swapChainID)
-const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
+const axcAssetID: string = Defaults.network[networkID].Swap.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
-const coreChainID: string = Defaults.network[networkID].P.blockchainID
+const coreChainID: string = Defaults.network[networkID].Core.blockchainID
 const coreChainIDBuf: Buffer = bintools.cb58Decode(coreChainID)
 const exportedOuts: TransferableOutput[] = []
 const outputs: TransferableOutput[] = []
@@ -115,7 +115,7 @@ const main = async (): Promise<any> => {
     exportedOuts
   )
   const unsignedTx: UnsignedTx = new UnsignedTx(exportTx)
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(swapKeyChain)
   const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

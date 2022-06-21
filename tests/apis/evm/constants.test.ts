@@ -11,10 +11,10 @@ describe("EVMConstants", (): void => {
       test(`NetworkID: ${networkID}`, async (): Promise<void> => {
         const localNetwork: Network = networks[networkID]
 
-        const minGasPriceBN: BN = localNetwork.C.minGasPrice
+        const minGasPriceBN: BN = localNetwork.AX.minGasPrice
         const minGasPriceNum: number = new BN(minGasPriceBN).toNumber()
 
-        const maxGasPriceBN: BN = localNetwork.C.maxGasPrice
+        const maxGasPriceBN: BN = localNetwork.AX.maxGasPrice
         const maxGasPriceNum: number = new BN(maxGasPriceBN).toNumber()
 
         expect(minGasPriceNum).toBeLessThanOrEqual(maxGasPriceNum)

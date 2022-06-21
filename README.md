@@ -84,7 +84,7 @@ import { Axia, BinTools, Buffer, BN } from "axia"
 const bintools = BinTools.getInstance()
 
 const myNetworkID = 12345 //default is 1, we want to override that for our local network
-const axia = new Axia("localhost", 9650, "http", myNetworkID)
+const axia = new Axia("localhost", 80, "http", myNetworkID)
 const swapchain = axia.SwapChain() //returns a reference to the SwapChain used by AxiaJS
 ```
 
@@ -170,7 +170,7 @@ import { Axia, BinTools, Buffer, BN } from "axia"
 import { InitialStates, SECPTransferOutput } from "axia/dist/apis/avm"
 
 const myNetworkID = 12345 // default is 1, we want to override that for our local network
-const axia = new Axia("localhost", 9650, "http", myNetworkID)
+const axia = new Axia("localhost", 80, "http", myNetworkID)
 const swapchain = axia.SwapChain() // returns a reference to the SwapChain used by AxiaJS
 ```
 
@@ -294,7 +294,7 @@ import { Axia, BinTools, Buffer, BN } from "axia"
 const myNetworkID = 12345 // default is 1, we want to override that for our local network
 const axia = new axia.Axia(
   "localhost",
-  9650,
+  80,
   "http",
   myNetworkID
 )
@@ -331,7 +331,7 @@ We have 400 coins! We're going to now send 100 of those coins to our friend's ad
 
 ```js
 const sendAmount = new BN(100) // amounts are in BN format
-const friendsAddress = "X-axc1k26jvfdzyukms95puxcceyzsa3lzwf5ftt0fjk" // address format is Bech32
+const friendsAddress = "Swap-axc1k26jvfdzyukms95puxcceyzsa3lzwf5ftt0fjk" // address format is Bech32
 
 // The below returns a UnsignedTx
 // Parameters sent are (in order of appearance):

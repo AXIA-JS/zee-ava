@@ -84,9 +84,9 @@ describe("Payload", (): void => {
     ["B58STR", utf8b58, utf8b58],
     ["B64STR", utf8b64, utf8b58],
     ["BIGNUM", bnhex, bintools.bufferToB58(Buffer.from(bnhex, "hex"))],
-    ["SWAPCHAINADDR", "X-" + bech, cb58buf],
-    ["CORECHAINADDR", "P-" + bech, cb58buf],
-    ["AXCHAINADDR", "C-" + bech, cb58buf],
+    ["SWAPCHAINADDR", "Swap-" + bech, cb58buf],
+    ["CORECHAINADDR", "Core-" + bech, cb58buf],
+    ["AXCHAINADDR", "AX-" + bech, cb58buf],
     ["TXID", cb58str, cb58buf],
     ["ASSETID", cb58str, cb58buf],
     ["UTXOID", cb58str, cb58buf],
@@ -174,24 +174,24 @@ describe("Payload", (): void => {
   })
 
   test("SWAPCHAINADDRPayload special cases", (): void => {
-    const addr: string = `X-${bech}`
+    const addr: string = `Swap-${bech}`
     const pl: SWAPCHAINADDRPayload = new SWAPCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
-    expect(pl.returnChainID()).toBe("X")
+    expect(pl.returnChainID()).toBe("Swap")
   })
 
   test("CORECHAINADDRPayload special cases", (): void => {
-    const addr: string = `P-${bech}`
+    const addr: string = `Core-${bech}`
     const pl: CORECHAINADDRPayload = new CORECHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
-    expect(pl.returnChainID()).toBe("P")
+    expect(pl.returnChainID()).toBe("Core")
   })
 
   test("AXCHAINADDRPayload special cases", (): void => {
-    const addr: string = `C-${bech}`
+    const addr: string = `AX-${bech}`
     const pl: AXCHAINADDRPayload = new AXCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
-    expect(pl.returnChainID()).toBe("C")
+    expect(pl.returnChainID()).toBe("AX")
   })
 
   // handles all of cb58EncodedPayload

@@ -22,12 +22,12 @@ describe("CoreChain", (): void => {
   const badUser: string = "asdfasdfsa"
   const badPass: string = "pass"
   const memo: string = "hello world"
-  const whaleAddr: string = "P-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
+  const whaleAddr: string = "Core-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
   const key: string =
     "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
   const nodeID: string = "NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg"
   const subnetID: string = "2bGsYJorY6X7RhjPBFs3kYjiNEHo4zGrD2eeyZbb43T2KKi7fM"
-  const swapChainAddr: string = "X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
+  const swapChainAddr: string = "Swap-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p"
   const axiaBlockChainID: string =
     "2VvmkRw4yrz8tPrVnCCbvEK1JxNyujpqhmU6SGonxMpkWBx9UD"
 
@@ -260,7 +260,7 @@ describe("CoreChain", (): void => {
     ],
     [
       "importAXC",
-      () => corechain.importAXC(user, passwd, addrB.value, "X"),
+      () => corechain.importAXC(user, passwd, addrB.value, "Swap"),
       (x) => x,
       Matcher.toThrow,
       () => "no spendable funds were found"

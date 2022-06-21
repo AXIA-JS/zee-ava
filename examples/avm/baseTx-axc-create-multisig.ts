@@ -22,25 +22,25 @@ import {
 
 const bintools: BinTools = BinTools.getInstance()
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
-const xBlockchainID: string = Defaults.network[networkID].X.blockchainID
+const xBlockchainID: string = Defaults.network[networkID].Swap.blockchainID
 const xBlockchainIDBuf: Buffer = bintools.cb58Decode(xBlockchainID)
-const axcAssetID: string = Defaults.network[networkID].X.axcAssetID
+const axcAssetID: string = Defaults.network[networkID].Swap.axcAssetID
 const axcAssetIDBuf: Buffer = bintools.cb58Decode(axcAssetID)
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const swapchain: AVMAPI = axia.SwapChain()
-const xKeychain: KeyChain = swapchain.keyChain()
+const swapKeyChain: KeyChain = swapchain.keyChain()
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-// X-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-xKeychain.importKey(privKey)
+// Swap-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
+swapKeyChain.importKey(privKey)
 privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
-// X-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
-xKeychain.importKey(privKey)
+// Swap-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
+swapKeyChain.importKey(privKey)
 privKey = "PrivateKey-24b2s6EqkBp9bFG5S3Xxi4bjdxFqeRk56ck7QdQArVbwKkAvxz"
-// X-custom1aekly2mwnsz6lswd6u0jqvd9u6yddt5884pyuc
-xKeychain.importKey(privKey)
+// Swap-custom1aekly2mwnsz6lswd6u0jqvd9u6yddt5884pyuc
+swapKeyChain.importKey(privKey)
 const xAddresses: Buffer[] = swapchain.keyChain().getAddresses()
 const xAddressStrings: string[] = swapchain.keyChain().getAddressStrings()
 const outputs: TransferableOutput[] = []
@@ -107,7 +107,7 @@ const main = async (): Promise<any> => {
   // Uncomment for codecID 00 01
   // baseTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(baseTx)
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(swapKeyChain)
   const txid: string = await swapchain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

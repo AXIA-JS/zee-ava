@@ -15,13 +15,13 @@ describe("Axia", (): void => {
   const blockchainID: string =
     "6h2s5de1VC65meajE1L2PjvZ1MXvHc3F6eqPCGKuDt4MxiweF"
   let host: string = "127.0.0.1"
-  const port: number = 9650
+  const port: number = 80
   const networkID: number = 1337
   let protocol: string = "https"
   let axia: Axia
   let axiaCore: AxiaCore
   const api: string = "api.axc.network"
-  const url: string = "https://api.axc.network:9650"
+  const url: string = "https://api.axc.network:80"
   const encrypted: string = "https"
   const skipinit: boolean = true
   beforeAll((): void => {
@@ -134,18 +134,18 @@ describe("Axia", (): void => {
   })
 
   test("Customize headers", (): void => {
-    axia.setHeader("X-Custom-Header", "example")
-    axia.setHeader("X-Foo", "Foo")
-    axia.setHeader("X-Bar", "Bar")
+    axia.setHeader("Swap-Custom-Header", "example")
+    axia.setHeader("Swap-Foo", "Foo")
+    axia.setHeader("Swap-Bar", "Bar")
     expect(axia.getHeaders()).toStrictEqual({
-      "X-Custom-Header": "example",
-      "X-Foo": "Foo",
-      "X-Bar": "Bar"
+      "Swap-Custom-Header": "example",
+      "Swap-Foo": "Foo",
+      "Swap-Bar": "Bar"
     })
-    axia.removeHeader("X-Foo")
+    axia.removeHeader("Swap-Foo")
     expect(axia.getHeaders()).toStrictEqual({
-      "X-Custom-Header": "example",
-      "X-Bar": "Bar"
+      "Swap-Custom-Header": "example",
+      "Swap-Bar": "Bar"
     })
     axia.removeAllHeaders()
     expect(axia.getHeaders()).toStrictEqual({})

@@ -25,18 +25,18 @@ import {
 } from "../../src/utils"
 
 const ip: string = "localhost"
-const port: number = 9650
+const port: number = 80
 const protocol: string = "http"
 const networkID: number = 1337
 const axia: Axia = new Axia(ip, port, protocol, networkID)
 const corechain: PlatformVMAPI = axia.CoreChain()
 const bintools: BinTools = BinTools.getInstance()
-const pKeychain: KeyChain = corechain.keyChain()
+const coreKeyChain: KeyChain = corechain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-pKeychain.importKey(privKey)
+coreKeyChain.importKey(privKey)
 const pAddresses: Buffer[] = corechain.keyChain().getAddresses()
 const pAddressStrings: string[] = corechain.keyChain().getAddressStrings()
-const coreChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
+const coreChainBlockchainID: string = Defaults.network[networkID].Core.blockchainID
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const stakeOuts: TransferableOutput[] = []
@@ -126,7 +126,7 @@ const main = async (): Promise<any> => {
     delegationFee
   )
   const unsignedTx: UnsignedTx = new UnsignedTx(addValidatorTx)
-  const tx: Tx = unsignedTx.sign(pKeychain)
+  const tx: Tx = unsignedTx.sign(coreKeyChain)
   const txid: string = await corechain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

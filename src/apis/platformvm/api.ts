@@ -228,7 +228,7 @@ export class PlatformVMAPI extends JRPCAPI {
    */
   getDefaultTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["P"]["txFee"])
+      ? new BN(Defaults.network[this.core.getNetworkID()]["Core"]["txFee"])
       : new BN(0)
   }
 
@@ -252,7 +252,7 @@ export class PlatformVMAPI extends JRPCAPI {
   getCreateSubnetTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
       ? new BN(
-          Defaults.network[this.core.getNetworkID()]["P"]["createSubnetTx"]
+          Defaults.network[this.core.getNetworkID()]["Core"]["createSubnetTx"]
         )
       : new BN(0)
   }
@@ -264,7 +264,7 @@ export class PlatformVMAPI extends JRPCAPI {
    */
   getCreateChainTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["P"]["createChainTx"])
+      ? new BN(Defaults.network[this.core.getNetworkID()]["Core"]["createChainTx"])
       : new BN(0)
   }
 
@@ -284,7 +284,7 @@ export class PlatformVMAPI extends JRPCAPI {
    */
   getDefaultCreationTxFee = (): BN => {
     return this.core.getNetworkID() in Defaults.network
-      ? new BN(Defaults.network[this.core.getNetworkID()]["P"]["creationTxFee"])
+      ? new BN(Defaults.network[this.core.getNetworkID()]["Core"]["creationTxFee"])
       : new BN(0)
   }
 
@@ -838,7 +838,7 @@ export class PlatformVMAPI extends JRPCAPI {
    *
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The address on the SwapChain to send the AXC to. Do not include X- in the address
+   * @param to The address on the SwapChain to send the AXC to. Do not include Swap- in the address
    * @param amount Amount of AXC to export as a {@link https://github.com/indutny/bn.js/|BN}
    *
    * @returns Promise for an unsigned transaction to be signed by the account the the AXC is
@@ -1431,7 +1431,7 @@ export class PlatformVMAPI extends JRPCAPI {
       )
     }
     /*
-    if(bintools.cb58Encode(destinationChain) !== Defaults.network[this.core.getNetworkID()].X["blockchainID"]) {
+    if(bintools.cb58Encode(destinationChain) !== Defaults.network[this.core.getNetworkID()].Swap["blockchainID"]) {
       throw new Error("Error - PlatformVMAPI.buildExportTx: Destination ChainID must The SwapChain ID in the current version of AxiaJS.")
     }*/
 
@@ -1953,9 +1953,9 @@ export class PlatformVMAPI extends JRPCAPI {
    * Instead use the [[Axia.addAPI]] method.
    *
    * @param core A reference to the Axia class
-   * @param baseURL Defaults to the string "/ext/P" as the path to blockchain's baseURL
+   * @param baseURL Defaults to the string "/ext/Core" as the path to blockchain's baseURL
    */
-  constructor(core: AxiaCore, baseURL: string = "/ext/bc/P") {
+  constructor(core: AxiaCore, baseURL: string = "/ext/bc/Core") {
     super(core, baseURL)
     this.blockchainID = PlatformChainID
     const netID: number = core.getNetworkID()

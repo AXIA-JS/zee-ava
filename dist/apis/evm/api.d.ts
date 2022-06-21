@@ -174,7 +174,7 @@ export declare class EVMAPI extends JRPCAPI {
      * @param username The Keystore user that controls the account specified in `to`
      * @param password The password of the Keystore user
      * @param to The address of the account the asset is sent to.
-     * @param sourceChain The chainID where the funds are coming from. Ex: "X"
+     * @param sourceChain The chainID where the funds are coming from. Ex: "Swap"
      *
      * @returns Promise for a string for the transaction, which should be sent to the network
      * by calling issueTx.
@@ -276,7 +276,7 @@ export declare class EVMAPI extends JRPCAPI {
      * Instead use the [[Axia.addAPI]] method.
      *
      * @param core A reference to the Axia class
-     * @param baseURL Defaults to the string "/ext/bc/C/axc" as the path to blockchain's baseURL
+     * @param baseURL Defaults to the string "/ext/bc/AX/axc" as the path to blockchain's baseURL
      * @param blockchainID The Blockchain's ID. Defaults to an empty string: ""
      */
     constructor(core: AxiaCore, baseURL?: string, blockchainID?: string);

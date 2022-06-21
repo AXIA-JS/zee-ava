@@ -54,7 +54,7 @@ describe("Transactions", (): void => {
   const amnt: number = 10000
   const netid: number = 12345
   const blockchainID: Buffer = bintools.cb58Decode(PlatformChainID)
-  const alias: string = "X"
+  const alias: string = "Swap"
   const assetID: Buffer = Buffer.from(
     createHash("sha256")
       .update(
@@ -95,7 +95,7 @@ describe("Transactions", (): void => {
       undefined,
       true
     )
-    api = new PlatformVMAPI(axia, "/ext/bc/P")
+    api = new PlatformVMAPI(axia, "/ext/bc/Core")
     const result: Promise<Buffer> = api.getAXCAssetID()
     const payload: object = {
       result: {
