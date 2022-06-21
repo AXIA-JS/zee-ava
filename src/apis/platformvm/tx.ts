@@ -41,7 +41,7 @@ export const SelectTxClass = (txtype: number, ...args: any[]): BaseTx => {
     return new AddNominatorTx(...args)
   } else if (txtype === PlatformVMConstants.ADDVALIDATORTX) {
     return new AddValidatorTx(...args)
-  } else if (txtype === PlatformVMConstants.CREATESUBNETTX) {
+  } else if (txtype === PlatformVMConstants.CREATEALLYCHAINTX) {
     return new CreateAllychainTx(...args)
   }
   /* istanbul ignore next */

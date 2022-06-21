@@ -97,7 +97,7 @@ describe("CreateChainTx", (): void => {
 
     test("getTypeID", async (): Promise<void> => {
       const allychainAuthTypeID: number = sa.getTypeID()
-      expect(allychainAuthTypeID).toBe(PlatformVMConstants.SUBNETAUTH)
+      expect(allychainAuthTypeID).toBe(PlatformVMConstants.ALLYCHAINAUTH)
     })
 
     test("getNumAddressIndices", async (): Promise<void> => {

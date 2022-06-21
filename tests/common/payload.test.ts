@@ -91,7 +91,7 @@ describe("Payload", (): void => {
     ["ASSETID", cb58str, cb58buf],
     ["UTXOID", cb58str, cb58buf],
     ["NFTID", cb58str, cb58buf],
-    ["SUBNETID", cb58str, cb58buf],
+    ["ALLYCHAINID", cb58str, cb58buf],
     ["CHAINID", cb58str, cb58buf],
     ["NODEID", cb58str, cb58buf],
     ["SECPSIG", cb58str, cb58str],

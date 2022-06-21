@@ -14,7 +14,7 @@ const bintools: BinTools = BinTools.getInstance()
 
 export class AllychainAuth extends Serializable {
   protected _typeName = "AllychainAuth"
-  protected _typeID = PlatformVMConstants.SUBNETAUTH
+  protected _typeID = PlatformVMConstants.ALLYCHAINAUTH
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     let fields: object = super.serialize(encoding)

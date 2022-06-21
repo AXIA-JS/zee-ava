@@ -95,7 +95,7 @@ export class PayloadTypes {
       case 12:
         return new NFTIDPayload(...args)
       case 13:
-        return new SUBNETIDPayload(...args)
+        return new ALLYCHAINIDPayload(...args)
       case 14:
         return new CHAINIDPayload(...args)
       case 15:
@@ -169,7 +169,7 @@ export class PayloadTypes {
       "ASSETID",
       "UTXOID",
       "NFTID",
-      "SUBNETID",
+      "ALLYCHAINID",
       "CHAINID",
       "NODEID",
       "SECPSIG",
@@ -541,7 +541,7 @@ export class NFTIDPayload extends UTXOIDPayload {
 /**
  * Class for payloads representing AllychainIDs.
  */
-export class SUBNETIDPayload extends cb58EncodedPayload {
+export class ALLYCHAINIDPayload extends cb58EncodedPayload {
   protected typeid = 13
 }
 

@@ -18,7 +18,7 @@ describe("CreateAllychainTx", (): void => {
 
   test("getTypeID", async (): Promise<void> => {
     const createAllychainTxTypeID: number = createAllychainTx.getTypeID()
-    expect(createAllychainTxTypeID).toBe(PlatformVMConstants.CREATESUBNETTX)
+    expect(createAllychainTxTypeID).toBe(PlatformVMConstants.CREATEALLYCHAINTX)
   })
 
   test("toBuffer and fromBuffer", async (): Promise<void> => {

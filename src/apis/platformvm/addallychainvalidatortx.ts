@@ -27,7 +27,7 @@ const serialization: Serialization = Serialization.getInstance()
  */
 export class AddAllychainValidatorTx extends BaseTx {
   protected _typeName = "AddAllychainValidatorTx"
-  protected _typeID = PlatformVMConstants.ADDSUBNETVALIDATORTX
+  protected _typeID = PlatformVMConstants.ADDALLYCHAINVALIDATORTX
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     let fields: object = super.serialize(encoding)
@@ -71,7 +71,7 @@ export class AddAllychainValidatorTx extends BaseTx {
    * Returns the id of the [[AddAllychainValidatorTx]]
    */
   getTxType(): number {
-    return PlatformVMConstants.ADDSUBNETVALIDATORTX
+    return PlatformVMConstants.ADDALLYCHAINVALIDATORTX
   }
 
   /**

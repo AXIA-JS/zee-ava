@@ -13,7 +13,7 @@ import { AllychainOwnerError } from "../../utils/errors"
 
 export class CreateAllychainTx extends BaseTx {
   protected _typeName = "CreateAllychainTx"
-  protected _typeID = PlatformVMConstants.CREATESUBNETTX
+  protected _typeID = PlatformVMConstants.CREATEALLYCHAINTX
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     let fields: object = super.serialize(encoding)
